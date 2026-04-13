@@ -1,0 +1,28 @@
+{
+  "sampleApps": [],
+  "starterApps": [],
+  "customApps": [
+    {
+      "internalName": "NG",
+      "name": "NG",
+      "description": "Adicionar uma descriação para o aplicativo NG",
+      "author": "northonnstaff",
+      "version": "1.0.0",
+      "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/873da8cd07c41ac9c52ee6291dd6902ae2439a60/ng/desenvolvimento/app-icon-256-rounded.png",
+      "url": "https://github.com/StaffInformatica/apps/blob/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento",
+      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento/f134.sql",
+      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento/f134.zip"
+    },
+    {
+      "internalName": "MPD",
+      "name": "MPD",
+      "description": "Adicionar uma descriação para o aplicativo MPD",
+      "author": "northonnstaff",
+      "version": "1.0.0",
+      "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/e9d5ed7602db3e71a22a9fea87235eb1a7301163/mpd/desenvolvimento/app-icon-256-rounded.png",
+      "url": "https://github.com/StaffInformatica/apps/blob/e3cb7c361e3e09831ecdbece2797866b14b45f08/mpd/desenvolvimento",
+      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/mpd/desenvolvimento/f139.sql",
+      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/mpd/desenvolvimento/f139.zip"
+    }
+  ]
+}
