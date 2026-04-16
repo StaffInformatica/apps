@@ -10,8 +10,8 @@
       "version": "1.0.0",
       "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/ng/desenvolvimento/app-icon-256-rounded.png",
       "url": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento",
-      "source": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento/f137.sql",
-      "zip": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento/f137.sql"
+      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/main/ng/desenvolvimento/f137.sql",
+      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/main/ng/desenvolvimento/f137.zip"
     },
     {
       "internalName": "MPD",
