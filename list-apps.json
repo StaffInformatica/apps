@@ -10,8 +10,8 @@
       "version": "1.0.0",
       "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/873da8cd07c41ac9c52ee6291dd6902ae2439a60/ng/desenvolvimento/app-icon-256-rounded.png",
       "url": "https://github.com/StaffInformatica/apps/blob/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento",
-      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento/f137.sql",
-      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/e3cb7c361e3e09831ecdbece2797866b14b45f08/ng/desenvolvimento/f137.zip"
+      "source": "https://github.com/StaffInformatica/apps/blob/a1036e671097d5f85a3a88773c5388d63522563c/ng/desenvolvimento/f137.sql",
+      "zip": "https://github.com/StaffInformatica/apps/blob/a1036e671097d5f85a3a88773c5388d63522563c/ng/desenvolvimento/f137.zip"
     },
     {
       "internalName": "MPD",
