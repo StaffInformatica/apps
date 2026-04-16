@@ -16,13 +16,13 @@
     {
       "internalName": "MPD",
       "name": "MPD",
-      "description": "Adicionar uma descriação para o aplicativo MPD",
+      "description": "Adicionar uma descrição para o aplicativo MPD",
       "author": "northonnstaff",
       "version": "1.0.0",
       "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/app-icon-256-rounded.png",
-      "url": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento",
-      "source": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento/f139.sql",
-      "zip": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento/f139.zip"
+      "url": "https://github.com/StaffInformatica/apps/tree/main/mpd/desenvolvimento",
+      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/f139.sql",
+      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/f139.zip"
     }
   ]
 }
