@@ -8,7 +8,7 @@
       "description": "Adicionar uma descriação para o aplicativo NG",
       "author": "northonnstaff",
       "version": "1.0.0",
-      "icon": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento/app-icon-256-rounded.png",
+      "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/ng/desenvolvimento/app-icon-256-rounded.png",
       "url": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento",
       "source": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento/f137.sql",
       "zip": "https://github.com/StaffInformatica/apps/blob/main/ng/desenvolvimento/f137.sql"
@@ -19,7 +19,7 @@
       "description": "Adicionar uma descriação para o aplicativo MPD",
       "author": "northonnstaff",
       "version": "1.0.0",
-      "icon": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento/app-icon-256-rounded.png",
+      "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/app-icon-256-rounded.png",
       "url": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento",
       "source": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento/f139.sql",
       "zip": "https://github.com/StaffInformatica/apps/blob/main/mpd/desenvolvimento/f139.zip"
