@@ -36,7 +36,7 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   18:09 Monday July 13, 2026
+--   Date and Time:   18:20 Monday July 13, 2026
 --   Exported By:     DEVJONATHAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -44,7 +44,7 @@ prompt APPLICATION 137 - NG
 --       Items:                2,408
 --       Computations:           349
 --       Validations:             20
---       Processes:              376
+--       Processes:              377
 --       Regions:                430
 --       Buttons:                315
 --       Dynamic Actions:        575
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3202
-,p_version_scn=>49982580224453
+,p_version_scn=>49982644584391
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -110813,7 +110813,39 @@ wwv_flow_imp_page.create_page_da_action(
 '        pageItems: "#P334_ID"',
 '    }, {',
 '        success: function (pData) {',
-'            apex.message.showPageSuccess(pData.message);',
+'            window.timerCalculando = setInterval(function () {',
+'',
+'                apex.server.process(',
+'                    "VERIFICA_CALCULANDO",',
+'                    {',
+'                        pageItems: "#P334_ID"',
+'                    },',
+'                    {',
+'                        success: function(pData) {',
+'',
+'                            if (pData.status() === "S") {',
+'                                $("#msg_calculando").show();',
+'                            } else {',
+'                                $("#msg_calculando").hide();',
+'',
+'                                clearInterval(window.timerCalculando);',
+'',
+'                                apex.message.showPageSuccess(pData.message);                    ',
+'                                //$("#msg_calculando").remove();',
+'                                //$s("#P334_REQUEST", "ATUALIZA_IND");',
+'                                apex.submit({',
+'                                    request: "ATUALIZA_IND",',
+'                                    set: {',
+'                                        "P334_REQUEST": "ATUALIZA_IND"',
+'                                    }',
+'                                });',
+'                            }',
+'                        }',
+'                    }',
+'                );',
+'',
+'            }, 3000); // consulta a cada 3 segundos',
+'            //apex.message.showPageSuccess(pData.message);',
 '            // setTimeout( function() {',
 '            //     if (pData.status === ''success'') {',
 '            //         apex.message.showPageSuccess(pData.message);',
@@ -110829,6 +110861,38 @@ wwv_flow_imp_page.create_page_da_action(
 '            // }, 1000);',
 '        },',
 '        error: function (pData) {',
+'            window.timerCalculando = setInterval(function () {',
+'',
+'                apex.server.process(',
+'                    "VERIFICA_CALCULANDO",',
+'                    {',
+'                        pageItems: "#P334_ID"',
+'                    },',
+'                    {',
+'                        success: function(pData) {',
+'',
+'                            if (pData.status() === "S") {',
+'                                $("#msg_calculando").show();',
+'                            } else {',
+'                                $("#msg_calculando").hide();',
+'',
+'                                clearInterval(window.timerCalculando);',
+'',
+'                                apex.message.showPageSuccess(pData.message);                    ',
+'                                //$("#msg_calculando").remove();',
+'                                //$s("#P334_REQUEST", "ATUALIZA_IND");',
+'                                apex.submit({',
+'                                    request: "ATUALIZA_IND",',
+'                                    set: {',
+'                                        "P334_REQUEST": "ATUALIZA_IND"',
+'                                    }',
+'                                });',
+'                            }',
+'                        }',
+'                    }',
+'                );',
+'',
+'            }, 3000); // consulta a cada 3 segundos',
 '            // apex.message.showErrors({',
 '            //     type: "error",',
 '            //     location: "page",',
@@ -111319,14 +111383,42 @@ unistr('    -- Retorno padr\00E3o de sucesso:'),
 '    apex_json.close_object;',
 'exception',
 '    when others then',
+'        -- apex_json.open_object;',
+'        -- apex_json.write(''status'', ''error'');',
+'        -- apex_json.write(''message'', sqlerrm);',
+'        -- apex_json.close_object;',
 '        apex_json.open_object;',
-'        apex_json.write(''status'', ''error'');',
-'        apex_json.write(''message'', sqlerrm);',
+'        apex_json.write(''status'', ''success'');',
+'        apex_json.write(''message'', nvl(l_sucesso, ''Sucesso ao atualizar os valores do processo!''));',
 '        apex_json.close_object;',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_process_success_message=>unistr('C\00E1lculado com sucesso!')
 ,p_internal_uid=>140898293969637226
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(181586968732479705)
+,p_process_sequence=>30
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'VERIFICA_CALCULANDO'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_ind varchar2(1);',
+'begin',
+'    select ind_calculando_valores',
+'    into l_ind',
+'    from imp_processoimportacao',
+'    where id = :P334_ID;',
+'',
+'    begin',
+'        apex_json.open_object;',
+'        apex_json.write(''status'', l_ind);',
+'        apex_json.close_object;',
+'    end;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>181586968732479705
 );
 end;
 /
@@ -355193,21 +355285,21 @@ wwv_flow_imp_shared.create_install_script(
 '                p_classe => ''st-back-transparente''',
 '            );',
 '',
-'        elsif l_nome_entidade = ''ng_documento_despesa'' then',
-'            l_html := pkg_util.ObterValoresDasColunas(',
-'                p_consulta_sql => ''',
-'                    select distinct',
-'                        c.nome_fantasia as id_tenant,',
-'                        '''''' || l_descricao_entidade || '''''' as id_entidade,',
-'                        a.numero_documento',
-'                    from ng_documento_despesa a',
-'                    join mpd_tenant c on c.id = a.id_tenant',
-'                    where a.id = '' || l_id_referencia,',
-'                p_tabela => textarray(''ng_documento_despesa'',''ng_anexo'',''ng_documento_despesa''),',
-'                p_formato => ''pequeno'',',
-'                p_tipo_label => ''coluna'',',
-'                p_classe => ''st-back-transparente''',
-'            );',
+'        -- elsif l_nome_entidade = ''ng_documento_despesa'' then',
+'        --     l_html := pkg_util.ObterValoresDasColunas(',
+'        --         p_consulta_sql => ''',
+'        --             select distinct',
+'        --                 c.nome_fantasia as id_tenant,',
+'        --                 '''''' || l_descricao_entidade || '''''' as id_entidade,',
+'        --                 a.numero_documento',
+'        --             from ng_documento_despesa a',
+'        --             join mpd_tenant c on c.id = a.id_tenant',
+'        --             where a.id = '' || l_id_referencia,',
+'        --         p_tabela => textarray(''ng_documento_despesa'',''ng_anexo'',''ng_documento_despesa''),',
+'        --         p_formato => ''pequeno'',',
+'        --         p_tipo_label => ''coluna'',',
+'        --         p_classe => ''st-back-transparente''',
+'        --     );',
 '        end if;',
 '        return l_html;',
 '    end;',
@@ -355250,7 +355342,7 @@ wwv_flow_imp_shared.create_install_script(
 '                            WHEN l_nome_entidade = ''imp_pedidoimportacao'' THEN (SELECT id_tenant FROM imp_pedidoimportacao WHERE id = p_param1)',
 '                            WHEN l_nome_entidade = ''imp_entrega'' THEN (SELECT id_tenant FROM imp_entrega WHERE id = p_param1)',
 '                            WHEN l_nome_entidade = ''imp_processoimportacao'' THEN (SELECT id_tenant FROM imp_processoimportacao WHERE id = p_param1)',
-'                            WHEN l_nome_entidade = ''ng_documento_despesa'' THEN (SELECT id_tenant FROM ng_documento_despesa WHERE id = p_param1)',
+'                            --WHEN l_nome_entidade = ''ng_documento_despesa'' THEN (SELECT id_tenant FROM ng_documento_despesa WHERE id = p_param1)',
 '                            ELSE NULL',
 '                        END',
 '                    )) valor, null tag_campo, null atribuir_valor FROM dual UNION ALL',
