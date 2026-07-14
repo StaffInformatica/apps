@@ -36,18 +36,18 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   11:48 Tuesday July 14, 2026
+--   Date and Time:   15:06 Tuesday July 14, 2026
 --   Exported By:     DEVJONICLEI
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     73
---       Items:                2,409
---       Computations:           349
---       Validations:             20
---       Processes:              377
---       Regions:                430
---       Buttons:                315
---       Dynamic Actions:        575
+--     Pages:                     74
+--       Items:                2,453
+--       Computations:           353
+--       Validations:             21
+--       Processes:              386
+--       Regions:                435
+--       Buttons:                320
+--       Dynamic Actions:        590
 --     Shared Components:
 --       Logic:
 --         Items:                  6
@@ -82,7 +82,7 @@ prompt APPLICATION 137 - NG
 --       E-Mail:
 --         Templates:             16
 --     Supporting Objects:  Included
---       Install scripts:        386
+--       Install scripts:        385
 --   Version:         24.2.17
 --   Instance ID:     7324607884514517
 --
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3202
-,p_version_scn=>49989442537140
+,p_version_scn=>49990813136945
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -149953,6 +149953,2085 @@ wwv_flow_imp_page.create_page_process(
 );
 end;
 /
+prompt --application/pages/page_00353
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>353
+,p_name=>'Registrar valores das despesas por entidade'
+,p_alias=>'REGISTRAR-VALORES-DAS-DESPESAS-POR-ENTIDADE'
+,p_page_mode=>'MODAL'
+,p_step_title=>'Registrar valores das despesas por entidade'
+,p_autocomplete_on_off=>'OFF'
+,p_javascript_file_urls=>'https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('// Fun\00E7\00E3o para formatar n\00FAmeros com o padr\00E3o ''FM999G999G990D00000'''),
+'function formatarValor(valor) {',
+unistr('    // Garante que o valor seja um n\00FAmero v\00E1lido'),
+'    if (isNaN(valor)) return '''';',
+'',
+unistr('    // Obt\00E9m os valores dos itens de p\00E1gina (separadores decimal e num\00E9rico)'),
+unistr('    var separadorDecimal = $(''#P345_SEPARADOR_DECIMAL'').val(); // Item de p\00E1gina para o separador decimal'),
+unistr('    var separadorNumerico = $(''#P345_SEPARADOR_NUMERICO'').val(); // Item de p\00E1gina para o separador num\00E9rico'),
+'',
+'    // Separa a parte inteira e decimal',
+unistr('    var partes = valor.toFixed(5).split(''.''); // Formata o n\00FAmero com 5 casas decimais fixas'),
+'    var inteiro = partes[0];',
+'    var decimal = partes[1];',
+'',
+unistr('    // Adiciona separadores de milhar (utilizando o separador num\00E9rico)'),
+unistr('    // A regex abaixo insere o separador de milhar a cada 3 d\00EDgitos da parte inteira'),
+'    inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, separadorNumerico);',
+'',
+'    // Une a parte inteira e decimal com o separador decimal',
+'    return inteiro + separadorDecimal + decimal;',
+'}',
+'',
+'function validateMaxValue(event, maxValue) {',
+'    const input = event.target;',
+'    let valorAtual = input.value || "";',
+'',
+'    // Permitir teclas de controle',
+'    if (["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"].includes(event.key)) {',
+'        return true;',
+'    }',
+'',
+unistr('    // Obt\00E9m os separadores configurados'),
+'    const separadorDecimal = $v(''P345_SEPARADOR_DECIMAL'');',
+'    const separadorMilhar  = $v(''P345_SEPARADOR_NUMERICO'');',
+'',
+'    // Garante que maxValue seja string antes de aplicar replace',
+'    let maxNum = typeof maxValue === "string"',
+'        ? parseFloat(',
+'            maxValue',
+'                .split(separadorMilhar).join('''') // remove milhar',
+'                .replace(separadorDecimal, ''.'')  // troca decimal por ponto',
+'        )',
+'        : maxValue;',
+'',
+unistr('    // Simula o valor ap\00F3s digitar a tecla'),
+'    const valorSimulado = valorAtual + event.key;',
+'',
+'    // Normaliza valor simulado',
+'    const valorNumerico = parseFloat(',
+'        valorSimulado',
+'            .split(separadorMilhar).join('''')',
+'            .replace(separadorDecimal, ''.'')',
+'    );',
+'',
+'    if (!isNaN(valorNumerico) && valorNumerico > maxNum) {',
+'        input.value = maxValue;',
+'        event.preventDefault();',
+'        return false;',
+'    }',
+'',
+'    return true;',
+'}',
+'',
+'',
+'function atribuiSaldoSimples(el) {',
+'    var $icon = $(el);',
+'    var saldo = $icon.data(''saldo'');',
+'    var id = $icon.attr(''id'').replace(''id_saldo_'', '''');',
+'',
+'    var $input = $(''#id_item_'' + id);',
+'',
+'    if ($input.length) {    ',
+'        $input.val(saldo);',
+'',
+'        $input.css(''background-color'', ''#e6ffe6'');',
+'        setTimeout(function() {',
+'            $input.css(''background-color'', '''');',
+'        }, 800);',
+'    } else {',
+unistr('        //console.warn(''Input n\00E3o encontrado para o ID:'', id);'),
+'    }',
+'}',
+'',
+'function atribuiSaldoTotal() {    ',
+'    $(''[id^="id_saldo_"]'').each(function() {',
+'        var $icon = $(this);',
+'        var saldo = $icon.data(''saldo'');',
+'        var id = $icon.attr(''id'').replace(''id_saldo_'', '''');',
+'        var $input = $(''#id_item_'' + id);',
+'',
+'        if ($input.length) {',
+'            $input.val(saldo);',
+'',
+'            $input.css(''background-color'', ''#e6ffe6'');',
+'            setTimeout(function() {',
+'                $input.css(''background-color'', '''');',
+'            }, 700);',
+'        }',
+'    });',
+'',
+unistr('    apex.message.showPageSuccess(''Saldos atribu\00EDdos a todos os itens.'');'),
+'}',
+'',
+'',
+'// CALCULO VALOR TOTAL DAS DESPESAS:',
+'function calcularTotalDespesas() {',
+'    let total = 0;',
+'',
+'    document.querySelectorAll(".js-valor-reais").forEach(function(el) {',
+'        let valor = el.value;',
+'',
+'        if (valor) {',
+'            // remove separador de milhar',
+'            valor = valor.replace(/\./g, '''');',
+unistr('            // troca v\00EDrgula por ponto'),
+'            valor = valor.replace('','', ''.'');',
+'',
+'            let numero = parseFloat(valor);',
+'',
+'            if (!isNaN(numero)) {',
+'                total += numero;',
+'            }',
+'        }',
+'    });',
+'',
+'    // formata com 2 casas',
+'    $s("P345_VALOR_MOEDA_NACIONAL",',
+'        total.toLocaleString(''pt-BR'', {',
+'            minimumFractionDigits: 2,',
+'            maximumFractionDigits: 2',
+'        })',
+'    );',
+'}',
+'',
+'',
+'// Muda cor valor do INPUT',
+'function atualizaCor() {',
+'    // pega os valores',
+'    var totalReais = $v(''P345_VALOR_INFORMADO_MOEDA_NACIONAL''); ',
+'    var totalDespesas = $v(''P345_VALOR_MOEDA_NACIONAL''); ',
+'',
+unistr('    // converte para n\00FAmero, garantindo que ponto decimal seja considerado'),
+'    totalReais = parseFloat(totalReais.replace('','', ''.'')) || 0;',
+'    totalDespesas = parseFloat(totalDespesas.replace('','', ''.'')) || 0;',
+'',
+unistr('    // verifica se s\00E3o diferentes'),
+'    if (totalDespesas !== totalReais) {',
+'        $(''#P345_VALOR_MOEDA_NACIONAL'').css({',
+'            ''color'': ''red'',',
+'            ''font-weight'': ''bold''',
+'        });',
+'    } else {',
+'        $(''#P345_VALOR_MOEDA_NACIONAL'').css({',
+'            ''color'': '''',',
+'            ''font-weight'': ''''',
+'        });',
+'    }',
+'}'))
+,p_javascript_code_onload=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'tituloTela($v("P345_TELA_TITULO")+'' (''+$v("P345_CODIGO_ARTEFATO")+'')'');',
+'',
+unistr('// Armazena os valores digitados \2014 persiste mesmo entre pesquisas'),
+'var cacheValores = {};',
+'',
+'function aplicarConfiguracoesDeEntrada() {',
+'    // Aplica AutoNumeric e outros ajustes',
+'    $("[id^=''id_item_'']").each(function () {',
+'        const inputId = $(this).attr(''id'');',
+'        const $input = $(''#'' + inputId);',
+'',
+'        const decimalPlaces = parseInt($input.data(''decimal-places'')) || 0;',
+'        const integerDigits = parseInt($input.data(''integer-digits'')) || 10;',
+'        const prefix = '''';',
+'        const groupSeparatorType = $(''#P345_SEPARADOR_NUMERICO'').val();',
+'        const decimalSeparatorType = $(''#P345_SEPARADOR_DECIMAL'').val();',
+'        const allowNegative = false;',
+'',
+'        applyAutoNumericMask(''#'' + inputId, decimalPlaces, prefix, groupSeparatorType, decimalSeparatorType, allowNegative, integerDigits);',
+'',
+'        // Se existir valor no cache, reaplica',
+'        if (cacheValores[inputId] !== undefined) {',
+'            $input.val(cacheValores[inputId]);',
+'        }',
+'    });',
+'',
+unistr('    // Captura altera\00E7\00F5es e atualiza cache global'),
+'    $(document).off(''input.cacheValores'').on(''input.cacheValores'', ''[id^="id_item_"]'', function () {',
+'        const id = $(this).attr(''id'');',
+'        cacheValores[id] = $(this).val();',
+'    });',
+'',
+'    // Clique individual de saldo',
+'    $(document).off(''click.saldoSimples'').on(''click.saldoSimples'', ''[id^="id_saldo_"]'', function () {',
+'        atribuiSaldoSimples(this);',
+'    });',
+'',
+'    // Reaplica estilo para linhas sem input (mantendo .slice(1))',
+'    apex.jQuery(document).ready(function () {',
+'        var $linhas = apex.jQuery("#ENTREGA_ITENS tbody tr");',
+'',
+'        $linhas.slice(1).each(function () {',
+'            var $row = apex.jQuery(this);',
+'            if ($row.find("input").length === 0) {',
+'                $row.addClass("apex_disabled");',
+'            }',
+'        });',
+'    });',
+'',
+unistr('    // Impede ativa\00E7\00E3o de filtro por teclado, exceto no cabe\00E7alho "atribuir_saldo_total" e elementos com id come\00E7ando com "id_item_"'),
+'    $(document).on("keydown", "#ENTREGA_ITENS .a-IRR-headerLink", function(e) {',
+'        const $header = $(this);',
+'        const id = $header.attr("id") || "";',
+'',
+unistr('        // Permite se for o \00EDcone do cabe\00E7alho ou algum elemento din\00E2mico de item'),
+'        const isExcecao = id === "atribuir_saldo_total" || id.startsWith("id_item_");',
+'',
+'        if (!isExcecao && (e.key === "Enter" || e.key === " " || e.key === "Spacebar")) {',
+'            e.preventDefault();',
+'            e.stopPropagation();',
+'        }',
+'    });',
+'',
+'}',
+'',
+unistr('// Executa ao carregar a p\00E1gina'),
+'aplicarConfiguracoesDeEntrada();',
+'',
+'// Antes do refresh, salva todos os valores digitados',
+'$("#ENTREGA_ITENS").on("apexbeforerefresh", function () {',
+'    $("[id^=''id_item_'']").each(function () {',
+'        const id = $(this).attr(''id'');',
+'        cacheValores[id] = $(this).val();',
+'    });',
+'});',
+'',
+unistr('// Ap\00F3s o refresh, reaplica configura\00E7\00F5es e restaura valores do cache'),
+'$("#ENTREGA_ITENS").on("apexafterrefresh", function () {',
+'    aplicarConfiguracoesDeEntrada();',
+'});',
+'',
+unistr('// Clique atribui\00E7\00E3o total de saldo'),
+'$(document).on(''click'', ''#atribuir_saldo_total'', function() {    ',
+'    var $icones = $(''[id^="id_item_"]'');',
+'',
+'    if ($icones.length === 0) {',
+unistr('        apex.message.alert("Nenhum item dispon\00EDvel para atribui\00E7\00E3o de saldo.");'),
+'        return;',
+'    }',
+'',
+'    apex.message.confirm("Deseja realmente atribuir o saldo total a todos os itens?", function(okPressed) {',
+'        if (okPressed) {',
+'            atribuiSaldoTotal();',
+'        }        ',
+'    });',
+'});'))
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/*',
+'.a-IRR-controlGroup--search {',
+'    width: 100% !important;',
+'}',
+'*/',
+'th, #ENTREGA_ITENS_search_button {',
+'    color: var(--ut-link-text-color) !important;',
+'}',
+'',
+'#ENTREGA_ITENS .a-IRR-headerLink {',
+'  pointer-events: none !important;',
+'  cursor: default !important;  ',
+'}',
+'',
+'#ENTREGA_ITENS #atribuir_saldo_total{',
+'  pointer-events: auto !important;',
+'  cursor: pointer !important;  ',
+'}',
+'',
+'.arrowLink {',
+'    justify-content: center;',
+'    text-decoration: none;',
+'    cursor: pointer;',
+'    align-items: center;',
+'    display: flex;    ',
+'    min-height: var(--a-gv-header-cell-height, 40px);',
+'    padding-block-end: var(--a-gv-header-cell-padding-y, 4px);',
+'    padding-block-start: var(--a-gv-header-cell-padding-y, 4px);',
+'    padding-inline-end: var(--a-gv-header-cell-padding-x, 8px);',
+'    padding-inline-start: var(--a-gv-header-cell-padding-x, 8px);',
+'    text-align: inherit;',
+'}',
+'',
+'',
+'',
+''))
+,p_step_template=>wwv_flow_imp.id(529552185164986945)
+,p_page_template_options=>'#DEFAULT#:js-dialog-class-t-Drawer--pullOutEnd:js-dialog-class-t-Drawer--lg'
+,p_protection_level=>'C'
+,p_page_component_map=>'25'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(568345844765315320)
+,p_plug_name=>unistr('Valores do Numer\00E1rio')
+,p_region_name=>'FORM'
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--noUI:t-Region--scrollBody:t-Form--large'
+,p_plug_template=>wwv_flow_imp.id(529623708881986997)
+,p_plug_display_sequence=>70
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    VALOR_TOTAL_REAIS,',
+'    VALOR_TOTAL_DESPESAS_REAIS',
+'from IMP_PROCESSOIMPORTACAO_NUMERARIO',
+'where id = :P353_PARAMETRO'))
+,p_is_editable=>false
+,p_plug_source_type=>'NATIVE_FORM'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(654887797734960460)
+,p_plug_name=>'Steps'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#:t-WizardSteps--displayLabels'
+,p_plug_template=>wwv_flow_imp.id(529636304362987004)
+,p_plug_display_sequence=>380
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_location=>null
+,p_list_id=>wwv_flow_imp.id(164171646191588601)
+,p_plug_source_type=>'NATIVE_LIST'
+,p_list_template_id=>wwv_flow_imp.id(529713471987987053)
+,p_plug_display_condition_type=>'EXISTS'
+,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    1',
+'from srv_artefato_wizard a',
+'join srv_artefato_versionado b on b.id = a.id_artefato_versionado',
+'join srv_artefato c on c.id = b.id_artefato',
+'join srv_artefato_versionado b1 on b1.id = a.id_artefato_versionado_base',
+'join srv_artefato c1 on c1.id = b1.id_artefato',
+'where c.codigo_artefato = nvl( apex_util.get_session_state(''P''||:APP_PAGE_ID||''_CODIGO_WIZARD''),:p0_codigo_artefato)'))
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(733033600138616866)
+,p_plug_name=>'Itens'
+,p_region_name=>'ENTREGA_ITENS'
+,p_region_template_options=>'#DEFAULT#:t-Form--stretchInputs'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_imp.id(529621672076986996)
+,p_plug_display_sequence=>90
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    to_char(chamar_webservice_traducao(''wksp_teste'', ''ng_despesa'', ''descricao_despesa'', apex_util.get_session_state(''IDIOMA_LOGADO''), d.id)) as id_despesa,',
+'    c.codigo_moeda || '' - '' || c.simbolo_iso as id_moeda_despesa,',
+'    ''<div class="t-form-itemwrapper" style="height:100%;">',
+'        <input',
+'            id="id_valor_numerario_''||a.id||''"',
+'            type="text"',
+'            class="text_field apex-item-text js-valor-numerario"',
+'            style="height:100%;"',
+'            value="''||to_char(coalesce(nullif(a.valor_realizado,0), a.valor_despesa_numerario), ''FM999G999G990D00'')||''"',
+'            data-decimal-places="2"',
+'            data-integer-digits="10"',
+'            data-id-despesa="''||a.id||''"',
+'        />',
+'     </div>'' as valor_despesa_numerario,',
+'    ',
+'    ''<div class="t-form-itemwrapper" style="height:100%;">',
+'        <input',
+'            id="id_valor_reais_''||a.id||''"',
+'            type="text"',
+'            class="text_field apex-item-text js-valor-reais"',
+'            style="height:100%;"',
+'            value="''||to_char(coalesce(nullif(a.valor_realizado_moeda_nacional,0), a.valor_numerario_moeda_nacional), ''FM999G999G990D00'')||''"',
+'            data-decimal-places="2"',
+'            data-integer-digits="10"',
+'            data-id-despesa="''||a.id||''"',
+'            onkeyup="calcularTotalDespesas();"',
+'        />',
+'    </div>'' as INPUT,',
+'    pkg_componentes.html_botao_opcao(p_id => a.id, p_pagina => ''345'', p_param1 => a.id) opcao',
+'from imp_processoimportacao_numerario_despesa a',
+'join imp_processoimportacao_numerario n on n.id = a.id_numerario',
+'join imp_processoimportacao_despesa b on b.id = a.id_despesa',
+'join ng_despesa d on d.id = b.id_despesa',
+'join ng_moeda c on c.id = a.id_moeda_despesa',
+'where',
+'(',
+unistr('    -- DESPESAS J\00C1 VINCULADAS AO NUMER\00C1RIO'),
+'    a.id_numerario = :P353_PARAMETRO',
+')',
+'or',
+'(',
+unistr('    -- DESPESAS DISPON\00CDVEIS PARA COMPROVA\00C7\00C3O'),
+'    n.id_processoimportacao = (',
+'        select n2.id_processoimportacao from imp_processoimportacao_numerario n2 where n2.id = :P353_PARAMETRO',
+'    )',
+'    ',
+'    and n.ind_tipo_movimento = 1',
+'',
+unistr('    -- ainda n\00E3o comprovadas'),
+'    and (a.valor_realizado is null or a.valor_realizado = 0)',
+'',
+unistr('    -- n\00E3o pode j\00E1 estar vinculada a outra comprova\00E7\00E3o'),
+'    and not exists (',
+'        select 1 from imp_processoimportacao_numerario_despesa nd join imp_processoimportacao_numerario nn on nn.id = nd.id_numerario where nd.id_despesa = a.id_despesa and nn.ind_tipo_movimento = 2',
+'    )',
+')',
+'order by id_despesa',
+'',
+''))
+,p_plug_source_type=>'NATIVE_IR'
+,p_prn_units=>'MILLIMETERS'
+,p_prn_paper_size=>'A4'
+,p_prn_width=>297
+,p_prn_height=>210
+,p_prn_orientation=>'HORIZONTAL'
+,p_prn_page_header_font_color=>'#000000'
+,p_prn_page_header_font_family=>'Helvetica'
+,p_prn_page_header_font_weight=>'normal'
+,p_prn_page_header_font_size=>'12'
+,p_prn_page_footer_font_color=>'#000000'
+,p_prn_page_footer_font_family=>'Helvetica'
+,p_prn_page_footer_font_weight=>'normal'
+,p_prn_page_footer_font_size=>'12'
+,p_prn_header_bg_color=>'#EEEEEE'
+,p_prn_header_font_color=>'#000000'
+,p_prn_header_font_family=>'Helvetica'
+,p_prn_header_font_weight=>'bold'
+,p_prn_header_font_size=>'10'
+,p_prn_body_bg_color=>'#FFFFFF'
+,p_prn_body_font_color=>'#000000'
+,p_prn_body_font_family=>'Helvetica'
+,p_prn_body_font_weight=>'normal'
+,p_prn_body_font_size=>'10'
+,p_prn_border_width=>.5
+,p_prn_page_header_alignment=>'CENTER'
+,p_prn_page_footer_alignment=>'CENTER'
+,p_prn_border_color=>'#666666'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_worksheet(
+ p_id=>wwv_flow_imp.id(733034321416616873)
+,p_max_row_count=>'1000000'
+,p_show_finder_drop_down=>'N'
+,p_report_list_mode=>'TABS'
+,p_fixed_header=>'NONE'
+,p_lazy_loading=>false
+,p_show_detail_link=>'N'
+,p_show_notify=>'Y'
+,p_download_formats=>'CSV:HTML:XLSX:PDF'
+,p_enable_mail_download=>'Y'
+,p_owner=>'LEO1'
+,p_internal_uid=>733034321416616873
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(562985892951205433)
+,p_db_column_name=>'ID_DESPESA'
+,p_display_order=>10
+,p_column_identifier=>'T'
+,p_column_label=>'&P345_LABEL_ID_DESPESA.'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(562985955427205434)
+,p_db_column_name=>'ID_MOEDA_DESPESA'
+,p_display_order=>20
+,p_column_identifier=>'U'
+,p_column_label=>'&P345_LABEL_ID_MOEDA_DESPESA.'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(562985634080205431)
+,p_db_column_name=>'VALOR_DESPESA_NUMERARIO'
+,p_display_order=>30
+,p_column_identifier=>'S'
+,p_column_label=>'&P345_LABEL_VALOR_DESPESA_NUMERARIO.'
+,p_column_type=>'STRING'
+,p_display_text_as=>'WITHOUT_MODIFICATION'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(654887740645960459)
+,p_db_column_name=>'INPUT'
+,p_display_order=>40
+,p_column_identifier=>'P'
+,p_column_label=>'&P345_LABEL_VALOR_DESPESA_NUMERARIO_REAIS.'
+,p_column_type=>'STRING'
+,p_display_text_as=>'WITHOUT_MODIFICATION'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(451915166304788748)
+,p_db_column_name=>'OPCAO'
+,p_display_order=>50
+,p_column_identifier=>'V'
+,p_column_label=>'&P0_LABEL_OPCAO.'
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<div style="display: flex; align-items: center; justify-content: center; flex-grow: 1;">',
+'    <span #OPCAO# style="cursor: pointer; color: var(--a-button-state-text-color, var(--a-button-type-text-color, var(--a-button-text-color, inherit)));" ',
+'        class="fa fa-ellipsis-v js-dlg-refresh" title="&P0_LABEL_OPCAO!RAW.">',
+'    </span>',
+'</div>'))
+,p_allow_sorting=>'N'
+,p_allow_filtering=>'N'
+,p_allow_highlighting=>'N'
+,p_allow_ctrl_breaks=>'N'
+,p_allow_aggregations=>'N'
+,p_allow_computations=>'N'
+,p_allow_charting=>'N'
+,p_allow_group_by=>'N'
+,p_allow_pivot=>'N'
+,p_allow_hide=>'N'
+,p_column_type=>'STRING'
+,p_display_text_as=>'WITHOUT_MODIFICATION'
+,p_heading_alignment=>'LEFT'
+,p_column_alignment=>'CENTER'
+,p_static_id=>'OPCAO'
+,p_use_as_row_header=>'N'
+);
+wwv_flow_imp_page.create_worksheet_rpt(
+ p_id=>wwv_flow_imp.id(733052336294699513)
+,p_application_user=>'APXWS_DEFAULT'
+,p_report_seq=>10
+,p_report_alias=>'743548'
+,p_status=>'PUBLIC'
+,p_is_default=>'Y'
+,p_report_columns=>'ID_DESPESA:ID_MOEDA_DESPESA:VALOR_DESPESA_NUMERARIO:INPUT:OPCAO:'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(837444788745753874)
+,p_plug_name=>'Footer'
+,p_region_css_classes=>'u-margin-bottom-none'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>wwv_flow_imp.id(529590912278986980)
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_03'
+,p_location=>null
+,p_ai_enabled=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(975542160582932481)
+,p_plug_name=>'Header'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--slimPadding:t-ButtonRegion--noUI'
+,p_plug_template=>wwv_flow_imp.id(529590912278986980)
+,p_plug_display_sequence=>50
+,p_location=>null
+,p_function_body_language=>'PLSQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_html clob;    ',
+'begin',
+'    l_html := pkg_util.ObterValoresDasColunas (',
+'            p_consulta_sql => ',
+'                ''select',
+'                    b.num_processoimportacao, ',
+'                    pkg_util.dominio_retorna_tag(''''imp_processoimportacao_numerario'''',''''ind_tipo_movimento'''',a.ind_tipo_movimento) ind_tipo_movimento,',
+'                    bo_ng_pessoa.retorna_pessoa(a.id_fornecedor) id_fornecedor',
+'                from imp_processoimportacao_numerario a ',
+'                join imp_processoimportacao b on b.id = a.id_processoimportacao',
+'                where a.id = ''||:P353_PARAMETRO,',
+'            p_tabela => textarray(''imp_processoimportacao'',''imp_processoimportacao_numerario'',''imp_processoimportacao_numerario''),',
+'            p_formato => ''pequeno'',                ',
+'            p_tipo_label => ''coluna'',',
+'            p_classe  => ''st-back-transparente''',
+'        ) || ''</br><div class="a-CardView-headerBody" style="display: flex; justify-content: left; align-items: center; padding: 0.5rem;"><h3 class="a-CardView-title">''||retorna_texto(''msg.138.l'')||''</h3></div>'';',
+'    return l_html;',
+'end;',
+''))
+,p_lazy_loading=>true
+,p_plug_source_type=>'NATIVE_DYNAMIC_CONTENT'
+,p_ajax_items_to_submit=>'P353_ID,P353_PARAMETRO,P353_PARAMETRO2,P353_PARAMETRO3'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(249286132997334501)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(837444788745753874)
+,p_button_name=>'Voltar'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconLeft'
+,p_button_template_id=>wwv_flow_imp.id(529721578828987060)
+,p_button_image_alt=>'&P0_LABEL_VOLTAR.'
+,p_button_condition=>':P353_URL_ANTERIOR is not null and :P353_ESCONDE_BOTAO_WIZARD is null'
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
+,p_icon_css_classes=>'fa-angle-left'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(249276879806334432)
+,p_button_sequence=>20
+,p_button_name=>unistr('Op\00E7\00F5es')
+,p_button_static_id=>'BTN_OPCAO'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--pillEnd'
+,p_button_template_id=>wwv_flow_imp.id(529720684627987059)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>unistr('Op\00E7\00F5es')
+,p_button_redirect_url=>'f?p=&APP_ID.:9000:&SESSION.::&DEBUG.:9000:P9000_PAGINA,P9000_ID,P9000_PARAMETRO:&P353_CODIGO_ARTEFATO.,&P353_ID.,&P353_PARAMETRO.'
+,p_button_condition=>'(:P353_VISUALIZAR = 1 AND :P353_ID is not null)'
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
+,p_icon_css_classes=>'fa-ellipsis-v-o'
+,p_grid_new_row=>'Y'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(249277234706334436)
+,p_button_sequence=>30
+,p_button_name=>'New'
+,p_button_static_id=>'NEW'
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--pillEnd'
+,p_button_template_id=>wwv_flow_imp.id(529720684627987059)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>unistr('Op\00E7\00F5es')
+,p_warn_on_unsaved_changes=>null
+,p_button_css_classes=>'u-hidden'
+,p_icon_css_classes=>'fa-ellipsis-v-o'
+,p_grid_new_row=>'Y'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(249277643341334438)
+,p_button_sequence=>80
+,p_button_name=>'Incluir_Nova_Despesa'
+,p_button_static_id=>'NEW'
+,p_button_action=>'REDIRECT_PAGE'
+,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--success:t-Button--gapBottom'
+,p_button_template_id=>wwv_flow_imp.id(529721430009987060)
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'&P353_LABEL_INCLUIR_NOVA_DESPESA.'
+,p_button_redirect_url=>'f?p=&APP_ID.:9016:&SESSION.::&DEBUG.:9016:P9016_CODIGO_ARTEFATO,P9016_PARAMETRO,P0_CODIGO_ARTEFATO:TD1003,&P353_PARAMETRO.,TD1003'
+,p_button_css_classes=>'u-pullRight'
+,p_button_cattributes=>'style="margin-top:0px;"'
+,p_grid_new_row=>'Y'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(249286524759334502)
+,p_button_sequence=>10
+,p_button_plug_id=>wwv_flow_imp.id(837444788745753874)
+,p_button_name=>'Create'
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconRight'
+,p_button_template_id=>wwv_flow_imp.id(529721578828987060)
+,p_button_image_alt=>'&P0_LABEL_PROXIMO.'
+,p_button_position=>'NEXT'
+,p_button_condition=>':P353_ID is null and :P353_URL_PROXIMO is not null and :P353_ESCONDE_BOTAO_WIZARD is null'
+,p_button_condition2=>'PLSQL'
+,p_button_condition_type=>'EXPRESSION'
+,p_icon_css_classes=>'fa-angle-right'
+);
+wwv_flow_imp_page.create_page_branch(
+ p_id=>wwv_flow_imp.id(249321273221334604)
+,p_branch_name=>'goto_anterior'
+,p_branch_action=>'P353_URL_ANTERIOR'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'BRANCH_TO_URL_IDENT_BY_ITEM'
+,p_branch_when_button_id=>wwv_flow_imp.id(249286132997334501)
+,p_branch_sequence=>10
+);
+wwv_flow_imp_page.create_page_branch(
+ p_id=>wwv_flow_imp.id(249321665596334605)
+,p_branch_name=>'goto_proximo'
+,p_branch_action=>'P353_URL_PROXIMO'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'BRANCH_TO_URL_IDENT_BY_ITEM'
+,p_branch_sequence=>20
+,p_branch_condition_type=>'REQUEST_IN_CONDITION'
+,p_branch_condition=>'Create,Save'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(249330276081725801)
+,p_name=>'P353_IND_DESPESAS'
+,p_item_sequence=>10
+,p_prompt=>'Ind Despesas'
+,p_display_as=>'NATIVE_DISPLAY_ONLY'
+,p_field_template=>wwv_flow_imp.id(529718889303987057)
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'based_on', 'VALUE',
+  'format', 'PLAIN',
+  'send_on_page_submit', 'Y',
+  'show_line_breaks', 'Y')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(451916923347788789)
+,p_name=>'P353_LABEL_INCLUIR_NOVA_DESPESA'
+,p_item_sequence=>60
+,p_item_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(568350463258315475)
+,p_name=>'P353_VALOR_INFORMADO_MOEDA_NACIONAL'
+,p_source_data_type=>'NUMBER'
+,p_is_required=>true
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_item_source_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_prompt=>'&P353_LABEL_VALOR_INFORMADO_MOEDA_NACIONAL.'
+,p_format_mask=>'999G999G999G999G990D00'
+,p_source=>'VALOR_TOTAL_REAIS'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_field_template=>wwv_flow_imp.id(529718889303987057)
+,p_item_css_classes=>'is-readonly apex-item-wrapper--display-only'
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_alignment', 'left',
+  'virtual_keyboard', 'decimal')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(568350632701315476)
+,p_name=>'P353_VALOR_MOEDA_NACIONAL'
+,p_source_data_type=>'NUMBER'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_item_source_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_prompt=>'&P353_LABEL_VALOR_MOEDA_NACIONAL.'
+,p_format_mask=>'999G999G999G999G990D00'
+,p_source=>'VALOR_TOTAL_DESPESAS_REAIS'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_NUMBER_FIELD'
+,p_cSize=>30
+,p_begin_on_new_line=>'N'
+,p_field_template=>wwv_flow_imp.id(529718889303987057)
+,p_item_css_classes=>'is-readonly apex-item-wrapper--display-only'
+,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_alignment', 'left',
+  'virtual_keyboard', 'decimal')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(568353877338315509)
+,p_name=>'P353_LABEL_VALOR_INFORMADO_MOEDA_NACIONAL'
+,p_source_data_type=>'NUMBER'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_item_source_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_source=>'VALOR_TOTAL_REAIS'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(568369987828315673)
+,p_name=>'P353_JSON_DESPESAS'
+,p_item_sequence=>60
+,p_use_cache_before_default=>'NO'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(568371258943315686)
+,p_name=>'P353_MENSAGEM_EXIBIDA'
+,p_item_sequence=>220
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(569821608054500860)
+,p_name=>'P353_LABEL_VALOR_MOEDA_NACIONAL'
+,p_source_data_type=>'NUMBER'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_item_source_plug_id=>wwv_flow_imp.id(568345844765315320)
+,p_source=>'VALOR_TOTAL_DESPESAS_REAIS'
+,p_source_type=>'REGION_SOURCE_COLUMN'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_is_persistent=>'N'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654908171733960780)
+,p_name=>'P353_LABEL_ID_DESPESA'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654908235803960781)
+,p_name=>'P353_LABEL_ID_MOEDA_DESPESA'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654908377312960782)
+,p_name=>'P353_LABEL_VALOR_DESPESA_NUMERARIO'
+,p_item_sequence=>60
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654908477650960783)
+,p_name=>'P353_LABEL_VALOR_DESPESA_NUMERARIO_REAIS'
+,p_item_sequence=>70
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654918861779960876)
+,p_name=>'P353_CODIGO_WIZARD'
+,p_item_sequence=>100
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654918960917960877)
+,p_name=>'P353_URL_ANTERIOR'
+,p_item_sequence=>120
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654918995591960878)
+,p_name=>'P353_URL_PROXIMO'
+,p_item_sequence=>130
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654919113878960879)
+,p_name=>'P353_ETAPA'
+,p_item_sequence=>140
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(654919688088960885)
+,p_name=>'P353_ESCONDE_BOTAO_WIZARD'
+,p_item_sequence=>150
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(733063701492617042)
+,p_name=>'P353_SEPARADOR_DECIMAL'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(733063730621617043)
+,p_name=>'P353_SEPARADOR_NUMERICO'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(733033600138616866)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(743014667199364424)
+,p_name=>'P353_PARAMETRO3'
+,p_item_sequence=>210
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(766498271305493927)
+,p_name=>'P353_LABEL_ACAO'
+,p_item_sequence=>260
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(766498736180493932)
+,p_name=>'P353_ESCONDE_OPCAO'
+,p_item_sequence=>270
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782416064275031720)
+,p_name=>'P353_TIPO_CONFIRMACAO'
+,p_item_sequence=>280
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782416738170031727)
+,p_name=>'P353_LABEL_CONFIRMAR_SIMPLES_L'
+,p_item_sequence=>290
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782416797139031728)
+,p_name=>'P353_LABEL_CONFIRMAR_SIMPLES_I'
+,p_item_sequence=>300
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782416922599031729)
+,p_name=>'P353_LABEL_CONFIRMAR_SIMPLES_H'
+,p_item_sequence=>310
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782416986684031730)
+,p_name=>'P353_LABEL_CONFIRMAR_SENHA_L'
+,p_item_sequence=>320
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782417087067031731)
+,p_name=>'P353_LABEL_CONFIRMAR_SENHA_H'
+,p_item_sequence=>340
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782417230353031732)
+,p_name=>'P353_LABEL_CONFIRMAR_SENHA_I'
+,p_item_sequence=>330
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782417784213031738)
+,p_name=>'P353_LABEL_SENHA_INCORRETA'
+,p_item_sequence=>350
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(782418399187031744)
+,p_name=>'P353_LABEL_MENSAGEM_CONFIRMAR'
+,p_item_sequence=>360
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(786418977461464640)
+,p_name=>'P353_SELECTED_ITEM_ID'
+,p_item_sequence=>370
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(786419115404464641)
+,p_name=>'P353_SELECTED_ITEM_TEXT'
+,p_item_sequence=>380
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(789819200050941933)
+,p_name=>'P353_POSTAR_E_FECHAR'
+,p_item_sequence=>390
+,p_format_mask=>' '
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_resultado varchar2(10);',
+'    l_pagina varchar2(256) := nvl(:P353_CODIGO_ARTEFATO,''TD452'');',
+'begin',
+'    EXECUTE IMMEDIATE',
+'        ''BEGIN :resultado := UI_MPD_''||l_pagina||''.post_fechar; END;''',
+'        USING OUT l_resultado; ',
+'',
+'    return l_resultado;   ',
+'    exception ',
+'        when others then',
+'            return  ''true'';   ',
+'',
+'end;'))
+,p_source_type=>'FUNCTION_BODY'
+,p_source_language=>'PLSQL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(794064674064710268)
+,p_name=>'P353_URL_REDIRECT'
+,p_item_sequence=>400
+,p_prompt=>'New'
+,p_format_mask=>' '
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_url clob;',
+'    l_pagina varchar2(256) := nvl(:P353_CODIGO_ARTEFATO,''TD452'');',
+'begin',
+'    EXECUTE IMMEDIATE',
+'        ''BEGIN :url := UI_MPD_''||l_pagina||''.direcionar(:param1,:param2,:param3); END;''',
+'        USING OUT l_url, IN nvl(:P353_ID,:P353_PARAMETRO),nvl(:P353_PARAMETRO2,:P353_PARAMETRO),:P353_PARAMETRO3;',
+'    return l_url;       ',
+'    exception',
+'        when others then',
+'        return null;       ',
+'',
+'end;'))
+,p_source_type=>'FUNCTION_BODY'
+,p_source_language=>'PLSQL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>30
+,p_field_template=>wwv_flow_imp.id(529718889303987057)
+,p_item_template_options=>'#DEFAULT#'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'TEXT',
+  'trim_spaces', 'BOTH')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(837668121587957486)
+,p_name=>'P353_ID'
+,p_item_sequence=>230
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(882074989826131232)
+,p_name=>'P353_PARAMETRO'
+,p_item_sequence=>190
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(882075084845131233)
+,p_name=>'P353_PARAMETRO2'
+,p_item_sequence=>200
+,p_display_as=>'NATIVE_HIDDEN'
+,p_protection_level=>'S'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(882075164927131234)
+,p_name=>'P353_TELA_TITULO'
+,p_item_sequence=>240
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(882075235157131235)
+,p_name=>'P353_TELA_HELP'
+,p_item_sequence=>250
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(962438423239759202)
+,p_name=>'P353_CODIGO_ARTEFATO'
+,p_item_sequence=>110
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(962519220236925486)
+,p_name=>'P353_SUCESSO'
+,p_item_sequence=>170
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(962670386926922466)
+,p_name=>'P353_VISUALIZAR'
+,p_item_sequence=>160
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(964921933449485985)
+,p_name=>'P353_COPIA'
+,p_item_sequence=>180
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_ai_enabled=>false
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(249297192682334554)
+,p_computation_sequence=>10
+,p_computation_item=>'P353_LABEL_ACAO'
+,p_computation_point=>'BEFORE_BOX_BODY'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_label clob;',
+'    l_pagina varchar2(256) := nvl(:p353_codigo_artefato,''td452'');',
+'begin',
+'    execute immediate',
+'        ''begin :l_label := ui_mpd_''||l_pagina||''.label_acao; end;''',
+'        using out l_label;',
+'',
+'    return l_label;       ',
+'',
+'    exception',
+'        when others then',
+'            return :P0_LABEL_SALVAR;',
+'    ',
+'end;',
+''))
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(249297503481334555)
+,p_computation_sequence=>30
+,p_computation_item=>'P353_SEPARADOR_DECIMAL'
+,p_computation_point=>'BEFORE_BOX_BODY'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation=>'return separador_decimal;'
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(249297986142334556)
+,p_computation_sequence=>40
+,p_computation_item=>'P353_SEPARADOR_NUMERICO'
+,p_computation_point=>'BEFORE_BOX_BODY'
+,p_computation_type=>'FUNCTION_BODY'
+,p_computation_language=>'PLSQL'
+,p_computation=>'return separador_numerico;'
+);
+wwv_flow_imp_page.create_page_computation(
+ p_id=>wwv_flow_imp.id(249298322837334556)
+,p_computation_sequence=>60
+,p_computation_item=>'P353_VALOR_INFORMADO_MOEDA_NACIONAL'
+,p_computation_point=>'BEFORE_BOX_BODY'
+,p_computation_type=>'QUERY'
+,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select valor_informado_moeda_nacional from imp_processoimportacao_numerario where id = :P353_PARAMETRO',
+''))
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+);
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(249298708321334557)
+,p_validation_name=>'Validar valor total despesas'
+,p_validation_sequence=>10
+,p_validation=>':P353_VALOR_INFORMADO_MOEDA_NACIONAL = :P353_VALOR_MOEDA_NACIONAL'
+,p_validation2=>'PLSQL'
+,p_validation_type=>'EXPRESSION'
+,p_error_message=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'&P353_MENSAGEM_EXIBIDA.',
+''))
+,p_when_button_pressed=>wwv_flow_imp.id(249286524759334502)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249307603829334580)
+,p_name=>'onPageLoad'
+,p_event_sequence=>40
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249308140489334584)
+,p_event_id=>wwv_flow_imp.id(249307603829334580)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_EXECUTE_PLSQL_CODE'
+,p_attribute_01=>':A_RESET_BREADCRUMB1 := ''S'';'
+,p_attribute_02=>'A_RESET_BREADCRUMB1'
+,p_attribute_05=>'PLSQL'
+,p_wait_for_result=>'Y'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249308543462334585)
+,p_name=>'onChangeIdTenant'
+,p_event_sequence=>50
+,p_triggering_element_type=>'JQUERY_SELECTOR'
+,p_triggering_element=>'#id_tenant'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249309038551334586)
+,p_event_id=>wwv_flow_imp.id(249308543462334585)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'var value = apex.item("id_tenant").getValue();',
+'apex.item("id_idioma_empresa").setValue(value)',
+'',
+'',
+'var tenantValue = apex.item("id_tenant").getValue();',
+'',
+'apex.server.process(',
+'    "SET_TENANT_GLOBAL",           // Nome do processo AJAX',
+'    { x01: tenantValue },     // Passando o valor do item',
+'    {',
+'        success: function(pData) {',
+unistr('            console.log("Sess\00E3o atualizada com sucesso:", tenantValue);'),
+'        },',
+'        error: function(err) {',
+unistr('            console.error("Erro ao atualizar sess\00E3o:", err);'),
+'        }',
+'    }',
+');'))
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249309414142334587)
+,p_name=>'onClickjs-dlg-refresh'
+,p_event_sequence=>70
+,p_triggering_element_type=>'JQUERY_SELECTOR'
+,p_triggering_element=>'.js-dlg-refresh'
+,p_bind_type=>'live'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249309930708334587)
+,p_event_id=>wwv_flow_imp.id(249309414142334587)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'window._lastDlgLink = this.triggeringElement;'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249310348620334588)
+,p_name=>'onClosejs-dlg-refresh'
+,p_event_sequence=>80
+,p_triggering_element_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_element=>'document'
+,p_triggering_condition_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_expression=>'!!window._lastDlgLink'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosecanceldialog'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249310806552334589)
+,p_event_id=>wwv_flow_imp.id(249310348620334588)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'window._lastDlgLink = null;'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249311279065334589)
+,p_name=>unistr('onClosedOp\00E7\00F5es')
+,p_event_sequence=>90
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(249276879806334432)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosecanceldialog'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249311683100334590)
+,p_name=>'onClosejs-dlg-setvalue'
+,p_event_sequence=>95
+,p_triggering_element_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_element=>'document'
+,p_triggering_condition_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_expression=>'!!window._lastDlgLinkZoom'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosecanceldialog'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249312102313334591)
+,p_event_id=>wwv_flow_imp.id(249311683100334590)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_SET_VALUE'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P353_SELECTED_ITEM_ID'
+,p_attribute_01=>'DIALOG_RETURN_ITEM'
+,p_attribute_09=>'N'
+,p_attribute_10=>'P9004_SELECTED_ITEM_ID'
+,p_wait_for_result=>'Y'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249312643805334592)
+,p_event_id=>wwv_flow_imp.id(249311683100334590)
+,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_SET_VALUE'
+,p_affected_elements_type=>'ITEM'
+,p_affected_elements=>'P353_SELECTED_ITEM_TEXT'
+,p_attribute_01=>'DIALOG_RETURN_ITEM'
+,p_attribute_09=>'N'
+,p_attribute_10=>'P9004_SELECTED_ITEM_TEXT'
+,p_wait_for_result=>'Y'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249313196332334592)
+,p_event_id=>wwv_flow_imp.id(249311683100334590)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'window._lastDlgLinkZoom = null;'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249313539009334593)
+,p_name=>'onClickjs-dlg-setvalue'
+,p_event_sequence=>100
+,p_triggering_element_type=>'JQUERY_SELECTOR'
+,p_triggering_element=>'.js-dlg-setvalue'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249314049577334593)
+,p_event_id=>wwv_flow_imp.id(249313539009334593)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'// window._lastDlgLinkZoom = $(this.triggeringElement)',
+'//                     .closest(''span.lov'')   // sobe para o container',
+'//                     .find(''input[coluna]'') // pega o input que possui atributo ''coluna''',
+'//                     .attr(''coluna'');',
+'',
+'window._lastDlgLinkZoom = $(this.triggeringElement)',
+'    .closest(''span.lov'')   // sobe para o container',
+'    .find(''input[coluna], textarea[coluna]'') // pega input OU textarea com atributo ''coluna''',
+'    .attr(''coluna'');'))
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249314404665334594)
+,p_name=>'onChangeConfirmacaoSimples'
+,p_event_sequence=>110
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P353_CONFIRMACAO_SIMPLES'
+,p_condition_element=>'P353_CONFIRMACAO_SIMPLES'
+,p_triggering_condition_type=>'EQUALS'
+,p_triggering_expression=>'CONFIRMAR'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249314855269334595)
+,p_name=>'onChangeConfirmacaoSenha'
+,p_event_sequence=>120
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P353_CONFIRMACAO_SENHA'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249315302478334595)
+,p_event_id=>wwv_flow_imp.id(249314855269334595)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('    var senha = $v("P353_CONFIRMACAO_SENHA"); // Obt\00E9m o valor do item de senha'),
+unistr('    var botaoId = "BTN_CONFIRMAR"; // ID do bot\00E3o que ser\00E1 habilitado/desabilitado'),
+'    ',
+'    apex.server.process("VALIDAR_SENHA", {',
+unistr('        x01: senha // Passa a senha como par\00E2metro'),
+'    }, {',
+'        success: function(data) {',
+'            if (data.success === ''true'') {',
+'                apex.message.clearErrors();',
+unistr('                apex.item(botaoId).enable(); // Habilita o bot\00E3o'),
+'            } else {',
+unistr('                apex.item(botaoId).disable(); // Habilita o bot\00E3o'),
+'                apex.message.clearErrors();',
+'                apex.message.showErrors([{',
+'                    type: "error",',
+'                    location: ["inline"],',
+'                    pageItem: "P353_CONFIRMACAO_SENHA",',
+'                    message: $v("P353_LABEL_SENHA_INCORRETA"),',
+'                    unsafe: false',
+'                }]);',
+'            }',
+'        },',
+'        error: function() {',
+unistr('            console.error("Erro na requisi\00E7\00E3o AJAX");'),
+unistr('            apex.item(botaoId).disable(); // Habilita o bot\00E3o'),
+'        }',
+'    });',
+'',
+'',
+''))
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249315738985334596)
+,p_name=>'onClickCreate'
+,p_event_sequence=>130
+,p_triggering_element_type=>'BUTTON'
+,p_triggering_button_id=>wwv_flow_imp.id(249286524759334502)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'click'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249316294060334597)
+,p_event_id=>wwv_flow_imp.id(249315738985334596)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('// Fun\00E7\00E3o para converter valor BR para n\00FAmero JS'),
+'function parseValorBR(valor) {',
+'    if (!valor) return 0;',
+'    return parseFloat(',
+'        valor.replace(/\./g, '''').replace('','', ''.'')',
+'    ) || 0;',
+'}',
+'',
+'var despesas = [];',
+'',
+unistr('// Percorre apenas os inputs de REAIS (base da itera\00E7\00E3o)'),
+'document.querySelectorAll(".js-valor-reais").forEach(function(inputReais){',
+'',
+'    var id = parseInt(inputReais.dataset.idDespesa);',
+'',
+unistr('    // Busca o input correspondente de valor numer\00E1rio'),
+'    var inputNumerario = document.querySelector(',
+'        ''.js-valor-numerario[data-id-despesa="''+id+''"]''',
+'    );',
+'',
+'    var valorReais = parseValorBR(inputReais.value);',
+'    var valorNumerario = inputNumerario ',
+'        ? parseValorBR(inputNumerario.value)',
+'        : 0;',
+'',
+'    despesas.push({',
+'        id: id,',
+'        valor_reais: valorReais,',
+'        valor_numerario: valorNumerario',
+'    });',
+'',
+'});',
+'',
+'// Seta no item hidden',
+'apex.item("P353_JSON_DESPESAS").setValue(',
+'    JSON.stringify(despesas)',
+');',
+'',
+'//console.log("JSON gerado:", JSON.stringify(despesas));',
+''))
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249316618538334597)
+,p_name=>'onChangeSelectItemId'
+,p_event_sequence=>140
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P353_SELECTED_ITEM_ID'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249317186375334598)
+,p_event_id=>wwv_flow_imp.id(249316618538334597)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_SET_VALUE'
+,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
+,p_affected_elements=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'// $(''input[coluna="'' + window._lastDlgLinkZoom + ''"]'').closest(''span.lov'').find(''input[type=hidden]'')',
+'$(''input[coluna="'' + window._lastDlgLinkZoom + ''"], textarea[coluna="'' + window._lastDlgLinkZoom + ''"]'')',
+'  .closest(''span.lov'')',
+'  .find(''input[type=hidden]'');'))
+,p_attribute_01=>'PLSQL_EXPRESSION'
+,p_attribute_04=>':P353_SELECTED_ITEM_ID'
+,p_attribute_07=>'P353_SELECTED_ITEM_ID'
+,p_attribute_08=>'Y'
+,p_attribute_09=>'N'
+,p_wait_for_result=>'Y'
+,p_client_condition_type=>'NOT_NULL'
+,p_client_condition_element=>'P353_SELECTED_ITEM_ID'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249317567822334598)
+,p_name=>'onChangeSelectItemText'
+,p_event_sequence=>150
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P353_SELECTED_ITEM_TEXT'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249318095760334599)
+,p_event_id=>wwv_flow_imp.id(249317567822334598)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_SET_VALUE'
+,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
+,p_affected_elements=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'// $(''input[coluna="'' + window._lastDlgLinkZoom + ''"]'').closest(''span.lov'').find(''input[type=text]'')',
+'$('':is(input, textarea)[coluna="'' + window._lastDlgLinkZoom + ''"]'')',
+'  .closest(''span.lov'')',
+'  .find('':is(input[type=text], textarea)'');'))
+,p_attribute_01=>'PLSQL_EXPRESSION'
+,p_attribute_04=>':P353_SELECTED_ITEM_TEXT '
+,p_attribute_07=>'P353_SELECTED_ITEM_TEXT'
+,p_attribute_08=>'Y'
+,p_attribute_09=>'N'
+,p_wait_for_result=>'Y'
+,p_client_condition_type=>'NOT_NULL'
+,p_client_condition_element=>'P353_SELECTED_ITEM_TEXT'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249318464547334599)
+,p_name=>'Calculo despesas totais'
+,p_event_sequence=>180
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(568345844765315320)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterrefresh'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249318917697334600)
+,p_event_id=>wwv_flow_imp.id(249318464547334599)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
+,p_affected_elements=>'calcularTotalDespesas()'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249319309866334601)
+,p_name=>'Altera Cor Valor Total Despesas'
+,p_event_sequence=>200
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P353_VALOR_MOEDA_NACIONAL'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249319856770334601)
+,p_event_id=>wwv_flow_imp.id(249319309866334601)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'Y'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'atualizaCor()'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(249320294950334602)
+,p_name=>'Refresh-Despesas'
+,p_event_sequence=>210
+,p_triggering_element_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_element=>'window'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'apexafterclosedialog'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(249320721307334603)
+,p_event_id=>wwv_flow_imp.id(249320294950334602)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(733033600138616866)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249304598624334574)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Popula Direcionar'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_url clob;',
+'    l_pagina varchar2(256) := nvl(:P353_CODIGO_ARTEFATO,'''');',
+'begin',
+'    EXECUTE IMMEDIATE',
+'        ''BEGIN :url := UI_MPD_''||l_pagina||''.direcionar; END;''',
+'        USING OUT l_url;',
+'    :P0_URL_DIRECIONAR := l_url;    ',
+'    apex_util.set_session_state(''P0_URL_DIRECIONAR'', l_url);',
+'    exception',
+'        when others then',
+'        null;       ',
+'',
+'end;',
+'',
+''))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249304598624334574
+,p_process_comment=>unistr('Esse recurso foi desenvolvido para realizar o redirecionamento de p\00E1ginas ap\00F3s a realiza\00E7\00E3o de POST nas telas de formul\00E1rios')
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249305333741334576)
+,p_process_sequence=>20
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'retorna_titulo_help'
+,p_attribute_01=>'PLSQL_PACKAGE'
+,p_attribute_03=>'PKG_UI'
+,p_attribute_04=>'RETORNA_TITULO_TELA'
+,p_internal_uid=>249305333741334576
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249305879430334577)
+,p_page_process_id=>wwv_flow_imp.id(249305333741334576)
+,p_page_id=>353
+,p_name=>'p_codigo_artefato'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>10
+,p_value_type=>'EXPRESSION'
+,p_value_language=>'PLSQL'
+,p_value=>'nvl(:P353_CODIGO_ARTEFATO,:APP_PAGE_ID)'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249306341794334578)
+,p_page_process_id=>wwv_flow_imp.id(249305333741334576)
+,p_page_id=>353
+,p_name=>'p_titulo'
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>20
+,p_value_type=>'ITEM'
+,p_value=>'P353_TELA_TITULO'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249306845338334579)
+,p_page_process_id=>wwv_flow_imp.id(249305333741334576)
+,p_page_id=>353
+,p_name=>'p_help'
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>30
+,p_value_type=>'ITEM'
+,p_value=>'P353_TELA_HELP'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249299025978334558)
+,p_process_sequence=>30
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_INVOKE_API'
+,p_process_name=>'url_wizard'
+,p_attribute_01=>'PLSQL_PACKAGE'
+,p_attribute_03=>'PKG_UI'
+,p_attribute_04=>'URL_WIZARD'
+,p_process_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'    1',
+'from srv_artefato_wizard a',
+'join srv_artefato_versionado b on b.id = a.id_artefato_versionado',
+'join srv_artefato c on c.id = b.id_artefato',
+'join srv_artefato_versionado b1 on b1.id = a.id_artefato_versionado_base',
+'join srv_artefato c1 on c1.id = b1.id_artefato',
+'where c.codigo_artefato = nvl( apex_util.get_session_state(''P''||:APP_PAGE_ID||''_CODIGO_WIZARD''),:p0_codigo_artefato)'))
+,p_process_when_type=>'EXISTS'
+,p_internal_uid=>249299025978334558
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249299533951334563)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_codigo_artefato'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>false
+,p_display_sequence=>10
+,p_value_type=>'ITEM'
+,p_value=>'P353_CODIGO_ARTEFATO'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249300081171334565)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_codigo_artefato_base'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>true
+,p_display_sequence=>20
+,p_value_type=>'EXPRESSION'
+,p_value_language=>'PLSQL'
+,p_value=>'case when :P353_CODIGO_WIZARD is null then :P353_CODIGO_ARTEFATO else :P353_CODIGO_WIZARD end'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249300551878334566)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_url_anterior'
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>30
+,p_value_type=>'ITEM'
+,p_value=>'P353_URL_ANTERIOR'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249301096026334567)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_url_proximo'
+,p_direction=>'OUT'
+,p_data_type=>'VARCHAR2'
+,p_ignore_output=>false
+,p_display_sequence=>40
+,p_value_type=>'ITEM'
+,p_value=>'P353_URL_PROXIMO'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249301574717334568)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_param1'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>true
+,p_display_sequence=>50
+,p_value_type=>'ITEM'
+,p_value=>'P353_PARAMETRO'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249302082854334569)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_param2'
+,p_direction=>'IN'
+,p_data_type=>'VARCHAR2'
+,p_has_default=>true
+,p_display_sequence=>60
+,p_value_type=>'ITEM'
+,p_value=>'P353_PARAMETRO2'
+);
+wwv_flow_imp_shared.create_invokeapi_comp_param(
+ p_id=>wwv_flow_imp.id(249302532433334570)
+,p_page_process_id=>wwv_flow_imp.id(249299025978334558)
+,p_page_id=>353
+,p_name=>'p_etapa'
+,p_direction=>'OUT'
+,p_data_type=>'NUMBER'
+,p_ignore_output=>false
+,p_display_sequence=>70
+,p_value_type=>'ITEM'
+,p_value=>'P353_ETAPA'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249303313604334571)
+,p_process_sequence=>40
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Load'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_id_despesa                        varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario_despesa.id_despesa'');',
+'    l_id_moeda_despesa                  varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario_despesa.id_moeda_despesa'');',
+'    l_valor_despesa_numerario           varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario_despesa.valor_realizado'');',
+'    l_valor_despesa_numerario_reais     varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario_despesa.valor_realizado_moeda_nacional'');    ',
+'    l_mensagem_exibida                  varchar2(4000)      := retorna_texto(''msg.140.l'');',
+'    l_valor_informado_moeda_nacional    varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario.valor_informado_moeda_nacional'');',
+'    l_valor_moeda_nacional              varchar2(4000)      := pkg_ui.retorna_label_coluna(''imp_processoimportacao_numerario.valor_moeda_nacional'');',
+'    l_label_incluir_nova_despesa        varchar2(4000)      := pkg_ui.retorna_label_botao(''incluir_nova_despesa'');',
+'begin',
+'    :P353_LABEL_ID_DESPESA                      := l_id_despesa;',
+'    :P353_LABEL_ID_MOEDA_DESPESA                := l_id_moeda_despesa;',
+'    :P353_LABEL_VALOR_DESPESA_NUMERARIO         := l_valor_despesa_numerario;',
+'    :P353_LABEL_VALOR_DESPESA_NUMERARIO_REAIS   := l_valor_despesa_numerario_reais;',
+'    :P353_MENSAGEM_EXIBIDA                      := l_mensagem_exibida;',
+'    :P353_LABEL_VALOR_INFORMADO_MOEDA_NACIONAL  := l_valor_informado_moeda_nacional;',
+'    :P353_LABEL_VALOR_MOEDA_NACIONAL            := l_valor_moeda_nacional;',
+'    :P353_LABEL_INCLUIR_NOVA_DESPESA            := l_label_incluir_nova_despesa;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249303313604334571
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249304918568334575)
+,p_process_sequence=>10
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'enviarParamentros'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    v_param1 varchar2(100) := apex_application.g_x01||''_''||APEX_CUSTOM_AUTH.GET_SESSION_ID;',
+'    v_param2 varchar2(100) := apex_application.g_x02;',
+'    v_param3 varchar2(100) := apex_application.g_x03;',
+'    v_param4 varchar2(100) := apex_application.g_x04;',
+'    v_existe number;',
+'    v_id number;',
+'begin',
+unistr('    -- verifica se a cole\00E7\00E3o j\00E1 existe e a exclui para evitar duplica\00E7\00F5es'),
+'    -- apex_debug.enable(apex_debug.c_log_level_info);',
+'    -- apex_debug.info(''info enviarparamentros v_param1:%s'',v_param1); ',
+'    -- apex_debug.info(''info enviarparamentros v_param2:%s'',v_param2); ',
+'    -- apex_debug.info(''info enviarparamentros v_param3:%s'',v_param3); ',
+'    -- apex_debug.info(''info enviarparamentros APEX_CUSTOM_AUTH.GET_SESSION_ID:%s'',APEX_CUSTOM_AUTH.GET_SESSION_ID); ',
+'    if apex_application.g_x01 is not null then',
+'        if upper(v_param2) = upper(''id_tenant'') and :P353_ID is null then',
+'            :P0_TENANT_INFORMADO := v_param3;',
+'        end if;',
+'',
+'        if not apex_collection.collection_exists(v_param1) then',
+'            apex_collection.create_collection(v_param1);',
+'        end if;',
+'',
+'        select count(1) into v_existe ',
+'        from apex_collections',
+'        where collection_name = v_param1',
+'          and c001 = v_param2;',
+'        if v_existe > 0 then',
+'            select seq_id into v_id ',
+'            from apex_collections',
+'            where collection_name = v_param1',
+'              and c001 = v_param2;',
+'',
+'            apex_collection.update_member (',
+'                p_collection_name => v_param1,',
+'                p_seq => v_id,',
+'                p_c001 => v_param2,',
+'                p_c002 => v_param3,',
+'                p_c003 => v_param4);      ',
+'        else',
+'            apex_collection.add_member(',
+'                p_collection_name => v_param1,',
+'                p_c001 => v_param2,',
+'                p_c002 => v_param3,',
+'                p_c003 => v_param4',
+'            );',
+'        end if;',
+'    end if;',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249304918568334575
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249302945540334571)
+,p_process_sequence=>20
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'atribuiValorAJAX'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    l_json CLOB;',
+'BEGIN',
+'    l_json := pkg_formulario_dinamico.executa_sql_parametrizado(',
+'        p_param1 => apex_application.g_x01,',
+'        p_sql    => apex_application.g_x02',
+'    );',
+'    sys.htp.init;   -- limpa buffer anterior',
+'    owa_util.mime_header(''application/json'', FALSE);',
+'    htp.p(''Cache-Control: no-cache'');',
+'    owa_util.http_header_close;',
+'    htp.prn(l_json); -- imprime exatamente o JSON',
+'END;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249302945540334571
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249303759915334572)
+,p_process_sequence=>30
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'VALIDAR_SENHA'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'    v_result BOOLEAN;',
+'BEGIN',
+'    v_result := PKG_SEGURANCA.auth(apex_custom_auth.get_username, apex_application.g_x01);',
+'    -- Retorna o resultado como JSON',
+'    APEX_JSON.OPEN_OBJECT;',
+'    APEX_JSON.WRITE(''success'', CASE WHEN v_result THEN ''true'' ELSE ''false'' END);',
+'    APEX_JSON.CLOSE_OBJECT;',
+'END;'))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249303759915334572
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249304175951334573)
+,p_process_sequence=>40
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'VALIDAR'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_clob clob;',
+'    v_messages pkg_mensagem.message_record_table;',
+'    l_pagina varchar2(256) := nvl(:p353_codigo_artefato,''td452'');',
+'begin',
+'    execute immediate',
+'        ''begin :v_messages := ui_mpd_''||l_pagina||''.valida(:p_id); end;''',
+'        using out v_messages, in apex_application.g_x01;',
+'',
+'    -- Monta JSON de retorno',
+'    apex_json.initialize_clob_output;',
+'    apex_json.open_array;',
+'',
+'    if v_messages.count > 0 then',
+'        for i in 1 .. v_messages.count loop',
+'            apex_json.open_object;',
+'            apex_json.write(''mensagem'',       v_messages(i).mensagem);',
+'            apex_json.write(''instrucao'',      v_messages(i).instrucao);',
+'            apex_json.write(''help'',           v_messages(i).help);',
+'            apex_json.write(''local_exibicao'', v_messages(i).local_exibicao);',
+'            apex_json.write(''nome_item'',      v_messages(i).nome_item);',
+'            apex_json.write(''tipo'',           v_messages(i).tipo);',
+'            apex_json.close_object;',
+'        end loop;',
+'    end if;',
+'',
+'    apex_json.close_array;',
+'    l_clob := apex_json.get_clob_output;',
+'    apex_json.free_output;    ',
+'    sys.htp.prn(l_clob);     ',
+'',
+'    exception',
+'        when others then',
+'        -- Monta JSON de erro consistente',
+'        apex_json.initialize_clob_output;',
+'        apex_json.open_array;',
+'        apex_json.open_object;',
+'        apex_json.write(''semValidacao'', ''sim'');',
+'        apex_json.close_object;',
+'        apex_json.close_array;',
+'',
+'        l_clob := apex_json.get_clob_output;',
+'        apex_json.free_output;    ',
+'        sys.htp.prn(l_clob);     ',
+'    ',
+'end;',
+''))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>249304175951334573
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(249307212312334579)
+,p_process_sequence=>30
+,p_process_point=>'ON_SUBMIT_BEFORE_COMPUTATION'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'GERAR_COMPROVACAO_DESPESAS'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_sucesso  clob;',
+'    l_messages pkg_mensagem.message_record_table;',
+'begin',
+'    bo_imp_processoimportacao_numerario_despesa.gerar_comprovacao_despesas_json(',
+'        p_id_numerario_comprovacao => :P353_PARAMETRO,',
+'        p_json                     => :P353_JSON_DESPESAS,',
+'        p_pagina                   => 345,',
+'        p_sucesso                  => l_sucesso,',
+'        p_messages                 => l_messages',
+'    );',
+'end;'))
+,p_process_clob_language=>'PLSQL'
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_button_id=>wwv_flow_imp.id(249286524759334502)
+,p_internal_uid=>249307212312334579
+);
+end;
+/
 prompt --application/pages/page_00429
 begin
 wwv_flow_imp_page.create_page(
@@ -191808,6 +193887,11 @@ wwv_flow_imp_shared.create_install_script(
 ,p_sequence=>30
 ,p_script_type=>'INSTALL'
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'-- Desenvolvedor: Leonardo Ferreira',
+'-- Data: 14/07/2026',
+unistr('-- Motivo: Adicionada a fun\00E7\00E3o detalhe_registro utilizada na a\00E7\00E3o de excluir o menu'),
+'-- Jira: ',
+'',
 'create or replace package            bo_srv_menu ',
 'is  ',
 unistr('    -- Vers\00E3o 2.4.1 do BO    '),
@@ -191944,6 +194028,9 @@ unistr('    -- Fun\00E7\00F5es de log'),
 '    function row_to_json(p_rec in srv_menu%rowtype) return clob;  ',
 '',
 '    --<CUSTOMIZADO_INICIO>',
+'    function detalhe_registro (',
+'        p_id in ng_pais.id%type',
+'    ) return varchar2;',
 '    -- ',
 unistr('    -- Fun\00E7\00F5es Gatilhos hook'),
 '    -- ',
@@ -191985,8 +194072,7 @@ unistr('    -- Fun\00E7\00F5es complementares'),
 '    );',
 '    --<CUSTOMIZADO_FIM>   ',
 '',
-'end bo_srv_menu; ',
-'',
+'end bo_srv_menu;',
 '/',
 '',
 'create or replace package body            bo_srv_menu ',
@@ -192534,7 +194620,12 @@ unistr('        /* Executa a fun\00E7\00E3o que valida o campo titulo */ '),
 '        valida_titulo(v_new.titulo);',
 unistr('        /* Executa a fun\00E7\00E3o que valida o campo ordenacao */ '),
 '        valida_ordenacao(v_new.ordenacao);',
-unistr('        /* Executa a fun\00E7\00E3o que valida o campo icone */ '),
+unistr('        /* Executa a fun\00E7\00E3o que valida o campo icone')))
+);
+wwv_flow_imp_shared.append_to_install_script(
+ p_id=>wwv_flow_imp.id(149413472014607742)
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+' */ ',
 '        valida_icone(v_new.icone);',
 unistr('        /* Executa a fun\00E7\00E3o que valida o campo ind_sincronizar */ '),
 '        valida_ind_sincronizar(v_new.ind_sincronizar);',
@@ -192542,12 +194633,7 @@ unistr('        /* Executa a fun\00E7\00E3o que valida o campo ind_sincronizar *
 '    end valida; ',
 '    --',
 '',
-'    procedure valida_id_tenant(p_id_tenant in s'))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(149413472014607742)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'rv_menu.id_tenant%type) ',
+'    procedure valida_id_tenant(p_id_tenant in srv_menu.id_tenant%type) ',
 '    is ',
 '        l_verifica_valor_unico number;',
 '    begin ',
@@ -192598,7 +194684,6 @@ unistr('        --Verifica valor \00FAnico se houver '),
 '    begin ',
 '        if p_titulo is null then ',
 '            v_parametro(1) := pkg_ui.retorna_label_coluna(''srv_menu.titulo''); ',
-'',
 '            pkg_mensagem.mensagem_campo_obrigatorio(',
 '                p_nome_campo => ''titulo'',',
 '                p_parametro => v_parametro,',
@@ -192803,6 +194888,25 @@ unistr('    -- Fun\00E7\00F5es de log'),
 '    end;       ',
 '',
 '    --<CUSTOMIZADO_INICIO>',
+'    function detalhe_registro (',
+'        p_id in ng_pais.id%type',
+'    ) return varchar2 is',
+'    begin',
+'        return pkg_ui.campos_detalhes(q''~',
+'            select ',
+'                b.nome_fantasia as ng_pais$id_tenant,',
+'                pkg_traducao.get_traducao(c.titulo) as srv_menu$id_menu_pai,',
+'                pkg_traducao.get_traducao(e.nome_sistema)||'' - ''||d.versao as srv_menu$id_sistema_versionado,',
+'                pkg_traducao.get_traducao(a.titulo) as srv_menu$titulo,',
+'                a.ordenacao as srv_menu$ordenacao,',
+'                pkg_util.dominio_retorna_tag(''srv_menu'',''ind_sincronizar'',a.ind_sincronizar) as srv_menu$ind_sincronizar',
+'            from srv_menu a',
+'            join mpd_tenant b on b.id = a.id_tenant',
+'            left join srv_menu c on c.id = a.id_menu_pai',
+'            left join srv_sistema_versionado d on d.id = a.id_sistema_versionado',
+'            left join srv_sistema e on e.id = d.id_sistema            ',
+'            where a.id = ~''||p_id);',
+'    end detalhe_registro;',
 '    -- ',
 unistr('    -- Fun\00E7\00F5es Gatilhos hook'),
 unistr('    -- Mover todo o bloco para dentro da parte customizada do fonte caso existe pelo menos UMA altera\00E7\00E3o'),
@@ -324690,2430 +326794,6 @@ unistr('-- Motivo: Ajuste na ordena\00E7\00E3o da pesquisa facetada ind_status')
 );
 end;
 /
-prompt --application/deployment/install/install_pkg_ui
-begin
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(202486000814894198)
-,p_install_id=>wwv_flow_imp.id(405357380887680440)
-,p_name=>'PKG_UI'
-,p_sequence=>3130
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'create or replace package "PKG_UI" as ',
-'',
-'    type r_facetada is record (',
-'        id varchar2(4000),         ',
-'        campo1 varchar2(4000),',
-'        campo2 varchar2(4000),',
-'        campo3 varchar2(4000),',
-'        campo4 varchar2(4000),',
-'        campo5 varchar2(4000),',
-'        campo6 varchar2(4000),',
-'        campo7 varchar2(4000),',
-'        campo8 varchar2(4000),',
-'        campo9 varchar2(4000),',
-'        campo10 varchar2(4000),',
-'        filtro1 varchar2(4000),',
-'        filtro2 varchar2(4000),',
-'        filtro3 varchar2(4000),',
-'        filtro4 varchar2(4000),',
-'        filtro5 varchar2(4000),',
-'        filtro_mult1 varchar2(4000),',
-'        filtro_mult2 varchar2(4000),',
-'        filtro_mult3 varchar2(4000),',
-'        filtro_mult4 varchar2(4000),',
-'        filtro_mult5 varchar2(4000),',
-'        opcao varchar2(4000)',
-'    ); ',
-'    ',
-'    type r_facetada2 is record (',
-'        id varchar2(4000),         ',
-'        campo1 varchar2(4000),',
-'        campo2 varchar2(4000),',
-'        campo3 varchar2(4000),',
-'        campo4 varchar2(4000),',
-'        campo5 varchar2(4000),',
-'        campo6 varchar2(4000),',
-'        campo7 varchar2(4000),',
-'        campo8 varchar2(4000),',
-'        campo9 number,',
-'        campo10 number,',
-'        filtro1 varchar2(4000),',
-'        filtro2 varchar2(4000),',
-'        filtro3 varchar2(4000),',
-'        filtro4 varchar2(4000),',
-'        filtro5 varchar2(4000),',
-'        filtro_mult1 varchar2(4000),',
-'        filtro_mult2 varchar2(4000),',
-'        filtro_mult3 varchar2(4000),',
-'        filtro_mult4 varchar2(4000),',
-'        filtro_mult5 varchar2(4000)',
-'    );     ',
-'    type t_facetada is table of r_facetada; ',
-'    type t_facetada2 is table of r_facetada2; ',
-' ',
-'    function pesquisa_facetada(  ',
-'        p_page_id          in number, ',
-'        p_region_static_id in varchar2, ',
-'        p_nome_tabela      in varchar2,',
-'        p_region_id        in varchar2 default null',
-'    ) return t_facetada pipelined; ',
-'',
-'    function pesquisa_facetada2(  ',
-'        p_page_id          in number, ',
-'        p_region_static_id in varchar2, ',
-'        p_nome_tabela      in varchar2 ',
-'    ) return t_facetada2 pipelined;     ',
-'',
-'    type r_list_value is record ( ',
-'        d          varchar2(4000), ',
-'        r          varchar2(4000) ',
-'    ); ',
-' ',
-'    type t_list_value is table of r_list_value; ',
-'',
-'    -- ',
-'    -- Tipos de artefatos ',
-'    -- ',
-'    c_tp_artefato_cadastro_dinamico         constant varchar2(2) := ''CD''; ',
-'    c_tp_artefato_excluir_dinamico          constant varchar2(2) := ''ED''; ',
-'    c_tp_artefato_acao_dinamico             constant varchar2(2) := ''AD''; ',
-'    c_tp_artefato_tela                      constant varchar2(2) := ''TE''; ',
-' ',
-'    -- ',
-'    -- Tipos de tipo_funcionalidade de cadastro dimicos de artefatos ',
-'    -- ',
-'    c_tipo_funcionalidade_incluir               constant varchar2(1) := ''I''; ',
-'    c_tipo_funcionalidade_alterar               constant varchar2(1) := ''A''; ',
-'    c_tipo_funcionalidade_duplicar              constant varchar2(1) := ''D''; ',
-'    c_tipo_funcionalidade_mais_detalhes         constant varchar2(1) := ''M''; ',
-'    c_tipo_funcionalidade_listar                constant varchar2(1) := ''L''; ',
-'    c_tipo_funcionalidade_acao                  constant varchar2(1) := ''W''; ',
-' ',
-'    -- ',
-'    -- Tipos de validacao ',
-'    -- ',
-'    c_tp_validacao_metodo                   constant varchar2(10) := ''metodo''; ',
-'    c_tp_validacao_sql                      constant varchar2(10) := ''sql''; ',
-'',
-'    c_select_auditoria_com_verificacao  constant clob := ',
-'    q''~ ',
-'        union all select ',
-'            pkg_ui.retorna_url(#p_id#,''TD773'',9010,''CD'',''M'','''',''P9010_PARAMETRO2,P9010_ESCONDE_OPCAO'',upper(nome_entidade)||'',''||1) link,',
-'            ''fa-history'' icon,',
-'            pkg_ui.retorna_label_botao_tipo(''historico-alteracao'',''l'') label,',
-'            pkg_ui.retorna_label_botao_tipo(''historico-alteracao'',''h'') help,',
-'            null sql_validacao,',
-'            9 ordem,',
-'            null recurso ',
-'        from view_entidade_artefato ',
-'        where rownum = 1 ',
-'        and id_registro = #p_id# ',
-'        and codigo_artefato = ''#p_codigo_artefato#''    ',
-'    ~''; ',
-'',
-'    c_select_auditoria_fixo  constant clob := ',
-'    q''~ ',
-'        union all select ',
-'            pkg_ui.retorna_url(#p_id#,''TD773'',9010,''CD'',''M'','''',''P9010_PARAMETRO2,P9010_ESCONDE_OPCAO'',upper(nome_entidade)||'',''||1) link,',
-'            ''fa-history'' icon,',
-'            pkg_ui.retorna_label_botao_tipo(''historico-alteracao'',''l'') label,',
-'            pkg_ui.retorna_label_botao_tipo(''historico-alteracao'',''h'') help,',
-'            null sql_validacao,',
-'            9 ordem,',
-'            null recurso ',
-'        from vw_artefato_entidade_tela_dinamica',
-'        where codigo_artefato = ''#p_codigo_artefato#''  ',
-'    ~''; ',
-'',
-'    c_campos_botao  constant clob := ',
-'    q''~ ',
-'        pkg_ui.retorna_url(#p_id#,e.codigo_artefato,i.codigo_artefato,e.tipo,g.tipo_funcionalidade,t.titulo,c.parametro,c.valor,#p_param2#) link, ',
-'        --pkg_ui.retorna_url(#p_id#,e.codigo_artefato,i.codigo_artefato,e.tipo,g.tipo_funcionalidade,t.titulo,c.parametro,c.valor,#p_param2#) link, ',
-'        pkg_ui.retorna_icone(e.tipo,g.tipo_funcionalidade,e.nome_icone) icon, ',
-'        t.titulo label,',
-'        pkg_ui.retorna_titulo_tela(e.codigo_artefato,2) help,',
-'        j.sql_validacao,',
-'        case ',
-'            when e.funcao = 5 then 1 -- mais detalhes ',
-'            when e.funcao = 3 then 2 -- aterar',
-'            when e.funcao = 4 then 3 -- copiar',
-'            when e.funcao = 6 then 4 -- excluir',
-'        end as ordem,',
-'        null recurso          ',
-'    ~''; ',
-'',
-'    c_campos_link   constant clob := ',
-'    q''~ ',
-'        null lvl, ',
-'        t.titulo||''(''||e.codigo_artefato||'')'' text,',
-'        pkg_ui.retorna_url(#p_id#,e.codigo_artefato,i.codigo_artefato,e.tipo,g.tipo_funcionalidade,t.titulo,c.parametro,c.valor,#p_param2#) link, ',
-'        null is_current_list_entry, ',
-'        case when c.icone is not null then c.icone else pkg_ui.retorna_icone(e.tipo,g.tipo_funcionalidade,e.nome_icone) end image, ',
-'        null image_attribute, ',
-'        null image_alt_attribute, ',
-'        case when c.help is not null then pkg_ui.retorna_titulo_atalho(c.id,2) else pkg_ui.retorna_titulo_tela(e.codigo_artefato,2) end a01,',
-'        '''' a02,',
-'        j.sql_validacao,',
-'        --null sql_validacao,',
-'        case ',
-'            when e.funcao = 5 then 1 -- mais detalhes ',
-'            when e.funcao = 3 then 2 -- aterar',
-'            when e.funcao = 4 then 3 -- copiar',
-'            when e.funcao = 6 then 4 -- excluir',
-'        end as ordem,',
-'        null recurso         ',
-'    ~''; ',
-'',
-'',
-'',
-'        -- apex_page.get_url(p_page => 2, p_clear_cache => 2) link, ',
-'    c_campos_link_home   constant clob := ',
-'    q''~ ',
-'    union all select ',
-'        null lvl, ',
-unistr('        ''P\00E1gina inicial'' text,'),
-'        ''javascript:void(0)'' link,',
-'        null is_current_list_entry, ',
-'        ''fa-home'' image, ',
-'        '''' image_attribute, ',
-'        '''' image_alt_attribute, ',
-unistr('        ''Abre uma nova guia com a p\00E1gina inicial'' a01,'),
-'        ''onclick="window.open('''''' ||',
-'        page_url(134,2) ||',
-'        '''''',''''_blank''''); "'' a02,',
-'        null sql_validacao,',
-'        0 ordem,',
-'        null recurso    ',
-'    from dual',
-'    ~''; ',
-'',
-'',
-'    c_campos_botao_home   constant clob := ',
-'    q''~ ',
-'    union all select    ',
-'        ''javascript:void(0)'' link, ',
-'        ''fa-home'' icon, ',
-unistr('        ''P\00E1gina inicial'' label,'),
-unistr('        ''Abre uma nova guia com a p\00E1gina inicial'' help,'),
-'        null sql_validacao,',
-'        0 ordem,',
-'        ''onclick=window.open('''''' ||',
-'        page_url(134,2) ||',
-'        '''''',''''_blank'''');'' recurso ',
-'    from dual  ',
-'    ~''; ',
-'',
-'    c_where_botao  constant clob := ',
-'    q''~ ',
-'        upper(e.tipo) in (''CD'',''ED'')     ',
-'    ~''; ',
-' ',
-'    c_where_link  constant clob := ',
-'    q''~ ',
-'        upper(e.tipo) not in (''CD'',''ED'')     ',
-'    ~'';     ',
-'',
-'    function buscar_acoes( ',
-'        p_id in number, ',
-'        p_codigo_artefato in varchar2, ',
-'        p_tipo in varchar2 default null,',
-'        p_new in boolean default false,',
-'        p_param2 in varchar2 default null',
-'    ) return varchar2; ',
-'',
-'    function lista_etapa_wizard return varchar2; ',
-'',
-'    function retorna_url( ',
-'        p_id in number, ',
-'        p_codigo_arfato in varchar2, ',
-'        p_codigo_arfato_base in varchar2, ',
-'        p_tipo in varchar2, ',
-'        p_tipo_funcionalidade in varchar2 default null, ',
-'        p_nome_acao in varchar2 default null, ',
-'        p_parametro in varchar2 default null,',
-'        p_valor in varchar2 default null,',
-'        p_param_tela1 in varchar2 default null',
-'    ) return varchar2;     ',
-'',
-'    function retorna_url_etapa_wizard(',
-'        p_codigo_artefato      in varchar2,',
-'        p_codigo_artefato_base in varchar2,',
-'        p_parametro            in varchar2,',
-'        p_param1               in varchar2 default null',
-'    ) return varchar2;',
-'',
-'    function valor_parametro_wizard(',
-'        p_item_destino in varchar2,',
-'        p_pagina in number',
-'    ) return varchar2;',
-'',
-'    procedure url_wizard( ',
-'        p_codigo_artefato in varchar2, ',
-'        p_codigo_artefato_base in varchar2 default null, ',
-'        p_url_anterior out varchar2,',
-'        p_url_proximo out varchar2,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null,',
-'        p_etapa out number,',
-'        p_url_anterior_dummy  in varchar2 default null,',
-'        p_url_proximo_dummy   in varchar2 default null',
-'    );     ',
-'',
-'    procedure url_new( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_url out varchar2,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null',
-'    );     ',
-'',
-'    function url_mais_detalhes( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null        ',
-'    ) return varchar2;',
-'',
-'    function url_mais_detalhes_antiga( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null        ',
-'    ) return varchar2;',
-'',
-'    function url_mais_detalhes2( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null        ',
-'    ) return varchar2;',
-'',
-'    function url_mais_detalhes_com_parametro( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_parametro in varchar2 default null',
-'    ) return varchar2;',
-'',
-'    procedure url( ',
-'        p_page in number, ',
-'        p_paramentros in varchar2 default null, ',
-'        p_valores in varchar2 default null, ',
-'        p_url out varchar2',
-'    );     ',
-'',
-'    function retorna_regra_execucao( ',
-'        p_id in number, ',
-'        p_codigo_artefato in varchar2 ',
-'    ) return varchar2;     ',
-' ',
-'    procedure retorna_metodos_acao_dinamica( ',
-'        p_codigo_artefato in varchar2, ',
-'        p_metodo_execucao out varchar2, ',
-'        p_metodo_detalhe out varchar2, ',
-'        p_tipo_confirmacao out varchar2 ',
-'    );     ',
-'',
-'    procedure retorna_zoom_dinamico( ',
-'        p_codigo_artefato        in  varchar2, ',
-'        p_url                    out varchar2, ',
-'        p_sql_consulta           out varchar2,',
-'        p_titulo_consulta        out varchar2,',
-'        p_titulo_cadastro        out varchar2,',
-'        p_label1                 out varchar2,',
-'        p_label2                 out varchar2,',
-'        p_label3                 out varchar2,',
-'        p_label4                 out varchar2,',
-'        p_label5                 out varchar2,',
-'        p_label6                 out varchar2,',
-'        p_label7                 out varchar2,',
-'        p_label8                 out varchar2,',
-'        p_label9                 out varchar2,',
-'        p_label10                out varchar2    ',
-'    );        ',
-'',
-'    function retorna_icone( ',
-'        p_tipo in varchar2, ',
-'        p_tipo_funcionalidade in varchar2 default null,',
-'        p_icone_nome in varchar2 default null',
-'    ) return varchar2;     ',
-' ',
-'    function campos_detalhes_antiga( ',
-'        p_sql in clob,',
-'        p_label_fixo in varchar2 default ''n''',
-'    ) return clob; ',
-'',
-'    function campos_detalhes(',
-'        p_sql in clob,',
-'        p_label_fixo in varchar2 default ''n''',
-'    ) return clob;    ',
-'     ',
-'    -- ',
-unistr('    -- Fun\00E7\00E3o para montagem dos detalhes de confirma\00E7\00E3o de exclus\00E3o e/ou execu\00E7\00E3o de a\00E7\00E3o '),
-'    -- ',
-'    function detalhes_confirmacao( ',
-'        p_detalhes in pk_types.t_detalhes ',
-'    ) return clob;    ',
-' ',
-'    function verifica_condicao( ',
-'        p_id in number, ',
-'        p_sql in varchar2, ',
-'        p_tipo in varchar2,',
-'        p_codigo_artefato in varchar2',
-'    ) return number;    ',
-'',
-'    function verifica_condicao(p_sql in varchar2) return number;',
-'',
-'    function id_not_null( ',
-'        p_id in number',
-'    ) return number;  ',
-'',
-'    function id_null( ',
-'        p_id in number',
-'    ) return number;  ',
-'',
-'    procedure retorna_titulo_tela (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_titulo          out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    );    ',
-'',
-'    function retorna_titulo_tela (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_help in number default 1 -- 1=Titulo e 2=Help        ',
-'    ) return varchar2;    ',
-'',
-'    procedure retorna_coluna (',
-'        p_tabela_coluna   in varchar2,',
-'        p_label           out mpd_traducao.texto_traduzido%type,',
-'        p_instrucao       out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    );    ',
-'',
-'    function retorna_coluna (',
-'        p_tabela_coluna in varchar2,',
-'        p_tipo in varchar2 default ''l''',
-'    ) return varchar2;    ',
-'',
-'    function retorna_label_etapa (',
-'        p_tag in varchar2',
-'    ) return varchar2;    ',
-'',
-'    function retorna_label_coluna (',
-'        p_tabela_coluna in varchar2',
-'    ) return varchar2;    ',
-'',
-'    function retorna_label_botao (',
-'        p_tag in varchar2,',
-'        p_idioma in number default null',
-'    ) return varchar2;    ',
-'',
-'    function retorna_label_botao_tipo (',
-'        p_tag in varchar2,',
-'        p_tipo in varchar2,',
-'        p_idioma in number default null',
-'    ) return varchar2;    ',
-'',
-'    procedure retorna_label_botao_completo (',
-'        p_tag in varchar2,',
-'        p_label out varchar2,',
-'        p_instrucao out varchar2,',
-'        p_help out varchar2',
-'    );    ',
-'',
-'    function retorna_label_tela (',
-'        p_tag in varchar2',
-'    ) return varchar2;  ',
-'',
-'    procedure retorna_label_tela (',
-'        p_tag in varchar2,',
-'        p_label out varchar2,',
-'        p_instrucao out varchar2,',
-'        p_help out varchar2',
-'    );      ',
-'',
-'    function retorna_label_tabela (',
-'        p_nome_entidade in varchar2',
-'    ) return varchar2;       ',
-'',
-'    function retorna_dominio(',
-'        p_id_dominio in number,',
-'        p_valor in varchar2',
-'    ) return varchar2;    ',
-'',
-'    function retorna_titulo_menu (',
-'        p_id_menu in number',
-'    ) return varchar2;        ',
-'',
-'    function retorna_label_grupo_funcionalidade (',
-'        p_id_grupo_funcionalidade in number',
-'    ) return varchar2;        ',
-'',
-'    function processa_itens(',
-'        p_itens in varchar2',
-'    ) return varchar2;',
-'',
-'    function verifica_se_tem_linhas(',
-'        p_sql in varchar2',
-'    ) return boolean;',
-'',
-'    function menu_aplicacao(',
-'        p_aplicacao in varchar2',
-'    ) return clob;',
-'',
-'    function formulario_dinamico (',
-'        p_entidade in varchar2',
-'    ) return varchar2;    ',
-'',
-'    procedure gerar_formulario(',
-'        p_codigo_artefato in varchar2,',
-'        p_id in number default null,',
-'        p_visualizar in number default null, ',
-'        p_html out clob,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null',
-'    );',
-'',
-'    function retorna_valor_colecao (',
-'        p_codigo_artefato in varchar2,',
-'        p_campo in varchar2',
-'    ) return varchar2;',
-'',
-'    function retorna_id_colecao (',
-'        p_codigo_artefato in varchar2,',
-'        p_campo in varchar2',
-'    ) return varchar2;',
-'',
-'    procedure prc_configurar_filtros(',
-'        p_id_usuario       number,',
-'        p_codigo_artefato  varchar2,',
-'        p_app_page_id      number',
-'    );',
-'',
-'    function retorna_pagina_artefato (',
-'        p_codigo_artefato in varchar2',
-'    ) return varchar2;',
-'',
-'    procedure retorna_titulo_atalho (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_titulo          out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    );',
-'',
-'    function retorna_titulo_atalho (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_help in number default 1 -- 1=Titulo e 2=Help ',
-'    ) return varchar2;',
-'',
-'    function existe_funcao_package(',
-'        p_package_name in varchar2,',
-'        p_function_name in varchar2',
-'    ) return boolean;    ',
-'',
-'end "PKG_UI";',
-'/',
-'create or replace package body "PKG_UI" as ',
-'',
-unistr('--Historico de altera\00E7\00E3o de fonte--'),
-unistr('--Data: 11/07/2025 - Chamado: TD3-160 - Responsavel: Northonn Oliveira - Assunto: Revisar fun\00E7\00E3o que gera URLs dos wizards'),
-'',
-'    function buscar_acoes( ',
-'        p_id in number, ',
-'        p_codigo_artefato in varchar2, ',
-'        p_tipo in varchar2 default null,',
-'        p_new in boolean default false,',
-'        p_param2 in varchar2 default null              ',
-'    ) return varchar2 ',
-'    as ',
-'        v_sql clob; ',
-'        v_sql_aux clob; ',
-'    begin  ',
-'',
-'        -- and (lower(e.tipo_funcionalidade) = lower(''#tipo_funcionalidade#'') or lower(c.tipo_acao) = lower(''#tipo_funcionalidade#''))',
-'        -- and (case when g.tipo_funcionalidade is not null then ',
-'        --         case when g.tipo_funcionalidade != ''I'' then 1 else 0 end',
-'        --         else 1 end) = 1',
-'        -- and (case when lower(e.tipo_funcionalidade) = lower(''E'') then ',
-'        --         case when nvl(e.funcao,0) != 2 then 1 else 0 end',
-'        --         else 1 end) = 1   ',
-'',
-'',
-'        v_sql := q''~ ',
-'            select ',
-'                #CAMPOS# ',
-'            from ',
-'                mpd_funcionalidade a    ',
-'                left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'                left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'                left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'                left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'                left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id   ',
-'                CROSS APPLY (SELECT case when c.titulo is not null then pkg_ui.retorna_titulo_atalho(c.id) else pkg_ui.retorna_titulo_tela(e.codigo_artefato) end AS titulo FROM dual) t                        ',
-'            where ',
-'                lower(a.codigo_artefato) = lower(''#p_codigo_artefato#'') ',
-'                AND ((c.tipo_acao IS NOT NULL',
-'                      AND lower(c.tipo_acao) = lower(''#tipo_funcionalidade#''))',
-'                     OR (c.tipo_acao IS NULL',
-'                         AND lower(e.tipo_funcionalidade) = lower(''#tipo_funcionalidade#'')',
-'                         AND (g.tipo_funcionalidade IS NULL',
-'                              OR g.tipo_funcionalidade <> ''I'')))',
-'',
-'                and (',
-'                        j.metodo_validacao is null ',
-'                        or EXISTS (',
-'                            SELECT 1 ',
-'                            FROM dual ',
-'                            WHERE PKG_UI.verifica_condicao(#p_id#, j.metodo_validacao, ''metodo'', e.codigo_artefato) = 1',
-'                        )',
-'                    )',
-'                and (',
-'                        j.sql_validacao is null ',
-'                        or EXISTS (',
-'                            SELECT 1 ',
-'                            FROM dual ',
-'                            WHERE PKG_UI.verifica_condicao(#p_id#, j.sql_validacao, ''sql'', e.codigo_artefato) = 1',
-'                        )',
-'                    )',
-'                and case  ',
-'                    when j.sql_validacao is null THEN PKG_UI.id_not_null(#p_id#) ',
-'                    else 1 ',
-'                end = 1',
-'                #AUDITORIA# ',
-'                #HOME#',
-'                #ORDER#',
-'',
-'        ~'';                        ',
-'        v_sql := replace(v_sql,''#tipo_funcionalidade#'',p_tipo); ',
-'         ',
-unistr('        if lower(p_tipo) = lower(''e'') then -- Edi\00E7\00E3o '),
-'            v_sql := replace(v_sql,''#CAMPOS#'',c_campos_botao); ',
-'            v_sql := replace(v_sql,''#CONDICAO#'',c_where_botao); ',
-'            v_sql := replace(v_sql,''#AUDITORIA#'',c_select_auditoria_fixo); ',
-'            v_sql := replace(v_sql,''#ORDER#'',''ORDER BY ORDEM'');         ',
-'        else  -- link ',
-'            v_sql := replace(v_sql,''#CAMPOS#'',c_campos_link); ',
-'            v_sql := replace(v_sql,''#CONDICAO#'',c_where_link); ',
-'            v_sql := replace(v_sql,''#AUDITORIA#'',''''); ',
-unistr('            if lower(p_tipo) = lower(''w'') then -- Navega\00E7\00E3o'),
-'                v_sql := replace(v_sql,''#ORDER#'',''ORDER BY t.titulo'');                     ',
-'            end if;',
-'        end if; ',
-'',
-unistr('        if lower(p_tipo) = lower(''n'') then -- Navega\00E7\00E3o'),
-'            v_sql_aux := apex_page.get_url( ',
-'                            p_page => 2, ',
-'                            p_plain_url => true,',
-'                            p_clear_cache => 2',
-'                        );  ',
-'            --v_sql := replace(v_sql,''#HOME#'',c_campos_link_home); ',
-'            v_sql := replace(v_sql,''#HOME#'',''''); ',
-'            v_sql := replace(v_sql,''#URL#'',v_sql_aux); ',
-'            v_sql := replace(v_sql,''#ORDER#'',''ORDER BY ORDEM,2'');                     ',
-unistr('        elsif lower(p_tipo) = lower(''e'') then -- Edi\00E7\00E3o'),
-'            -- v_sql := replace(v_sql,''#HOME#'',c_campos_botao_home);             ',
-'            v_sql := replace(v_sql,''#HOME#'','''');             ',
-'        else',
-'            v_sql := replace(v_sql,''#HOME#'',''''); ',
-'        end if;',
-'        ',
-'',
-'        v_sql := replace(v_sql,''#p_id#'',nvl(p_id,0)); ',
-'        v_sql := replace(v_sql,''#p_param2#'',nvl(p_param2,'''''''''''')); ',
-'        v_sql := replace(v_sql,''#p_codigo_artefato#'',p_codigo_artefato); ',
-'        return v_sql; ',
-'    end buscar_acoes;         ',
-'',
-'    -- function lista_etapa_wizard',
-'    -- return varchar2 ',
-'    -- as ',
-'    --     v_sql clob; ',
-'    -- begin  ',
-'    --     v_sql := q''~ ',
-'    --         select ',
-'    --             null as level_value,',
-'    --             pkg_ui.retorna_label_etapa(a.id) as label_value,',
-'    --             null as target_value,',
-'    --             case when :p0_codigo_artefato = c1.codigo_artefato then ''YES'' else ''NO'' end as is_current,',
-'    --             null as image_value,',
-'    --             null as image_attr_value,',
-'    --             null as image_alt_value',
-'    --         from srv_artefato_wizard a',
-'    --         join srv_artefato_versionado b on b.id = a.id_artefato_versionado',
-'    --         join srv_artefato c on c.id = b.id_artefato',
-'    --         join srv_artefato_versionado b1 on b1.id = a.id_artefato_versionado_base',
-'    --         join srv_artefato c1 on c1.id = b1.id_artefato',
-'    --         where c.codigo_artefato = nvl( apex_util.get_session_state(''P''||:APP_PAGE_ID||''_CODIGO_WIZARD''),:p0_codigo_artefato)',
-'    --         and (',
-'    --                 condicao is null ',
-'    --                 or exists (',
-'    --                     select 1 ',
-'    --                     from dual ',
-'    --                     where pkg_ui.verifica_condicao(condicao) = 1',
-'    --                 )',
-'    --             )',
-'    --         order by ordem        ',
-'    --     ~'';        ',
-'    --     return v_sql; ',
-'    -- end lista_etapa_wizard;         ',
-unistr('    -- Nova vers\00E3o para permitir link nas etapas do Wizard.'),
-'function lista_etapa_wizard',
-'return varchar2 ',
-'as ',
-'    v_sql clob; ',
-'begin  ',
-'    v_sql := q''~ ',
-'        with etapas as (',
-'            select ',
-'                a.id,',
-'                a.ordem,',
-'                pkg_ui.retorna_label_etapa(a.id) as label_value,',
-'                c1.codigo_artefato as codigo_etapa,',
-'                c.codigo_artefato as codigo_wizard,',
-'                case ',
-'                    when a.parametro_anterior is null then ''ID'' ',
-'                    else ''PARAMETRO'' ',
-'                end as parametro_entrada',
-'            from srv_artefato_wizard a',
-'            join srv_artefato_versionado b ',
-'                on b.id = a.id_artefato_versionado',
-'            join srv_artefato c ',
-'                on c.id = b.id_artefato',
-'            join srv_artefato_versionado b1 ',
-'                on b1.id = a.id_artefato_versionado_base',
-'            join srv_artefato c1 ',
-'                on c1.id = b1.id_artefato',
-'            where c.codigo_artefato = nvl(',
-'                    apex_util.get_session_state(''P'' || :APP_PAGE_ID || ''_CODIGO_WIZARD''),',
-'                    :P0_CODIGO_ARTEFATO',
-'                  )',
-'              and (',
-'                    a.condicao is null ',
-'                    or exists (',
-'                        select 1 ',
-'                        from dual ',
-'                        where pkg_ui.verifica_condicao(a.condicao) = 1',
-'                    )',
-'                  )',
-'        ),',
-'        atual as (',
-'            select ordem as ordem_atual',
-'            from etapas',
-'            where upper(codigo_etapa) = upper(:P0_CODIGO_ARTEFATO)',
-'        )',
-'        select ',
-'            null as level_value,',
-'            e.label_value,',
-'            ',
-'            case ',
-'                when e.ordem < a.ordem_atual then',
-'                    pkg_ui.retorna_url_etapa_wizard(',
-'                        p_codigo_artefato      => e.codigo_etapa,',
-'                        p_codigo_artefato_base => e.codigo_wizard,',
-'                        p_parametro            => e.parametro_entrada,',
-'                        p_param1               => pkg_ui.valor_parametro_wizard(',
-'                            e.parametro_entrada,',
-'                            :APP_PAGE_ID',
-'                        )',
-'                    )',
-'                else',
-'                    null',
-'            end as target_value,',
-'',
-'            case ',
-'                when upper(:P0_CODIGO_ARTEFATO) = upper(e.codigo_etapa) then ''YES'' ',
-'                else ''NO'' ',
-'            end as is_current,',
-'',
-'            null as image_value,',
-'            null as image_attr_value,',
-'            null as image_alt_value',
-'        from etapas e',
-'        cross join atual a',
-'        order by e.ordem        ',
-'    ~'';        ',
-'',
-'    return v_sql; ',
-'end lista_etapa_wizard;  ',
-'',
-'    function valor_parametro_wizard(',
-'        p_item_destino in varchar2,',
-'        p_pagina in number',
-'    ) return varchar2',
-'    is',
-'        l_valor varchar2(4000);',
-'    begin',
-'        /*',
-'            Regra especial:',
-'            Se a etapa de destino espera P9012_ID,',
-unistr('            mas estou em uma etapa onde o ID principal est\00E1 em P9012_PARAMETRO,'),
-'            uso P9012_PARAMETRO como origem.',
-'        */',
-'        if upper(p_item_destino) = ''ID'' or upper(p_item_destino) = ''PARAMETRO'' then',
-'            l_valor := apex_util.get_session_state(''P'' || p_pagina || ''_PARAMETRO'');',
-'',
-'            if l_valor is not null then',
-'                return l_valor;',
-'            end if;',
-'',
-'            return apex_util.get_session_state(''P'' || p_pagina || ''_ID'');',
-'        end if;',
-'',
-'        /*',
-unistr('            Regra padr\00E3o:'),
-unistr('            Busca o valor pelo pr\00F3prio nome do par\00E2metro.'),
-'        */',
-'        return apex_util.get_session_state(''P'' || p_pagina || ''_'' || p_item_destino);',
-'    end valor_parametro_wizard;    ',
-'',
-'    function retorna_url( ',
-'        p_id in number, --1',
-'        p_codigo_arfato in varchar2, --2 ',
-'        p_codigo_arfato_base in varchar2, --3 ',
-'        p_tipo in varchar2, --4',
-'        p_tipo_funcionalidade in varchar2 default null, --5',
-'        p_nome_acao in varchar2 default null, --6',
-'        p_parametro in varchar2 default null, --7',
-'        p_valor in varchar2 default null, --8',
-'        p_param_tela1 in varchar2 default null --9',
-'    ) return varchar2 ',
-'    as ',
-'        v_items             varchar2(4000); ',
-'        v_valores           varchar2(4000); ',
-'        v_pagina            varchar2(4000);   ',
-'        v_url               clob;   ',
-'        v_metodo_execucao   varchar2(256);           ',
-'        v_metodo_detalhe    varchar2(256);           ',
-'        v_tipo_confirmacao  varchar2(1);           ',
-'    begin ',
-' ',
-'        -- apex_debug.enable(apex_debug.c_log_level_info);',
-'        -- apex_debug.info(''info retorna_url p_param_tela1:%s'',p_param_tela1);    ',
-'        -- apex_debug.info(''info retorna_url p_valor:%s'',p_valor);    ',
-'                       ',
-'        if p_tipo = c_tp_artefato_cadastro_dinamico then  ',
-'            v_pagina := p_codigo_arfato_base; ',
-'            if p_tipo_funcionalidade = c_tipo_funcionalidade_alterar  then ',
-'                if p_parametro is not null then',
-'                    v_items := p_parametro||'',P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                    v_valores := replace(p_valor,''#ID#'',p_id);',
-'                    v_valores := replace(v_valores,''#PARAM1#'',p_param_tela1);',
-'                    v_valores := v_valores||'',''||p_codigo_arfato||'',''||p_codigo_arfato;',
-'                    -- apex_debug.info(''info retorna_url v_valores:%s'',v_valores);    ',
-'                else ',
-'                    v_items := ''P''||p_codigo_arfato_base||''_ID,P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                    v_valores := p_id||'',''||p_codigo_arfato||'',''||p_codigo_arfato;',
-'                end if;',
-'            elsif p_tipo_funcionalidade = c_tipo_funcionalidade_incluir then ',
-'                if p_parametro is not null then',
-'                    v_items := p_parametro||'',P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                    v_valores := replace(p_valor,''#ID#'',p_id);',
-'                    v_valores := replace(v_valores,''#PARAM1#'',p_param_tela1);',
-'                    v_valores := v_valores||'',''||p_codigo_arfato||'',''||p_codigo_arfato;',
-'                else',
-'                    v_items := ''P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                    v_valores :='))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(202486000814894198)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-' p_codigo_arfato||'',''||p_codigo_arfato;',
-'                end if;',
-'            elsif p_tipo_funcionalidade = c_tipo_funcionalidade_acao then ',
-'                v_items := ''P''||p_codigo_arfato_base||''_PARAMETRO,P''||p_codigo_arfato_base||''_PARAMETRO2,P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                v_valores := p_id||'',''||p_param_tela1||'',''||p_codigo_arfato||'',''||p_codigo_arfato;',
-'            elsif p_tipo_funcionalidade = c_tipo_funcionalidade_listar then ',
-'                v_items := ''P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''; ',
-'                v_valores := p_codigo_arfato||'',''||p_codigo_arfato;',
-'                if p_parametro is not null then -- Se possuir paramentros personalizados',
-'                    v_items := v_items ||'',''|| p_parametro;',
-'                    v_valores := v_valores ||'',''|| p_valor;  ',
-'                    v_valores := replace(v_valores,''#ID#'',p_id);',
-'                    v_valores := processa_itens(v_valores);                    ',
-'                end if;',
-'            elsif p_tipo_funcionalidade = c_tipo_funcionalidade_duplicar  then ',
-'                v_items := ''P''||p_codigo_arfato_base||''_COPIA,P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO'';',
-'                v_valores := p_id||'',''||p_codigo_arfato||'',''||p_codigo_arfato; ',
-'            elsif p_tipo_funcionalidade = c_tipo_funcionalidade_mais_detalhes  then ',
-'                if p_parametro is not null then',
-'                    v_items := p_parametro||'',P''||p_codigo_arfato_base||''_ID,P''||p_codigo_arfato_base||''_VISUALIZAR,P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO'';',
-'                    v_valores := replace(p_valor,''#ID#'',p_id);',
-'                    v_valores := replace(v_valores,''#PARAM1#'',p_param_tela1);',
-'                    v_valores := v_valores||'',''||p_id||'',1,''||p_codigo_arfato||'',''||p_codigo_arfato; ',
-'                else',
-'                    v_items := ''P''||p_codigo_arfato_base||''_ID,P''||p_codigo_arfato_base||''_VISUALIZAR,P''||p_codigo_arfato_base||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO'';',
-'                    v_valores := p_id||'',1,''||p_codigo_arfato||'',''||p_codigo_arfato; ',
-'                end if;',
-'            end if; ',
-'',
-'        elsif p_tipo in (c_tp_artefato_acao_dinamico,c_tp_artefato_excluir_dinamico) then  ',
-'            retorna_metodos_acao_dinamica(p_codigo_arfato,v_metodo_execucao,v_metodo_detalhe,v_tipo_confirmacao);     ',
-'            v_pagina  := 9001; ',
-'            v_items   := ''P9001_ID,P9001_METODO_EXECUCAO,P9001_METODO_DETALHE,P9001_ACAO,P0_CODIGO_ARTEFATO,P9001_TIPO_CONFIRMACAO''; ',
-'            v_valores := p_id||'',''||v_metodo_execucao||'',''||v_metodo_detalhe||'',''||p_nome_acao||'',''||p_codigo_arfato||'',''||v_tipo_confirmacao; ',
-'        else     ',
-'            v_pagina := p_codigo_arfato; ',
-'            if p_parametro is not null then -- Se possuir paramentros personalizados',
-'                v_items := p_parametro;',
-'                v_valores := p_valor;  ',
-'                v_valores := replace(p_valor,''#ID#'',p_id);',
-'                v_valores := processa_itens(v_valores);',
-'                ',
-'                v_items := v_items ||'',P0_CODIGO_ARTEFATO,P''||p_codigo_arfato||''_CODIGO_ARTEFATO'';',
-'                v_valores := v_valores ||'',''||p_codigo_arfato||'',''||p_codigo_arfato;  ',
-'            else',
-'                v_items := ''P''||p_codigo_arfato||''_ID,P''||p_codigo_arfato||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO'';',
-'                v_valores := p_id||'',''||p_codigo_arfato||'',''||p_codigo_arfato;  ',
-'            end if;',
-'        end if;                    ',
-'',
-'        v_url := apex_page.get_url( ',
-'            p_page => v_pagina, ',
-'            p_items => v_items, ',
-'            p_values => v_valores, ',
-'            p_plain_url => false,',
-'            p_clear_cache => v_pagina,',
-'            p_triggering_element => ''apex.jQuery("#ATUALIZAR")'');',
-'',
-'        return v_url; ',
-'         ',
-'    end retorna_url;     ',
-'',
-'    function retorna_url_etapa_wizard(',
-'        p_codigo_artefato      in varchar2,',
-'        p_codigo_artefato_base in varchar2,',
-'        p_parametro            in varchar2,',
-'        p_param1               in varchar2 default null',
-'    ) return varchar2',
-'    is',
-'        l_codigo_pagina varchar2(256);',
-'        l_url           varchar2(4000);',
-'    begin',
-'        select ',
-'            nvl(i.codigo_artefato, p_codigo_artefato)',
-'        into l_codigo_pagina',
-'        from mpd_funcionalidade a ',
-'            left join mpd_funcionalidade_tela_dinamica g ',
-'                on g.id_funcionalidade = a.id             ',
-'            left join mpd_funcionalidade i ',
-'                on i.id = g.id_funcionalidade_base                        ',
-'        where lower(a.codigo_artefato) = lower(p_codigo_artefato); ',
-'',
-'',
-'        l_url := apex_page.get_url(',
-'            p_page        => l_codigo_pagina,',
-'            p_items       => ''P'' || l_codigo_pagina || ''_CODIGO_ARTEFATO,'' ||',
-'                             ''P'' || l_codigo_pagina || ''_CODIGO_WIZARD,''   ||',
-'                             ''P0_CODIGO_ARTEFATO,''                         ||',
-'                             ''P'' || l_codigo_pagina || ''_'' || p_parametro,',
-'            p_values      => p_codigo_artefato || '','' ||',
-'                             p_codigo_artefato_base || '','' ||',
-'                             p_codigo_artefato || '','' ||',
-'                             p_param1,',
-'            p_clear_cache => l_codigo_pagina',
-'        );',
-'',
-'        return l_url;',
-'    exception',
-'        when no_data_found then',
-'            return null;',
-'    end retorna_url_etapa_wizard;    ',
-'',
-'    procedure url_wizard( ',
-'        p_codigo_artefato in varchar2, ',
-'        p_codigo_artefato_base in varchar2 default null,         ',
-'        p_url_anterior out varchar2,',
-'        p_url_proximo out varchar2,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null,',
-'        p_etapa out number,',
-'        p_url_anterior_dummy  in varchar2 default null,',
-'        p_url_proximo_dummy   in varchar2 default null',
-'    )is',
-'        v_codigo_artefato_anterior varchar2(200);',
-'        v_parametro_anterior varchar2(256);',
-'        v_codigo_artefato_proximo varchar2(200);   ',
-'        v_parametro_proximo varchar2(256);   ',
-'        v_condicao_anterior varchar2(1024);   ',
-'        v_condicao_proximo varchar2(1024);   ',
-'',
-'        function retorna_url(p_codigo_artefato varchar2, p_parametro varchar2)  return clob is',
-'            v_codigo_artefato varchar2(256);',
-'            v_url clob;',
-'        begin',
-'            select ',
-'                i.codigo_artefato',
-'                into v_codigo_artefato',
-'            from mpd_funcionalidade a ',
-'                left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = a.id             ',
-'                left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base                        ',
-'            where ',
-'                lower(a.codigo_artefato) = lower(p_codigo_artefato); ',
-'',
-'            --TD3-160',
-'            v_codigo_artefato := nvl(v_codigo_artefato,p_codigo_artefato);',
-'',
-'            v_url := apex_page.get_url(',
-'                    p_page => v_codigo_artefato, ',
-'                    p_items => ''P''||v_codigo_artefato||''_CODIGO_ARTEFATO,P''||v_codigo_artefato||''_CODIGO_WIZARD,P0_CODIGO_ARTEFATO,P''||v_codigo_artefato||''_''||p_parametro,',
-'                    p_values => p_codigo_artefato||'',''||p_codigo_artefato_base||'',''||p_codigo_artefato||'',''||p_param1,   ',
-'                    -- p_triggering_element => ''NEW'',',
-'                    p_clear_cache => v_codigo_artefato);',
-'',
-'            return v_url; ',
-'        end retorna_url;',
-'    begin',
-'        -- apex_debug.enable(apex_debug.c_log_level_info);',
-'        select ',
-'            d1.codigo_artefato anterior,',
-'            c.parametro_anterior,',
-'            e1.codigo_artefato proximo,',
-'            c.parametro_proximo,',
-'            c.ordem,',
-'            (select condicao from srv_artefato_wizard where rownum = 1 and id_artefato_versionado_base = d.id and id_artefato_versionado = b.id),',
-'            (select condicao from srv_artefato_wizard where rownum = 1 and id_artefato_versionado_base = e.id and id_artefato_versionado = b.id)',
-'            into',
-'            v_codigo_artefato_anterior,',
-'            v_parametro_anterior,',
-'            v_codigo_artefato_proximo,',
-'            v_parametro_proximo,',
-'            p_etapa,',
-'            v_condicao_anterior,',
-'            v_condicao_proximo',
-'        from srv_artefato a',
-'        join srv_artefato_versionado b on b.id_artefato = a.id',
-'        left join srv_artefato_wizard c  on c.id_artefato_versionado = b.id',
-'        left join srv_artefato_versionado y on y.id = c.id_artefato_versionado_base',
-'        left join srv_artefato z on z.id = y.id_artefato',
-'        left join srv_artefato_versionado d on d.id = c.id_artefato_versionado_anterior',
-'        left join srv_artefato d1 on d1.id = d.id_artefato',
-'        left join srv_artefato_versionado e on e.id = c.id_artefato_versionado_proximo',
-'        left join srv_artefato e1 on e1.id = e.id_artefato',
-'        where upper(a.codigo_artefato) = upper(nvl(p_codigo_artefato_base,p_codigo_artefato))',
-'        and upper(z.codigo_artefato) = upper(p_codigo_artefato);',
-'',
-'    	  if p_url_anterior_dummy is null then',
-'	        if v_condicao_anterior is not null and verifica_condicao(v_condicao_anterior) = 0 then',
-'	            url_wizard(v_codigo_artefato_anterior,p_codigo_artefato_base,p_url_anterior,p_url_proximo,p_param1,p_param2,p_etapa);',
-'	        elsif v_codigo_artefato_anterior is not null then',
-'	            p_url_anterior := retorna_url(v_codigo_artefato_anterior,v_parametro_anterior);  ',
-'	        end if;',
-'        else',
-'            p_url_anterior := p_url_anterior_dummy;',
-'	     end if;',
-'',
-'    	  if p_url_proximo_dummy is null then',
-'	        if v_condicao_proximo is not null and verifica_condicao(v_condicao_proximo) = 0 then',
-'	            url_wizard(v_codigo_artefato_proximo,p_codigo_artefato_base,p_url_anterior,p_url_proximo,p_param1,p_param2,p_etapa,p_url_anterior);',
-'	        elsif v_codigo_artefato_proximo is not null then',
-'	            p_url_proximo := retorna_url(v_codigo_artefato_proximo,v_parametro_proximo);  ',
-'	        end if;',
-'        else',
-'            p_url_proximo := p_url_proximo_dummy;',
-'	     end if;',
-'',
-'    end url_wizard;',
-'',
-'    procedure url_new( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_url out varchar2,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null',
-'    )is',
-'        v_parametro varchar2(512);',
-'        v_valor varchar2(512);',
-'        v_codigo_artefato varchar2(512);',
-'        v_codigo_artefato_exibir varchar2(512);',
-'        v_id varchar2(256) := nvl(p_param1,0);',
-'    begin      ',
-'        -- apex_debug.enable(apex_debug.c_log_level_info);',
-'        select ',
-'            nvl(i.codigo_artefato,e.codigo_artefato), e.codigo_artefato, c.parametro, c.valor',
-'            into v_codigo_artefato, v_codigo_artefato_exibir, v_parametro, v_valor',
-'        from ',
-'            mpd_funcionalidade a ',
-'            left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'            left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'            left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'            left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'            left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id                            ',
-'        where ',
-'            lower(a.codigo_artefato) = lower(p_codigo_arfato) and (c.tipo_acao = ''E'' or c.tipo_acao is null)',
-unistr('            and (g.tipo_funcionalidade = ''I'' or e.funcao = 2) and c.tipo_acao is null -- Fun\00E7\00E3o = 2 seria incluir            '),
-'            and (',
-'                    j.metodo_validacao is null ',
-'                    or EXISTS (',
-'                        SELECT 1 ',
-'                        FROM dual ',
-'                        WHERE PKG_UI.verifica_condicao(v_id, j.metodo_validacao, ''metodo'', e.codigo_artefato) = 1',
-'                    )',
-'                )',
-'            and (',
-'                    j.sql_validacao is null ',
-'                    or EXISTS (',
-'                        SELECT 1 ',
-'                        FROM dual ',
-'                        WHERE PKG_UI.verifica_condicao(v_id, j.sql_validacao, ''sql'', e.codigo_artefato) = 1',
-'                    )',
-'                );',
-'',
-'        v_valor := replace(v_valor,''#PARAM1#'',nvl(p_param1,''''));',
-'        v_valor := replace(v_valor,''#PARAM2#'',nvl(p_param2,''''));',
-'',
-'        p_url := apex_page.get_url(',
-'                p_page => v_codigo_artefato, ',
-'                p_items => ''P''||v_codigo_artefato||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO''||case when v_parametro is not null then '',''||v_parametro else '''' end, ',
-'                p_values => v_codigo_artefato_exibir||'',''||v_codigo_artefato_exibir||case when v_valor is not null then '',''||v_valor else '''' end,',
-'                p_triggering_element => ''apex.jQuery("#NEW")'',',
-'                p_clear_cache => v_codigo_artefato);',
-'        ',
-'        exception',
-'            when no_data_found then',
-'                p_url := null;',
-'    end;',
-'',
-'    function url_mais_detalhes( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null    ',
-'    ) return varchar2 is',
-'        -- l_url clob;',
-'        -- l_tipo varchar2(16);',
-'        -- l_codigo_artefato_tela varchar2(32);',
-'        -- l_codigo_artefato varchar2(32);',
-'        -- l_parametro varchar2(256);',
-'        -- l_valor varchar2(256);',
-'        -- l_page varchar2(256);',
-'    begin',
-'        return ''onclick="urlLinkMaisDetalhes(''||aspas(p_codigo_arfato)||'',''||p_id||'',''||nvl(aspas(p_param1),''null'')||'',''||nvl(aspas(p_param2),''null'')||'')"''; ',
-'',
-'        -- if p_id is not null then            ',
-'        --     select ',
-'        --         e.tipo,e.codigo_artefato,i.codigo_artefato,c.parametro,c.valor,',
-'        --         apex_page.get_url(',
-'        --             p_page => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end, ',
-'        --             p_items =>  ''P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_CODIGO_ARTEFATO,P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||ca'
-||'se when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_ID'', ',
-'        --             p_values => e.codigo_artefato||'',1,''||e.codigo_artefato||'',''||p_id,',
-'        --             p_clear_cache => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end',
-'        --         ) into l_tipo, l_codigo_artefato_tela, l_codigo_artefato, l_parametro, l_valor, l_url',
-'        --     from ',
-'        --         mpd_funcionalidade a ',
-'        --         left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'        --         left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'        --         left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'        --         left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'        --         left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id                            ',
-'        --     where ',
-'        --         lower(a.codigo_artefato) = lower(p_codigo_arfato) ',
-'        --         and ((g.tipo_funcionalidade = ''M'') or (e.tipo = ''TE'' and e.funcao = 5)); -- Para artefatos do tipo Tela que tem funcao de Mais detalhes',
-'',
-'        --     if l_valor is not null then',
-'        --         if p_param1 is not null then',
-'        --             l_valor := replace(l_valor,''#PARAM1#'',nvl(p_param1,''''));',
-'        --         end if;',
-'        --         if p_param2 is not null then',
-'        --             l_valor := replace(l_valor,''#PARAM2#'',nvl(p_param2,''''));',
-'        --         end if;',
-'        --     end if;',
-'',
-'        --     l_page := case when l_tipo = ''TE'' then l_codigo_artefato_tela else l_codigo_artefato end;',
-'        --     if l_parametro is not null then',
-'        --         l_url := apex_page.get_url(',
-'        --                 p_page => l_page, ',
-'        --                 p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID,''||l_parametro, ',
-'        --                 p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',''||p_id||'',''||l_valor,',
-'        --                 p_triggering_element => ''apex.jQuery("#NEW")'',',
-'        --                 p_clear_cache => l_page ',
-'        --         );',
-'        --     else',
-'        --         l_url := apex_page.get_url(',
-'        --                 p_page => l_page, ',
-'        --                 p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID'', ',
-'        --                 p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',''||p_id,',
-'        --                 p_triggering_element => ''apex.jQuery("#NEW")'',',
-'        --                 p_clear_cache => l_page ',
-'        --         );',
-'        --     end if;',
-'',
-'        --     return l_url;    ',
-'        -- else',
-'        --     return null;',
-'        -- end if;',
-'        -- exception',
-'        --     when no_data_found then',
-'        --         return null;',
-'    end;',
-'',
-'    function url_mais_detalhes_antiga( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null    ',
-'    ) return varchar2 is',
-'        l_url clob;',
-'        l_tipo varchar2(16);',
-'        l_codigo_artefato_tela varchar2(32);',
-'        l_codigo_artefato varchar2(32);',
-'        l_parametro varchar2(256);',
-'        l_valor varchar2(256);',
-'        l_page varchar2(256);',
-'    begin',
-'        if p_id is not null then            ',
-'            select ',
-'                e.tipo,e.codigo_artefato,i.codigo_artefato,c.parametro,c.valor,',
-'                apex_page.get_url(',
-'                    p_page => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end, ',
-'                    p_items =>  ''P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_CODIGO_ARTEFATO,P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||case '
-||'when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_ID'', ',
-'                    p_values => e.codigo_artefato||'',1,''||e.codigo_artefato||'',''||p_id,',
-'                    p_clear_cache => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end',
-'                ) into l_tipo, l_codigo_artefato_tela, l_codigo_artefato, l_parametro, l_valor, l_url',
-'            from ',
-'                mpd_funcionalidade a ',
-'                left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'                left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'                left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'                left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'                left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id                            ',
-'            where ',
-'                lower(a.codigo_artefato) = lower(p_codigo_arfato) and c.tipo_acao is null',
-'                and ((g.tipo_funcionalidade = ''M'') or (e.tipo = ''TE'' and e.funcao = 5)); -- Para artefatos do tipo Tela que tem funcao de Mais detalhes',
-'',
-'            if l_valor is not null then',
-'                if p_param1 is not null then',
-'                    l_valor := replace(l_valor,''#PARAM1#'',nvl(p_param1,''''));',
-'                end if;',
-'                if p_param2 is not null then',
-'                    l_valor := replace(l_valor,''#PARAM2#'',nvl(p_param2,''''));',
-'                end if;',
-'            end if;',
-'',
-'            l_page := case when l_tipo = ''TE'' then l_codigo_artefato_tela else l_codigo_artefato end;',
-'            if l_parametro is not null then',
-'                l_url := apex_page.get_url(',
-'                        p_page => l_page, ',
-'                        p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID,''||l_parametro, ',
-'                        p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',''||p_id||'',''||l_valor,',
-'                        p_triggering_element => ''apex.jQuery("#NEW")'',',
-'                        p_clear_cache => l_page ',
-'                );',
-'            else',
-'                l_url := apex_page.get_url(',
-'                        p_page => l_page, ',
-'                        p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID'', ',
-'                        p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',''||p_id,',
-'                        p_triggering_element => ''apex.jQuery("#NEW")'',',
-'                        p_clear_cache => l_page ',
-'                );',
-'            end if;',
-'',
-'            return l_url;    ',
-'        else',
-'            return null;',
-'        end if;',
-'        exception',
-'            when no_data_found then',
-'                return null;',
-'    end;',
-'',
-'    function url_mais_detalhes2( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null    ',
-'    ) return varchar2 is',
-'        l_url clob;',
-'        l_tipo varchar2(16);',
-'        l_codigo_artefato_tela varchar2(32);',
-'        l_codigo_artefato varchar2(32);',
-'        l_parametro varchar2(256);',
-'        l_valor varchar2(256);',
-'        l_page varchar2(256);',
-'    begin',
-'        select ',
-'            e.tipo,e.codigo_artefato,i.codigo_artefato,c.parametro,c.valor,',
-'            apex_page.get_url(',
-'                p_page => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end, ',
-'                p_items =>  ''P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_CODIGO_ARTEFATO,P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||case when'
-||' e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_ID'', ',
-'                p_values => e.codigo_artefato||'',1,''||e.codigo_artefato||'',#ID#'',',
-'                p_clear_cache => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end',
-'            ) into l_tipo, l_codigo_artefato_tela, l_codigo_artefato, l_parametro, l_valor, l_url',
-'        from ',
-'            mpd_funcionalidade a ',
-'            left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'            left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'            left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'            left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'            left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id                            ',
-'        where ',
-'            lower(a.codigo_artefato) = lower(p_codigo_arfato) ',
-'            and ((g.tipo_funcionalidade = ''M'') or (e.tipo = ''TE'' and e.funcao = 5)); -- Para artefatos do tipo Tela que tem funcao de Mais detalhes',
-'',
-'        if l_valor is not null then',
-'            if p_param1 is not null then',
-'                l_valor := replace(l_valor,''#PARAM1#'',nvl(p_param1,''''));',
-'            end if;',
-'            if p_param2 is not null then',
-'                l_valor := replace(l_valor,''#PARAM2#'',nvl(p_param2,''''));',
-'            end if;',
-'        end if;',
-'',
-'        l_page := case when l_tipo = ''TE'' then l_codigo_artefato_tela else l_codigo_artefato end;',
-'        if l_parametro is not null then',
-'            l_url := apex_page.get_url(',
-'                    p_page => l_page, ',
-'                    p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID,''||l_parametro, ',
-'                    p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',#ID#,''||l_valor,',
-'                    p_triggering_element => ''apex.jQuery("#NEW")'',',
-'                    p_clear_cache => l_page ',
-'            );',
-'        else',
-'            l_url := apex_page.get_url(',
-'                    p_page => l_page, ',
-'                    p_items =>  ''P''||l_page||''_CODIGO_ARTEFATO,P''||l_page||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||l_page||''_ID'', ',
-'                    p_values => l_codigo_artefato_tela||'',1,''||l_codigo_artefato_tela||'',#ID#'',',
-'                    p_triggering_element => ''apex.jQuery("#NEW")'',',
-'                    p_clear_cache => l_page ',
-'            );',
-'        end if;',
-'        return l_url;    ',
-'',
-'        exception',
-'            when no_data_found then',
-'                return null;',
-'    end;',
-'',
-'    function url_mais_detalhes_com_parametro( ',
-'        p_codigo_arfato in varchar2, ',
-'        p_id in number,',
-'        p_parametro in varchar2 default null',
-'    ) return varchar2 is',
-'        l_url clob;',
-'    begin',
-'        if p_id is not null then',
-'            select ',
-'                apex_page.get_url(',
-'                    p_page => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end, ',
-'                    p_items =>  ''P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_CODIGO_ARTEFATO,P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_VISUALIZAR,P0_CODIGO_ARTEFATO,P''||case '
-||'when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_ID,P''||case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end||''_PARAMETRO'', ',
-'                    -- p_values => replace(c.valor,''#ID#'',p_id), ',
-'                    p_values => e.codigo_artefato||'',1,''||e.codigo_artefato||'',''||p_id||'',''||p_parametro,',
-'                    p_clear_cache => case when e.tipo = ''TE'' then e.codigo_artefato else i.codigo_artefato end',
-'                ) into l_url',
-'            from ',
-'                mpd_funcionalidade a ',
-'                left join mpd_funcionalidade_botao_acao c on c.id_funcionalidade = a.id ',
-'                left join mpd_funcionalidade e on e.id = c.id_funcionalidade_exibir',
-'                left join mpd_funcionalidade_tela_dinamica g on g.id_funcionalidade = e.id ',
-'                left join mpd_funcionalidade i on i.id = g.id_funcionalidade_base ',
-'                left join mpd_funcionalidade_regra_execucao j on j.id_funcionalidade = e.id                            ',
-'            where ',
-'                lower(a.codigo_artefato) = lower(p_codigo_arfato) ',
-'                and ((g.tipo_funcionalidade = ''M'') or (e.tipo = ''TE'' and e.funcao = 5)); -- Para artefatos do tipo Tela que tem funcao de Mais detalhes',
-'            return l_url;    ',
-'        else',
-'            return null;',
-'        end if;',
-'        exception',
-'            when no_data_found then',
-'                return null;',
-'    end;     ',
-'',
-'    procedure url( ',
-'        p_page in number, ',
-'        p_paramentros in varchar2 default null, ',
-'        p_valores in varchar2 default null, ',
-'        p_url out varchar2',
-'    ) as ',
-'        v_items             varchar2(4000); ',
-'        v_valores           varchar2(4000); ',
-'        v_pagina            varchar2(4000);   ',
-'        v_url               clob;   ',
-'        v_metodo_execucao   varchar2(256);           ',
-'        v_metodo_detalhe    varchar2(256);           ',
-'    begin ',
-'        if p_paramentros is not null then',
-'            p_url := apex_page.get_url( ',
-'                p_page => p_page, ',
-'                p_items => p_paramentros, ',
-'                p_values => p_valores, ',
-'                p_clear_cache => p_page);               ',
-'        else',
-'            p_url := apex_page.get_url( ',
-'                p_page => p_page, ',
-'                p_clear_cache => p_page);               ',
-'        end if;             ',
-'    end url;         ',
-' ',
-'    function retorna_regra_execucao( ',
-'        p_id in number, ',
-'        p_codigo_artefato in varchar2 ',
-'    ) return varchar2 as ',
-'        v_metodo_validacao varchar2(256); ',
-'        v_sql_validacao varchar2(4000); ',
-'        v_validacao varchar2(4000); ',
-'    begin ',
-'        select c.metodo_validacao, c.sql_validacao  ',
-'        into v_metodo_validacao, v_sql_validacao ',
-'        from mpd_funcionalidade a  ',
-'        join mpd_funcionalidade_regra_execucao c on c.id_funcionalidade = c.id ',
-'        where lower(a.codigo_artefato) = lower(p_codigo_artefato); ',
-'        v_validacao := nvl(v_metodo_validacao,v_sql_validacao); ',
-'        v_validacao := replace(v_validacao,''#ID#'',p_id); ',
-'        return nvl(v_validacao,''select 1 from dual''); ',
-'    end retorna_regra_execucao;  ',
-' ',
-'    procedure retorna_metodos_acao_dinamica( ',
-'        p_codigo_artefato in varchar2, ',
-'        p_metodo_execucao out varchar2, ',
-'        p_metodo_detalhe out varchar2,',
-'        p_tipo_confirmacao out varchar2 ',
-'    )as ',
-'    begin ',
-'        select c.metodo_execucao, c.metodo_campos_exibir, c.tipo_confirmacao  ',
-'        into p_metodo_execucao, p_metodo_detalhe, p_tipo_confirmacao  ',
-'        from mpd_funcionalidade a  ',
-'        join mpd_funcionalidade_acao_dinamica c on c.id_funcionalidade = a.id ',
-'        where lower(a.codigo_artefato) = lower(p_codigo_artefato); ',
-'    end retorna_metodos_acao_dinamica;     ',
-'',
-'    procedure retorna_zoom_dinamico( ',
-'        p_codigo_artefato        in  varchar2, ',
-'        p_url                    out varchar2, ',
-'        p_sql_consulta           out varchar2,',
-'        p_titulo_consulta        out varchar2,',
-'        p_titulo_cadastro        out varchar2,',
-'        p_label1                 out varchar2,',
-'        p_label2                 out varchar2,',
-'        p_label3                 out varchar2,',
-'        p_label4                 out varchar2,',
-'        p_label5                 out varchar2,',
-'        p_label6                 out varchar2,',
-'        p_label7                 out varchar2,',
-'        p_label8                 out varchar2,',
-'        p_label9                 out varchar2,',
-'        p_label10                out varchar2  ',
-'    ) as ',
-'        l_sql clob;',
-'        l_page number;',
-'        l_codig'))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(202486000814894198)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'o_artefato varchar2(256);',
-'        l_sql_aux clob;',
-'    begin ',
-'        apex_debug.message(''>> Iniciando retorna_zoom_dinamico com artefato = %s'', p_codigo_artefato);',
-'',
-'        -- Busca SQL da funcionalidade',
-'        select b.sql_consulta,',
-'               pkg_ui.retorna_titulo_tela(a.codigo_artefato),',
-'               pkg_ui.retorna_titulo_tela(c.codigo_artefato),',
-'               e.codigo_artefato,',
-'               c.codigo_artefato',
-'          into p_sql_consulta, ',
-'               p_titulo_consulta,',
-'               p_titulo_cadastro,',
-'               l_page,',
-'               l_codigo_artefato',
-'          from mpd_funcionalidade a  ',
-'          join mpd_funcionalidade_zoom_dinamico b on b.id_funcionalidade = a.id ',
-'          left join mpd_funcionalidade c on c.id = b.id_funcionalidade_exibir',
-'          left join mpd_funcionalidade_tela_dinamica d on d.id_funcionalidade = c.id',
-'          left join mpd_funcionalidade e on e.id = d.id_funcionalidade_base',
-'         where lower(a.codigo_artefato) = lower(p_codigo_artefato); ',
-'',
-'',
-'        apex_application.g_page_mode := ''MODAL'';',
-'',
-'        if l_codigo_artefato is not null then',
-'            p_url := apex_page.get_url (',
-'              p_page => l_page,',
-'              p_items => ''P''||l_page||''_CODIGO_ARTEFATO,P0_CODIGO_ARTEFATO'',',
-'              p_values => l_codigo_artefato||'',''||l_codigo_artefato,',
-'              p_plain_url => true',
-'            );',
-'        else',
-'            p_url := null;',
-'        end if;',
-'        --apex_application.g_page_mode := ''NON_MODAL'';',
-'',
-'',
-'        apex_debug.message(''SQL consulta recuperado: %s'', p_sql_consulta);',
-'         ',
-'        l_sql_aux := replace(p_sql_consulta,''#ABRIR_VAZIO#'','' where 1 = 1 '');',
-'        l_sql_aux := replace(p_sql_consulta,''#WHERE#'','''');',
-'',
-unistr('        -- Executa o SQL para pegar os labels (1 linha s\00F3, pois labels s\00E3o fixos)'),
-'        l_sql := ''select '';',
-'',
-'        if instr(p_sql_consulta, ''label1'') > 0 then',
-'           l_sql := l_sql || ''max(label1),'';',
-'        else',
-'           l_sql := l_sql || ''null label1,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label2'') > 0 then',
-'           l_sql := l_sql || ''max(label2),'';',
-'        else',
-'           l_sql := l_sql || ''null label2,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label3'') > 0 then',
-'           l_sql := l_sql || ''max(label3),'';',
-'        else',
-'           l_sql := l_sql || ''null label3,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label4'') > 0 then',
-'           l_sql := l_sql || ''max(label4),'';',
-'        else',
-'           l_sql := l_sql || ''null label4,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label5'') > 0 then',
-'           l_sql := l_sql || ''max(label5),'';',
-'        else',
-'           l_sql := l_sql || ''null label5,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label6'') > 0 then',
-'           l_sql := l_sql || ''max(label6),'';',
-'        else',
-'           l_sql := l_sql || ''null label6,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label7'') > 0 then',
-'           l_sql := l_sql || ''max(label7),'';',
-'        else',
-'           l_sql := l_sql || ''null label7,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label8'') > 0 then',
-'           l_sql := l_sql || ''max(label8),'';',
-'        else',
-'           l_sql := l_sql || ''null label8,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label9'') > 0 then',
-'           l_sql := l_sql || ''max(label9),'';',
-'        else',
-'           l_sql := l_sql || ''null label9,'';           ',
-'        end if;',
-'        if instr(p_sql_consulta, ''label10'') > 0 then',
-'           l_sql := l_sql || ''max(label10),'';',
-'        else',
-'           l_sql := l_sql || ''null label10,'';           ',
-'        end if;',
-unistr('        -- repete at\00E9 label10...'),
-'',
-unistr('        -- remove \00FAltima v\00EDrgula'),
-'        l_sql := rtrim(l_sql, '','');',
-'',
-'        l_sql := l_sql || '' from (''||l_sql_aux||'')'';',
-'',
-'        apex_debug.message(''SQL Labels gerado: %s'', l_sql);',
-'',
-'        execute immediate l_sql',
-'        into p_label1, p_label2, p_label3, p_label4, p_label5,',
-'             p_label6, p_label7, p_label8, p_label9, p_label10;',
-'',
-'    exception',
-'        when no_data_found then',
-'            apex_debug.message(''!! Erro em retorna_zoom_dinamico: %s'', sqlerrm);',
-'            select null,null,null,null,null,null,null,null,null,null into ',
-'            p_label1, p_label2, p_label3, p_label4, p_label5,p_label6, p_label7, p_label8, p_label9, p_label10 from dual;',
-'            --raise;',
-'    end retorna_zoom_dinamico; ',
-' ',
-'    function retorna_icone( ',
-'        p_tipo in varchar2, ',
-'        p_tipo_funcionalidade in varchar2 default null,',
-'        p_icone_nome in varchar2 default null',
-'    ) return varchar2 ',
-'    as ',
-'        v_icone             varchar2(4000); ',
-'        v_tipo     varchar(2); ',
-'    begin ',
-'        if p_icone_nome is null then',
-'            v_tipo := upper(p_tipo); ',
-'            if v_tipo = c_tp_artefato_cadastro_dinamico then ',
-'                if p_tipo_funcionalidade = c_tipo_funcionalidade_alterar  then ',
-'                    v_icone := ''fa-edit''; ',
-'                elsif p_tipo_funcionalidade = c_tipo_funcionalidade_incluir then ',
-'                    v_icone := ''fa-plus''; ',
-'                elsif p_tipo_funcionalidade = c_tipo_funcionalidade_duplicar then ',
-'                    v_icone := ''fa-copy''; ',
-'                elsif p_tipo_funcionalidade = c_tipo_funcionalidade_mais_detalhes then ',
-'                    v_icone := ''fa-info''; ',
-'                end if; ',
-'            elsif v_tipo = c_tp_artefato_excluir_dinamico then   ',
-'                v_icone := ''fa-trash''; ',
-'            elsif v_tipo = c_tp_artefato_tela then   ',
-'                v_icone := ''fa-external-link''; ',
-'            else     ',
-'                v_icone := ''fa-bolt''; ',
-'            end if; ',
-'        else',
-'            v_icone := p_icone_nome; ',
-'        end if;',
-'             ',
-'        return v_icone; ',
-'         ',
-'    end retorna_icone;     ',
-' ',
-unistr('    --Fun  \00E3o antiga usada antes do chamado TD3-140'),
-'    function campos_detalhes_antiga( ',
-'        p_sql clob, ',
-'        p_label_fixo in varchar2 default ''n''',
-'    ) return clob ',
-'    as ',
-'        v_detalhes         pk_types.t_detalhes := pk_types.t_detalhes(); ',
-'        c          number; ',
-'        cntCols    number; ',
-'        cols       dbms_sql.desc_tab2;  ',
-'        colValue   varchar2(4000); ',
-'        tag        varchar2(4000); ',
-'    begin ',
-'        c := dbms_sql.open_cursor; ',
-'        dbms_sql.parse(c, p_sql, dbms_sql.native); ',
-'        dbms_sql.describe_columns2(c, cntCols, cols); ',
-' ',
-'        for i in 1 .. cntCols loop ',
-'            dbms_sql.define_column(c, i, colValue, 4000); ',
-'        end loop;         ',
-' ',
-'        v_detalhes.extend(cntCols); ',
-'        if dbms_sql.execute(c) = 0 then ',
-'            while dbms_sql.fetch_rows(c) > 0 loop         ',
-'                for i in 1 .. cntCols loop ',
-'                    dbms_sql.column_value(c, i, colValue); ',
-'                    tag := replace(cols(i).col_name,''$'',''.'');',
-'',
-'                    if p_label_fixo = ''n'' then                        ',
-'                        v_detalhes(i) := pk_types.t_detalhe(pkg_ui.retorna_coluna(tag), colValue); ',
-'                    else',
-'                        v_detalhes(i) := pk_types.t_detalhe(tag, colValue); ',
-'                    end if;',
-'                end loop; ',
-'            end loop; ',
-'        end if; ',
-'         ',
-'        return detalhes_confirmacao( ',
-'            p_detalhes => v_detalhes ',
-'        ); ',
-'    end campos_detalhes_antiga; ',
-'',
-'    function campos_detalhes( ',
-'        p_sql clob, ',
-'        p_label_fixo in varchar2 default ''n''',
-'    ) return clob as ',
-'    begin ',
-'        return pkg_formulario_dinamico.campos_detalhes(',
-'            p_sql => p_sql,',
-'            p_label_fixo => p_label_fixo',
-'        );',
-'    end campos_detalhes; ',
-' ',
-'    -- ',
-unistr('    -- Fun\00E7\00E3o para montagem dos detalhes de confirma\00E7\00E3o de exclus\00E3o e/ou execu\00E7\00E3o de a\00E7\00E3o '),
-'    -- ',
-'    function detalhes_confirmacao( ',
-'        p_detalhes in pk_types.t_detalhes ',
-'    ) return clob ',
-'    as ',
-'        v_html          clob; ',
-'    begin ',
-' ',
-'        v_html := v_html || ''<div class="t-ContentBlock-body">''; ',
-'        v_html := v_html || ''  <div class="container">''; ',
-'        v_html := v_html || ''   <div class="row">''; ',
-'        v_html := v_html || ''     <div class="col col-12 apex-col-auto col-start col-end">''; ',
-'        v_html := v_html || ''       <div id="detalhes" class="js-apex-region" aria-live="polite">''; ',
-'        v_html := v_html || ''         <div id="report">'';         ',
-'        v_html := v_html || ''           <dl class="t-AVPList t-AVPList--leftAligned" data-region-id="detalhes">''; ',
-' ',
-'        for i in 1..p_detalhes.count loop ',
-'            v_html := v_html || ''             <dt class="t-AVPList-label">'' || p_detalhes(i).label || ''</dt>''; ',
-'            v_html := v_html || ''             <dd class="t-AVPList-value">'' || p_detalhes(i).value || ''</dd>'';             ',
-'        end loop; ',
-'         ',
-'        v_html := v_html || ''           </dl>'';         ',
-'        v_html := v_html || ''         </div>''; ',
-'        v_html := v_html || ''       </div>''; ',
-'        v_html := v_html || ''     </div>''; ',
-'        v_html := v_html || ''   </div>''; ',
-'        v_html := v_html || '' </div>''; ',
-'        v_html := v_html || ''</div>''; ',
-' ',
-'        return v_html; ',
-' ',
-'    end detalhes_confirmacao; ',
-' ',
-'    function verifica_condicao( ',
-'        p_id in number, ',
-'        p_sql in varchar2, ',
-'        p_tipo in varchar2,',
-'        p_codigo_artefato in varchar2',
-'    ) return number is ',
-'        v_resultado number; ',
-'        v_sql varchar(4000); ',
-'    begin        ',
-'        if p_sql is not null then',
-'            v_sql := replace(p_sql,''#ID#'',p_id); ',
-'            v_sql := replace(v_sql,''#id#'',p_id); ',
-'',
-'            if lower(p_tipo) = lower(c_tp_validacao_metodo) then ',
-'                v_sql := ''select ''||v_sql||'' from dual where rownum = 1''; ',
-'            end if; ',
-'            -- apex_debug.error(''verifica_condicao codigo_artefato=''||p_codigo_artefato||'' /-/ p_sql:''|| p_sql); ',
-'            -- apex_debug.error(''verifica_condicao codigo_artefato=''||p_codigo_artefato||'' /-/ v_sql:''|| v_sql); ',
-'            execute immediate v_sql into v_resultado;',
-'            return v_resultado; ',
-'        end if;',
-'        exception ',
-'            when no_data_found then',
-'                return 0; ',
-'            when others then',
-unistr('                raise_application_error(-20010, ''A fun\00E7\00E3o PKG_UI.verifica_condicao encontrou um erro na defini\00E7\00E3o da express\00E3o de valida\00E7\00E3o. Express\00E3o original:''||p_sql||'' - Erro original:''||SQLERRM);'),
-'                ',
-'    end verifica_condicao; ',
-'',
-'    function verifica_condicao(p_sql in varchar2) return number is',
-'      v_resultado number;',
-'    begin',
-'      execute immediate p_sql into v_resultado;',
-'      return 1;',
-'    exception',
-'      when no_data_found then',
-'        return 0;',
-'      when others then',
-'        return 0; -- <== garantir retorno mesmo em caso de erro',
-'    end;',
-'',
-'    function id_not_null( ',
-'        p_id in number',
-'    ) return number is',
-'    begin',
-'        if p_id is not null and p_id > 0 then',
-'            return 1;   ',
-'        else',
-'            return 0;   ',
-'        end if;',
-'    end;',
-'',
-'    function id_null( ',
-'        p_id in number',
-'    ) return number is',
-'    begin',
-'        if p_id is null then',
-'            return 1;   ',
-'        else',
-'            return 0;   ',
-'        end if;',
-'    end;',
-'',
-'    procedure retorna_titulo_tela (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_titulo          out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    )is',
-'    begin',
-'        p_titulo := retorna_texto(''artefato.''||p_codigo_artefato||''.l'');',
-'        p_help := retorna_texto(''artefato.''||p_codigo_artefato||''.h'');',
-'    end retorna_titulo_tela;',
-'',
-'    function retorna_titulo_tela (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_help in number default 1 -- 1=Titulo e 2=Help ',
-'    ) return varchar2 is',
-'    begin',
-'        -- apex_debug.error(''retorna_titulo_tela p_codigo_artefato=''||p_codigo_artefato); ',
-'        if p_help = 2 then',
-'            return retorna_texto(''artefato.''||p_codigo_artefato||''.h'');',
-'        else',
-'            return retorna_texto(''artefato.''||p_codigo_artefato||''.l'');',
-'        end if;',
-'    end retorna_titulo_tela;',
-'',
-'    procedure retorna_coluna (',
-'        p_tabela_coluna   in varchar2,',
-'        p_label           out mpd_traducao.texto_traduzido%type,',
-'        p_instrucao       out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    )is',
-'    begin',
-'        p_label := retorna_texto(''coluna.''||p_tabela_coluna||''.l'');',
-'        p_instrucao := retorna_texto(''coluna.''||p_tabela_coluna||''.i'');',
-'        p_help := retorna_texto(''coluna.''||p_tabela_coluna||''.h'');',
-'    end retorna_coluna;',
-'',
-'    function retorna_coluna (',
-'        p_tabela_coluna   in varchar2,',
-'        p_tipo in varchar2 default ''l''        ',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''coluna.''||p_tabela_coluna||''.''||p_tipo);',
-'    end retorna_coluna;',
-'',
-'    function retorna_label_etapa (',
-'        p_tag   in varchar2',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''etapa.''||p_tag||''.l'');',
-'    end retorna_label_etapa;',
-'',
-'    function retorna_label_coluna (',
-'        p_tabela_coluna   in varchar2 -- nome_tabela.nome_coluna',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''coluna.''||p_tabela_coluna||''.l'');',
-'    end retorna_label_coluna;',
-'',
-'    function retorna_label_botao (',
-'        p_tag   in varchar2,',
-'        p_idioma in number default null',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''botao.''||p_tag||''.l'',p_idioma);',
-'    end retorna_label_botao;',
-'',
-'    function retorna_label_botao_tipo (',
-'        p_tag in varchar2,',
-'        p_tipo in varchar2,',
-'        p_idioma in number default null',
-'    ) return varchar2 is',
-'    begin',
-'        case p_tipo',
-'            when ''l'' then return retorna_texto(''botao.''||p_tag||''.l'', p_idioma);',
-'            when ''i'' then return retorna_texto(''botao.''||p_tag||''.i'', p_idioma);',
-'            when ''h'' then return retorna_texto(''botao.''||p_tag||''.h'', p_idioma);',
-unistr('            -- \D83D\DCA1 Adicionado o ELSE para tratar casos n\00E3o mapeados, retornando NULL'),
-unistr('            -- ou voc\00EA pode lan\00E7ar uma exce\00E7\00E3o se preferir.'),
-'            else return null;',
-'        end case;',
-'    end retorna_label_botao_tipo;',
-'',
-'    procedure retorna_label_botao_completo (',
-'        p_tag in varchar2,',
-'        p_label out varchar2,',
-'        p_instrucao out varchar2,',
-'        p_help out varchar2',
-'    )is',
-'    begin   ',
-'        p_label := retorna_texto(''botao.''||p_tag||''.l'');',
-'        p_instrucao := retorna_texto(''botao.''||p_tag||''.i'');',
-'        p_help := retorna_texto(''botao.''||p_tag||''.h'');',
-'    end;         ',
-'',
-'    function retorna_label_tela (',
-'        p_tag   in varchar2',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''tela.''||p_tag||''.l'');',
-'    end retorna_label_tela;    ',
-'',
-'    procedure retorna_label_tela (',
-'        p_tag in varchar2,',
-'        p_label out varchar2,',
-'        p_instrucao out varchar2,',
-'        p_help out varchar2',
-'    )is',
-'    begin',
-'        p_label := retorna_texto(''tela.''||p_tag||''.l'');',
-'        p_instrucao := retorna_texto(''tela.''||p_tag||''.i'');',
-'        p_help := retorna_texto(''tela.''||p_tag||''.h'');',
-'    end retorna_label_tela;   ',
-'',
-'    function retorna_label_tabela (',
-'        p_nome_entidade in varchar2',
-'    ) return varchar2 is',
-'        l_descricao_entidade varchar2(4000);',
-'    begin',
-'        select descricao_entidade into l_descricao_entidade from srv_entidade where upper(nome_entidade) = upper(p_nome_entidade);        ',
-'        return l_descricao_entidade;',
-'        exception',
-'            when no_data_found then',
-'                return '''';',
-'    end;  ',
-'',
-'    function retorna_dominio(',
-'        p_id_dominio number,',
-'        p_valor in varchar2    ',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''dominio.''||p_id_dominio||''.''||p_valor||''.l'');',
-'    end retorna_dominio;',
-'',
-'    function retorna_titulo_menu (',
-'        p_id_menu in number',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''menu.''||p_id_menu||''.l'');',
-'    end retorna_titulo_menu;',
-'',
-'    function retorna_label_grupo_funcionalidade (',
-'        p_id_grupo_funcionalidade in number',
-'    ) return varchar2 is',
-'    begin',
-'        return retorna_texto(''grupofuncionalidades.''||p_id_grupo_funcionalidade||''.l'');',
-'    end retorna_label_grupo_funcionalidade;',
-'',
-'    FUNCTION processa_itens(p_itens IN VARCHAR2) ',
-'    RETURN VARCHAR2',
-'    IS',
-unistr('      v_result     VARCHAR2(32767);      -- Resultado final com as substitui\00E7\00F5es'),
-unistr('      v_pos        PLS_INTEGER;          -- Posi\00E7\00E3o da tag SQL (SQL1, SQL2, etc.)'),
-unistr('      v_sql        VARCHAR2(32767);      -- Comando SQL extra\00EDdo entre {}'),
-'      v_sql_result VARCHAR2(4000);       -- Resultado do comando SQL',
-'      v_tag        VARCHAR2(10);         -- Tag SQL atual (SQL1, SQL2, etc.)',
-'      v_index      INTEGER := 1;         -- Contador para SQL1, SQL2, etc.',
-unistr('      v_start      PLS_INTEGER;          -- Posi\00E7\00E3o de in\00EDcio da tag'),
-unistr('      v_end        PLS_INTEGER;          -- Posi\00E7\00E3o de fim da tag'),
-'    BEGIN',
-unistr('      -- Inicializa o resultado com o valor do par\00E2metro p_itens'),
-'      v_result := p_itens;',
-'',
-unistr('      -- Loop para verificar se h\00E1 SQL tags a serem processadas'),
-'      LOOP',
-unistr('        -- Cria a tag SQL atual com base no \00EDndice'),
-'        v_tag := ''SQL'' || v_index;',
-'',
-'        -- Localiza a tag no texto',
-'        v_pos := INSTR(v_result, v_tag);',
-'',
-unistr('        -- Sai do loop se n\00E3o houver mais tags SQL a serem processadas'),
-'        IF v_pos = 0 THEN',
-'          EXIT;',
-'        END IF;',
-'',
-'        -- Localiza as chaves {} que delimitam a SQL',
-'        v_start := INSTR(v_result, ''{'', v_pos);',
-'        v_end := INSTR(v_result, ''}'',v_start);',
-'',
-'        -- Extrai o comando SQL entre {}',
-'        v_sql := SUBSTR(v_result, v_start + 1, v_end - v_start - 1);',
-'',
-'        -- Executa o comando SQL e armazena o resultado',
-'        EXECUTE IMMEDIATE v_sql INTO v_sql_result;',
-'',
-unistr('        -- Substitui a tag SQL e o comando no resultado final pelo resultado da execu\00E7\00E3o'),
-'        v_result := REPLACE(v_result, v_tag || ''{'' || v_sql || ''}'', v_sql_result);',
-'',
-unistr('        -- Incrementa o \00EDndice para a pr\00F3xima tag (SQL1, SQL2, SQL3, etc.)'),
-'        v_index := v_index + 1;',
-'      END LOOP;',
-'',
-'      -- Retorna o texto processado',
-'      RETURN v_result;',
-'    EXCEPTION',
-'      WHEN OTHERS THEN',
-unistr('        -- Retorna o erro caso ocorra alguma exce\00E7\00E3o'),
-'        RETURN ''Erro: '' || SQLERRM;',
-'    END processa_itens;',
-'',
-'    function verifica_se_tem_linhas(p_sql in varchar2)',
-'    return boolean',
-'    is',
-'      v_count pls_integer;',
-'    begin',
-'      -- executa o comando sql e conta quantas linhas ele retorna',
-'      execute immediate ''select count(1) from ('' || p_sql || '')'' into v_count;',
-'',
-unistr('      -- se o n\00FAmero de linhas for maior que 0, retorna true'),
-'      if v_count > 0 then',
-'        return true;',
-'      else',
-'        return false;',
-'      end if;',
-'    exception',
-'      when others then',
-unistr('        -- caso ocorra algum erro, pode-se optar por logar ou lidar com a exce\00E7\00E3o'),
-'        -- aqui, estamos apenas retornando false em caso de erro',
-'        return false;',
-'    end verifica_se_tem_linhas;',
-'',
-'    function menu_aplicacao(',
-'        p_aplicacao in varchar2',
-'    ) return clob is',
-'    begin',
-'        return q''~',
-'            select',
-'                level,',
-'                pkg_ui.retorna_titulo_menu(a.id) || case when c.codigo_artefato is not null then '' (''||c.codigo_artefato||'')'' else '''' end "label", ',
-'                case when a.id = b.id_menu then ''f?p=&APP_ID.:''||case when c.tipo = ''CD'' then e.codigo_artefato else c.codigo_artefato end||'':&SESSION.::NO:''||:APP_PAGE_ID||'':P0_CODIGO_ARTEFATO,P''||case when c.tipo = ''CD'' then e.codigo_artefato else '
-||'c.codigo_artefato end||''_CODIGO_ARTEFATO:''||c.codigo_artefato||'',''||c.codigo_artefato else '''' end as target,',
-'                case when :P0_CODIGO_ARTEFATO = c.codigo_artefato then ''YES'' else ''NO'' end as is_current,',
-'                case when PKG_CONTROLE_ACESSO.retorno_verifica_permissao(:APP_USER,c.codigo_artefato) = ''true'' then a.icone else case when c.codigo_artefato is null then a.icone else ''fa-lock'' end end as image',
-'                from mpd_menu a',
-'            left join mpd_menu_acao b on b.id_menu = a.id',
-'            left join mpd_funcionalidade c on c.id = b.id_funcionalidade',
-'            left join mpd_funcionalidade_tela_dinamica d on d.id_funcionalidade = c.id',
-'            left join mpd_funcionalidade e on e.id = d.id_funcionalidade_base            ',
-'            start with',
-'                id_nivel_pai is null',
-'            connect by',
-'                prior a.id = a.id_nivel_pai ',
-'                order siblings by a.ordenacao',
-'        ~'';',
-'    end menu_aplicacao;',
-'',
-'    function formulario_dinamico (p_entidade in varchar2) ',
-'    return varchar2 is',
-'        v_sql varchar2(32767);',
-'        v_total number;',
-'        cursor c_campos is',
-'            select  ordenacao, descricao, UPPER(nome_coluna) nome_coluna,tipo_dado,tamanho,qtd_casas_decimais,',
-'                edicao,valor_default,eh_coluna_obrigatoria,eh_valor_unico,chave_primaria,label,instrucao,help',
-'            from srv_entidade_coluna a',
-'            join srv_entidade b on b.id = a.id_entidade',
-'            where lower(nome_entidade) = lower(p_entidade)',
-'            and lower(nome_coluna) not in (''id_usuario_incluiu'',''data_inclusao'',''id_usuario_alterou'',''data_alteracao'')',
-'            order by ordenacao;',
-' ',
-'        v_contador number := 1;',
-'    begin',
-'',
-'        select count(*) into v_total from srv_entidade_coluna a join srv_entidade b on b.id = a.id_entidade ',
-'        where lower(nome_entidade) = lower(p_entidade)',
-'        and lower(nome_coluna) not in (''id_usuario_incluiu'',''data_inclusao'',''id_usuario_alterou'',''data_alteracao'');',
-unistr('        -- inicia a constru\00E7\00E3o da consulta'),
-'        v_sql := ''select '';',
-'        ',
-'        -- itera pelas colunas da entidade',
-'        for r_campos in c_campos loop',
-'            v_sql := v_sql || ''apex_item.text(p_idx => '' || v_contador || '', p_value => '' || r_campos.nome_coluna || '') as text''||v_contador;',
-'            ',
-'            -- if r_campos.tipo_dado = 3 then',
-'            --     v_sql := v_sql || ''apex_item.text(p_idx => '' || v_contador || '', p_value => '' || r_campos.nome_coluna || '', p_attributes => ''''placeholder=''|| aspas_dupla(r_campos.nome_coluna) ||'''''') as '' || r_campos.nome_coluna;',
-'                ',
-'',
-'            -- -- elsif r_campos.tipo_dado = 1 then',
-'            -- --     v_sql := v_sql || ''apex_item.number('' || v_contador || '', '' || r_campos.nome_coluna || '') as '' || r_campos.nome_coluna;',
-'',
-'            -- -- elsif r_campos.tipo_dado = 3 and r_campos.tamanho = 1 then',
-'            -- --     v_sql := v_sql || ''apex_item.checkbox('' || v_contador || '', '' || r_campos.nome_coluna || '') as '' || r_campos.nome_coluna;',
-'',
-'            -- -- elsif r_campos.tipo_dado = ''select_list'' then',
-'            -- --     v_sql := v_sql || ''apex_item.select_list('' || v_contador || '', '' || r_campos.nome_coluna || '', '''''' || r_campos.lista_opcoes || '''''') as '' || r_campos.nome_coluna;',
-'',
-unistr('            -- -- adicione outros tipos de itens aqui conforme necess\00E1rio'),
-'            -- else',
-unistr('            --     -- default para text se o tipo n\00E3o for reconhecido'),
-'            --     v_sql := v_sql || ''apex_item.text(p_idx => '' || v_contador || '', p_value => '' || r_campos.nome_coluna || '') as '' || r_campos.nome_coluna;',
-'            -- end if;',
-'',
-unistr('            -- adiciona a v\00EDrgula entre os campos, exceto no \00FAltimo'),
-'            -- if c_campos%rowcount < v_total then',
-'            if v_contador < v_total then',
-'                v_sql := v_sql || '', '';',
-'            end if;                                                ',
-'            -- incrementa o contador de itens',
-'            v_contador := v_contador + 1;',
-'        end loop;',
-'        ',
-'        -- finaliza a consulta',
-'        v_sql := v_sql || '' from '' || p_entidade;',
-'',
-'        return v_sql;',
-'    end formulario_dinamico;',
-'',
-'    procedure gerar_formulario(',
-'        p_codigo_artefato in varchar2,',
-'        p_id in number default null,        ',
-'        p_visualizar in number default null, ',
-'        p_html out clob,',
-'        p_param1 in varchar2 default null,',
-'        p_param2 in varchar2 default null        ',
-'    ) is',
-'    begin',
-'        pkg_formulario_dinamico.gerar_formulario(',
-'            p_codigo_artefato => p_codigo_artefato,',
-'            p_id => p_id,',
-'            p_visualizar => p_visualizar,',
-'            p_html => p_html,',
-'            p_param1 => p_param1,',
-'            p_param2 => p_param2',
-'        );',
-'    end gerar_formulario; ',
-'',
-'    function pesquisa_facetada(  ',
-'        p_page_id          in number, ',
-'        p_region_static_id in varchar2, ',
-'        p_nome_tabela      in varchar2,',
-'        p_region_id        in varchar2 default null ',
-'    )  ',
-'        return t_facetada pipelined  ',
-'    is ',
-'        l_region_id   number; ',
-'        l_context     apex_exec.t_context; ',
-'        ',
-'        l_idx_id number;',
-'        l_idx_campo1 number;',
-'        l_idx_campo2 number;',
-'        l_idx_campo3 number;',
-'        l_idx_campo4 number;',
-'        l_idx_campo5 number;',
-'        l_idx_campo6 number;',
-'        l_idx_campo7 number;',
-'        l_idx_campo8 number;',
-'        l_idx_campo9 number;',
-'        l_idx_campo10 number;',
-'        l_idx_filtro1 number;',
-'        l_idx_filtro2 number;',
-'        l_idx_filtro3 number;',
-'        l_idx_filtro4 number;',
-'        l_idx_filtro5 number;',
-'        l_idx_filtro_mult1 number;',
-'        l_idx_filtro_mult2 number;',
-'        l_idx_filtro_mult3 number;',
-'        l_idx_filtro_mult4 number;',
-'        l_idx_filtro_mult5 number;',
-'        l_idx_opcao number;',
-'    begin ',
-'        if p_region_id is null then',
-'            -- 1. get the region ID of the Faceted Search region ',
-'            select region_id ',
-'              into l_region_id ',
-'              from apex_application_page_regions ',
-'             where application_id = v(''APP_ID'') ',
-'               and page_id        = p_page_id ',
-'               and static_id      = p_region_static_id; ',
-'        else',
-'            l_region_id := p_region_id;',
-'        end if;',
-'',
-' ',
-'        -- 2. Get a cursor (apex_exec.t_context) for the current region data ',
-'        l_context := apex_region.open_query_context( ',
-'                         p_page_id      => p_page_id, ',
-'                         p_region_id    => l_region_id ); ',
-' ',
-'        l_idx_id        := apex_exec.get_column_position( l_context, ''ID''); ',
-'        l_idx_campo1    := apex_exec.get_column_position( l_context, ''CAMPO1''); ',
-'        l_idx_campo2    := apex_exec.get_column_position( l_context, ''CAMPO2''); ',
-'        l_idx_campo3    := apex_exec.get_column_position( l_context, ''CAMPO3''); ',
-'        l_idx_campo4    := apex_exec.get_column_position( l_context, ''CAMPO4''); ',
-'        l_idx_campo5    := apex_exec.get_column_position( l_context, ''CAMPO5''); ',
-'        l_idx_campo6    := apex_exec.get_column_position( l_context, ''CAMPO6''); ',
-'        l_idx_campo7    := apex_exec.get_column_position( l_context, ''CAMPO7''); ',
-'        l_idx_campo8    := apex_exec.get_column_position( l_context, ''CAMPO8''); ',
-'        l_idx_campo9    := apex_exec.get_column_position( l_context, ''CAMPO9''); ',
-'        l_idx_campo10   := apex_exec.get_column_position( l_context, ''CAMPO10'');',
-'        l_idx_filtro1   := apex_exec.get_column_position( l_context, ''FILTRO1'');',
-'        l_idx_filtro2   := apex_exec.get_column_position( l_context, ''FILTRO2'');',
-'        l_idx_filtro3   := apex_exec.get_column_position( l_context, ''FILTRO3'');',
-'        l_idx_filtro4   := apex_exec.get_column_position( l_context, ''FILTRO4'');',
-'        l_idx_filtro5   := apex_exec.get_column_position( l_context, ''FILTRO5'');',
-'        l_idx_filtro_mult1 := apex_exec.get_column_position( l_context, ''FILTRO_MULT1'');',
-'        l_idx_filtro_mult2 := apex_exec.get_column_position( l_context, ''FILTRO_MULT2'');',
-'        l_idx_filtro_mult3 := apex_exec.get_column_position( l_context, ''FILTRO_MULT3'');',
-'        l_idx_filtro_mult4 := apex_exec.get_column_position( l_context, ''FILTRO_MULT4'');',
-'        l_idx_filtro_mult5 := apex_exec.get_column_position( l_context, ''FILTRO_MULT5'');',
-'        l_idx_opcao:= apex_exec.get_column_position( l_context, ''OPCAO'');',
-'',
-unistr('        --A fun\00E7\00E3o corta_texto foi adicionar pelo chamado TD3-136'),
-'        while apex_exec.next_row( p_context => l_context ) loop ',
-'            pipe row( r_facetada (                           ',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_id        ),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo1    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo2    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo3    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo4    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo5    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo6    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo7    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo8    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo9    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo10    )),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro1   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro2   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro3   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro4   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro5   ),',
-'                          apex_exec.get_varchar2  ('))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(202486000814894198)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'( l_context, l_idx_filtro_mult1   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult2   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult3   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult4   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult5   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_opcao   )',
-'                          )); ',
-'        end loop; ',
-' ',
-'        apex_exec.close( l_context ); ',
-' ',
-'        return; ',
-'    exception ',
-'        when no_data_needed then ',
-'            apex_exec.close( l_context ); ',
-'            return; ',
-'        when others then ',
-'            apex_exec.close( l_context ); ',
-'            raise; ',
-'    end pesquisa_facetada;      ',
-'',
-'    function pesquisa_facetada2(  ',
-'        p_page_id          in number, ',
-'        p_region_static_id in varchar2, ',
-'        p_nome_tabela      in varchar2 ',
-'    )  ',
-'        return t_facetada2 pipelined  ',
-'    is ',
-'        l_region_id   number; ',
-'        l_context     apex_exec.t_context; ',
-'        ',
-'        l_idx_id number;',
-'        l_idx_campo1 number;',
-'        l_idx_campo2 number;',
-'        l_idx_campo3 number;',
-'        l_idx_campo4 number;',
-'        l_idx_campo5 number;',
-'        l_idx_campo6 number;',
-'        l_idx_campo7 number;',
-'        l_idx_campo8 number;',
-'        l_idx_campo9 number;',
-'        l_idx_campo10 number;',
-'        l_idx_filtro1 number;',
-'        l_idx_filtro2 number;',
-'        l_idx_filtro3 number;',
-'        l_idx_filtro4 number;',
-'        l_idx_filtro5 number;',
-'        l_idx_filtro_mult1 number;',
-'        l_idx_filtro_mult2 number;',
-'        l_idx_filtro_mult3 number;',
-'        l_idx_filtro_mult4 number;',
-'        l_idx_filtro_mult5 number;',
-'    begin ',
-'        -- 1. get the region ID of the Faceted Search region ',
-'        select region_id ',
-'          into l_region_id ',
-'          from apex_application_page_regions ',
-'         where application_id = v(''APP_ID'') ',
-'           and page_id        = p_page_id ',
-'           and static_id      = p_region_static_id; ',
-' ',
-'        -- 2. Get a cursor (apex_exec.t_context) for the current region data ',
-'        l_context := apex_region.open_query_context( ',
-'                         p_page_id      => p_page_id, ',
-'                         p_region_id    => l_region_id ); ',
-' ',
-'        l_idx_id        := apex_exec.get_column_position( l_context, ''ID''); ',
-'        l_idx_campo1    := apex_exec.get_column_position( l_context, ''CAMPO1''); ',
-'        l_idx_campo2    := apex_exec.get_column_position( l_context, ''CAMPO2''); ',
-'        l_idx_campo3    := apex_exec.get_column_position( l_context, ''CAMPO3''); ',
-'        l_idx_campo4    := apex_exec.get_column_position( l_context, ''CAMPO4''); ',
-'        l_idx_campo5    := apex_exec.get_column_position( l_context, ''CAMPO5''); ',
-'        l_idx_campo6    := apex_exec.get_column_position( l_context, ''CAMPO6''); ',
-'        l_idx_campo7    := apex_exec.get_column_position( l_context, ''CAMPO7''); ',
-'        l_idx_campo8    := apex_exec.get_column_position( l_context, ''CAMPO8''); ',
-'        l_idx_campo9    := apex_exec.get_column_position( l_context, ''CAMPO9''); ',
-'        l_idx_campo10   := apex_exec.get_column_position( l_context, ''CAMPO10'');',
-'        l_idx_filtro1   := apex_exec.get_column_position( l_context, ''FILTRO1'');',
-'        l_idx_filtro2   := apex_exec.get_column_position( l_context, ''FILTRO2'');',
-'        l_idx_filtro3   := apex_exec.get_column_position( l_context, ''FILTRO3'');',
-'        l_idx_filtro4   := apex_exec.get_column_position( l_context, ''FILTRO4'');',
-'        l_idx_filtro5   := apex_exec.get_column_position( l_context, ''FILTRO5'');',
-'        l_idx_filtro_mult1 := apex_exec.get_column_position( l_context, ''FILTRO_MULT1'');',
-'        l_idx_filtro_mult2 := apex_exec.get_column_position( l_context, ''FILTRO_MULT2'');',
-'        l_idx_filtro_mult3 := apex_exec.get_column_position( l_context, ''FILTRO_MULT3'');',
-'        l_idx_filtro_mult4 := apex_exec.get_column_position( l_context, ''FILTRO_MULT4'');',
-'        l_idx_filtro_mult5 := apex_exec.get_column_position( l_context, ''FILTRO_MULT5'');',
-'',
-unistr('        --A fun\00E7\00E3o corta_texto foi adicionar pelo chamado TD3-136'),
-'        while apex_exec.next_row( p_context => l_context ) loop ',
-'            pipe row( r_facetada2 (                           ',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_id        ),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo1    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo2    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo3    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo4    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo5    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo6    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo7    )),',
-'                          corta_texto(apex_exec.get_varchar2  ( l_context, l_idx_campo8    )),',
-'                          apex_exec.get_number  ( l_context, l_idx_campo9    ),',
-'                          apex_exec.get_number  ( l_context, l_idx_campo10    ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro1   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro2   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro3   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro4   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro5   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult1   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult2   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult3   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult4   ),',
-'                          apex_exec.get_varchar2  ( l_context, l_idx_filtro_mult5   )',
-'                          )); ',
-'        end loop; ',
-' ',
-'        apex_exec.close( l_context ); ',
-' ',
-'        return; ',
-'    exception ',
-'        when no_data_needed then ',
-'            apex_exec.close( l_context ); ',
-'            return; ',
-'        when others then ',
-'            apex_exec.close( l_context ); ',
-'            raise; ',
-'    end pesquisa_facetada2;      ',
-'',
-'',
-'    function retorna_valor_colecao (',
-'        p_codigo_artefato in varchar2,',
-'        p_campo in varchar2',
-'    ) return varchar2 is',
-'        l_valor varchar2(4000);',
-'    begin',
-'        select c002 into l_valor',
-'           from apex_collections',
-'         where upper(collection_name) = upper(p_codigo_artefato||''_''||apex_custom_auth.get_session_id)',
-'        and upper(c001) = upper(p_campo);',
-'        return l_valor;',
-'        exception',
-'            when no_data_found then',
-'                return '''';',
-'            when others then',
-'                return '''';',
-'    end;    ',
-'',
-'    function retorna_id_colecao (',
-'        p_codigo_artefato in varchar2,',
-'        p_campo in varchar2',
-'    ) return varchar2 is',
-'        l_valor varchar2(4000);',
-'    begin',
-'        select c003 into l_valor',
-'           from apex_collections',
-'         where upper(collection_name) = upper(p_codigo_artefato||''_''||apex_custom_auth.get_session_id)',
-'        and upper(c001) = upper(p_campo);',
-'        return l_valor;',
-'        exception',
-'            when no_data_found then',
-'                return '''';',
-'            when others then',
-'                return '''';',
-'    end;    ',
-'',
-'    procedure prc_configurar_filtros(',
-'        p_id_usuario       number,',
-'        p_codigo_artefato  varchar2,',
-'        p_app_page_id      number',
-'    ) as',
-'        l_prefixo_itens  varchar2(256);',
-'        l_label          varchar2(256);',
-'        l_label_opcao    varchar2(256);',
-'        l_label_salvar   varchar2(256);',
-'        l_id_colunas     varchar2(256);',
-'        v_lista_colunas  apex_t_varchar2;',
-'        v_existe         number;',
-'        v_item_nome      varchar2(50);',
-'    begin',
-'        l_prefixo_itens := ''P'' || p_app_page_id;',
-'        ',
-'        if v(l_prefixo_itens|| ''_CARD_OU_LISTA'') is null then',
-'            apex_util.set_session_state(l_prefixo_itens || ''_CARD_OU_LISTA'', ''CARD'');',
-'        end if;',
-'        ',
-'        begin',
-'            select id_coluna into l_id_colunas ',
-'            from mpd_usuario_grid_oculta_coluna ',
-'            where id_usuario = p_id_usuario ',
-'              and codigo_artefato = p_codigo_artefato;',
-'            ',
-'            v_lista_colunas := apex_string.split(l_id_colunas, '':'');',
-'            apex_util.set_session_state(l_prefixo_itens || ''_COLUNAS'', l_id_colunas);',
-'        exception',
-'            when no_data_found then',
-'                l_id_colunas := null;',
-'                v_lista_colunas := apex_t_varchar2();',
-'        end;',
-'        ',
-'        -- percorre os itens campo1 a campo10',
-'        for i in 1..10 loop',
-'            v_item_nome := l_prefixo_itens || ''_MOSTRA_CAMPO'' || i;',
-'            ',
-unistr('            -- verifica se a coluna est\00E1 presente em id_colunas'),
-'            select count(*) into v_existe ',
-'            from table(v_lista_colunas) t ',
-'            where t.column_value = ''CAMPO'' || i;',
-'            ',
-unistr('            -- define "n" se a coluna estiver presente, sen\00E3o "y"'),
-'            if v_existe > 0 then',
-'                apex_util.set_session_state(v_item_nome, ''N'');',
-'            else',
-'                apex_util.set_session_state(v_item_nome, ''Y'');',
-'            end if;',
-'        end loop;',
-'    end prc_configurar_filtros;    ',
-'',
-'    function retorna_pagina_artefato (',
-'        p_codigo_artefato in varchar2',
-'    ) return varchar2',
-'    is',
-'        v_resultado varchar2(4000);',
-'    begin',
-unistr('        -- seleciona o c\00F3digo artefato considerando nvl'),
-'        select nvl(c.codigo_artefato, a.codigo_artefato)',
-'          into v_resultado',
-'          from mpd_funcionalidade a',
-'          left join mpd_funcionalidade_tela_dinamica b',
-'            on b.id_funcionalidade = a.id',
-'          left join mpd_funcionalidade c',
-'            on c.id = b.id_funcionalidade_base',
-'         where a.codigo_artefato = p_codigo_artefato;',
-'',
-'        return v_resultado;',
-'',
-'    exception',
-'        when no_data_found then',
-unistr('            -- se n\00E3o encontrar registro, retorna null ou uma mensagem'),
-unistr('            return null; -- ou return ''n\00E3o encontrado'';'),
-'        when others then',
-'            return null;',
-'    end retorna_pagina_artefato;    ',
-'',
-'    procedure retorna_titulo_atalho (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_titulo          out mpd_traducao.texto_traduzido%type,',
-'        p_help            out mpd_traducao.texto_traduzido%type',
-'    )is',
-'    begin',
-'        p_titulo := retorna_texto(''atalho.''||p_codigo_artefato||''.l'');',
-'        p_help := retorna_texto(''atalho.''||p_codigo_artefato||''.h'');',
-'    end retorna_titulo_atalho;',
-'',
-'    function retorna_titulo_atalho (',
-'        p_codigo_artefato in mpd_funcionalidade.codigo_artefato%type,',
-'        p_help in number default 1 -- 1=Titulo e 2=Help ',
-'    ) return varchar2 is',
-'    begin',
-'        if p_help = 2 then',
-'            return retorna_texto(''atalho.''||p_codigo_artefato||''.h'');',
-'        else',
-'            return retorna_texto(''atalho.''||p_codigo_artefato||''.l'');',
-'        end if;',
-'    end retorna_titulo_atalho;',
-'',
-'    function existe_funcao_package(',
-'        p_package_name in varchar2,',
-'        p_function_name in varchar2',
-'    ) return boolean',
-'    is',
-'        l_count number;',
-'    begin',
-'        select count(*)',
-'          into l_count',
-'          from all_arguments',
-'         where package_name = upper(p_package_name)',
-'           and object_name  = upper(p_function_name)',
-'           and position     = 0;',
-'',
-'        return l_count > 0;',
-'    end;    ',
-'',
-'end "PKG_UI";',
-'/'))
-);
-end;
-/
 prompt --application/deployment/install/install_ui_mpd_td917
 begin
 wwv_flow_imp_shared.create_install_script(
@@ -327965,9 +327645,9 @@ unistr('-- Motivo: Altera\00E7\00F5es na entidade imp_processoimportacao_item_de
 '                    pkg_traducao.get_traducao(c.descricao_despesa) imp_processoimportacao_item_despesa$id_despesa,',
 '                    pkg_util.dominio_retorna_tag(''ng_despesa'',''ind_tipo_despesa'',c.ind_tipo_despesa) ng_despesa$ind_tipo_despesa,',
 '                    to_char(d.codigo_moeda||'' - ''||d.simbolo_iso) imp_processoimportacao_item_despesa$id_moeda_despesa_prevista,',
-'                    to_char(a.valor_total_despesa_previsto_item, ''FM999G999G990D00'') imp_processoimportacao_item_despesa$valor_total_despesa_previsto_item,',
+'                    to_char(a.valor_total_despesa_previsto_item, ''FM999G999G990D00000'') imp_processoimportacao_item_despesa$valor_total_despesa_previsto_item,',
 '                    case when a.id_moeda_despesa_realizada is not null then to_char(e.codigo_moeda||'' - ''||e.simbolo_iso) end imp_processoimportacao_item_despesa$id_moeda_despesa_realizada,',
-'                    to_char(a.valor_total_despesa_realizado_item, ''FM999G999G990D00'') imp_processoimportacao_item_despesa$valor_total_despesa_realizado_item',
+'                    to_char(a.valor_total_despesa_realizado_item, ''FM999G999G990D00000'') imp_processoimportacao_item_despesa$valor_total_despesa_realizado_item',
 '                from imp_processoimportacao_item_despesa a',
 '                join imp_processoimportacao_despesa b on b.id = a.id_processoimportacao_despesa',
 '                join ng_despesa c on c.id = b.id_despesa',
@@ -348252,8 +347932,8 @@ unistr('        -- Vari\00E1veis auxiliares e contadores: '),
 '            execute immediate ''begin UI_MPD_'' || upper(p_codigo_artefato) || ''.formulario(:p_codigo_artefato,:p_param1,:p_param2); end;'' USING upper(p_codigo_artefato),nvl(p_param1,p_id),p_param2; ',
 '            exception ',
 '                when others then ',
-'                    raise_application_error(-20010, ''erro:''||sqlerrm);                 ',
-'                    --apex_debug.info(''info gerar_formulario erro:''||sqlerrm); ',
+'                    --raise_application_error(-20010, ''erro:''||sqlerrm);                 ',
+'                    apex_debug.info(''info gerar_formulario erro:''||sqlerrm); ',
 ' ',
 '        end; ',
 '        l_linha := 2; ',
@@ -348344,7 +348024,6 @@ unistr('                                raise_application_error(-20011, ''N\00E3
 ' ',
 '            elsif l_nome_tabela is not null then',
 '                begin',
-'                    /*',
 '                    select c.nome_entidade, d.tipo_funcionalidade, b.tipo_dado, b.label, b.instrucao, b.help, b.tipo_interacao, b.nome_consulta, b.eh_coluna_obrigatoria, b.id, b.tamanho, b.qtd_casas_decimais, b.edicao, b.id_artefato_versionado_novo, '
 ||'ind_negativo, ind_formato_texto, id_artefato_versionado_zoom  ',
 '                      into l_nome_entidade, l_tipo_funcionalidade, l_tipo_dado, l_label, l_instrucao, l_help, l_tipo_interacao_tabela, l_nome_consulta_tabela, l_eh_coluna_obrigatoria, l_id_coluna, l_tamanho, l_qtd_casas_descimais, l_edicao, l_id_arte'
@@ -348357,8 +348036,6 @@ unistr('                                raise_application_error(-20011, ''N\00E3
 '                    and lower(b.nome_coluna) = lower(l_nome_coluna); ',
 '     ',
 '                    pkg_ui.retorna_coluna(l_nome_entidade||''.''||l_nome_coluna,l_label,l_instrucao,l_help); ',
-'                    */',
-'                    null;',
 '                exception ',
 '                    when no_data_found then ',
 unistr('                        raise_application_error(-20010, ''Entidade n\00E3o definida para o p_codigo_artefato:''||p_codigo_artefato || '' -> Coluna:''||l_nome_coluna); '),
@@ -348759,13 +348436,13 @@ unistr('                    if instr(l_label,''Texto indispon\00EDvel'') > 0 the
 '                    ); ',
 '                    l_html_aux := l_html_aux || ''  </div>'' || ',
 '                                                ''</div>''; ',
-'               '))
+'                    --Ajuste realizado pelo chamado TD3-143 ',
+'                    l_html_a'))
 );
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(244234998061692190)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'     --Ajuste realizado pelo chamado TD3-143 ',
-'                    l_html_aux := l_html_aux || ''<script> document.addEventListener("DOMContentLoaded", function(){enviarParametrosLoad("''||l_nome_coluna||''");''|| l_texto_funcao_dependeciaLoad ||''});</script>''; ',
+'ux := l_html_aux || ''<script> document.addEventListener("DOMContentLoaded", function(){enviarParametrosLoad("''||l_nome_coluna||''");''|| l_texto_funcao_dependeciaLoad ||''});</script>''; ',
 '                elsif l_tipo_interacao = ''HID'' then ',
 '                    l_html_aux := l_html_aux || apex_item.hidden( ',
 '                            p_idx => l_indice,   ',
@@ -349427,15 +349104,15 @@ unistr('        -- Substitui\00E7\00F5es '),
 '            l_classe := ''item-round selectlist apex-item-select''; ',
 '',
 '        WHEN ''SEC'' THEN ',
-'            l_classe := ''item-round selectlist apex-item-sele'))
+'            l_classe := ''item-round selectlist apex-item-select''; ',
+'',
+'        WHEN ''POP'' THEN ',
+'            l_classe := ''item-round-topl'))
 );
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(244234998061692190)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'ct''; ',
-'',
-'        WHEN ''POP'' THEN ',
-'            l_classe := ''item-round-topleft-botleft popup_lov apex-item-text apex-item-popup-lov''; ',
+'eft-botleft popup_lov apex-item-text apex-item-popup-lov''; ',
 '',
 '        WHEN ''POP1'' THEN ',
 '            l_classe := ''item-round-topleft-botleft popup_lov apex-item-text apex-item-popup-lov''; ',
