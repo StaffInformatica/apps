@@ -36,7 +36,7 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   14:29 Monday July 20, 2026
+--   Date and Time:   14:52 Monday July 20, 2026
 --   Exported By:     DEVJONATHAN
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3208
-,p_version_scn=>50048943894997
+,p_version_scn=>50049099625872
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -193806,7 +193806,7 @@ unistr('-- CRIA\00C7\00C3O DE FOREIGN KEY:'),
 'BEGIN',
 '    SELECT count(*) INTO v_count FROM USER_CONSTRAINTS WHERE CONSTRAINT_NAME = ''PROCESSOIMPORTACAO_DESPESA_FK10'';',
 '',
-'    IF v_count > 0 THEN',
+'    IF v_count = 0 THEN',
 '        EXECUTE IMMEDIATE ''ALTER TABLE IMP_PROCESSOIMPORTACAO_DESPESA ADD CONSTRAINT PROCESSOIMPORTACAO_DESPESA_FK10 FOREIGN KEY (ID_INVOICE) REFERENCES IMP_INVOICE(ID)'';',
 '    END IF;',
 'END;',
@@ -245887,6 +245887,7 @@ unistr('    -- Fun\00E7\00F5es Gatilhos hook'),
 '    --',
 '    procedure altera_ind_status(        ',
 '        p_ind_status in imp_invoice_divergencia.ind_status%type,',
+'        p_observacao in imp_invoice_divergencia.observacao%type default null,',
 '        p_id in imp_invoice_divergencia.id%type, ',
 '        p_pagina in number default 0, ',
 '        p_encadeado in boolean default false,',
@@ -245903,7 +245904,6 @@ unistr('    -- Fun\00E7\00F5es Gatilhos hook'),
 '',
 'end bo_imp_invoice_divergencia;',
 '/',
-'',
 'create or replace package body            bo_imp_invoice_divergencia ',
 'is  ',
 unistr('    -- Vers\00E3o 2.4.1 do BO    '),
@@ -246380,17 +246380,17 @@ unistr('    -- Fun\00E7\00F5es Gatilhos '),
 '    procedure depois_excluir(p_encadeado in boolean default false,p_sucesso out clob,p_messages out pkg_mensagem.message_record_table) is ',
 '    begin ',
 '        grava_log_excluir;',
-'        hook_depois_excluir(true,p_sucesso,p_messages);',
-'    end depois_excluir; ',
-'',
-'    --',
-'    -- ',
-'    -- '))
+'        hook_depois_excluir(true'))
 );
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(154768047993576434)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-unistr('Fun\00E7\00F5es Valida\00E7\00E3o '),
+',p_sucesso,p_messages);',
+'    end depois_excluir; ',
+'',
+'    --',
+'    -- ',
+unistr('    -- Fun\00E7\00F5es Valida\00E7\00E3o '),
 '    -- ',
 '    procedure verifica_registro( ',
 '        p_id in imp_invoice_divergencia.id%type ',
@@ -247055,14 +247055,14 @@ unistr('                -- De "Rejeitada" para "Em an\00E1lise":'),
 '                p_id_ncm => v_new.conteudo_invoice,',
 '                p_id => l_id_entrega_item,',
 '                p_pagina => p_pagina,',
-'                p_encadeado => p_encadeado,',
-'                p_sucesso => p_sucesso,',
-'                p_messages'))
+'                p_encadeado => p_en'))
 );
 wwv_flow_imp_shared.append_to_install_script(
  p_id=>wwv_flow_imp.id(154768047993576434)
 ,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-' => p_messages',
+'cadeado,',
+'                p_sucesso => p_sucesso,',
+'                p_messages => p_messages',
 '            );',
 '        elsif v_new.ind_divergencia = 10 and v_new.ind_status = 2 and v_new.id_invoice_item is not null then',
 '            select b.id into l_id_entrega_item from imp_invoice_item a join imp_entrega_item b on b.id = a.id_entrega_item /*b.id_entrega = a.id_entrega and b.id_pedidoimportacao_item = a.id_pedidoimportacao_item*/ where a.id = v_new.id_invoice_item;',
@@ -247079,6 +247079,7 @@ wwv_flow_imp_shared.append_to_install_script(
 '    --',
 '    procedure altera_ind_status(        ',
 '        p_ind_status in imp_invoice_divergencia.ind_status%type,',
+'        p_observacao in imp_invoice_divergencia.observacao%type default null,',
 '        p_id in imp_invoice_divergencia.id%type, ',
 '        p_pagina in number default 0, ',
 '        p_encadeado in boolean default false,',
@@ -247093,6 +247094,9 @@ wwv_flow_imp_shared.append_to_install_script(
 '        v_new := v_old;',
 '',
 '        v_new.ind_status := p_ind_status;',
+'        if p_observacao is not null then',
+'            v_new.observacao := p_observacao;',
+'        end if;',
 '        v_new.id_usuario_alterou := pkg_util.retorna_id_usuario_logado; ',
 '        v_new.data_alteracao := sysdate;  ',
 '',
@@ -319523,7 +319527,12 @@ unistr('    -- Mover todo o bloco de valida\00E7\00F5es hook para dentro da part
 '        p_sucesso   out clob,',
 '        p_messages  out pkg_mensagem.message_record_table',
 '    );',
-'',
+'    procedure altera_status_nacionalizacao(',
+'        p_id        in imp_declaracaoimportacao.id%type,',
+'        p_encadeado in boolean default false,',
+'        p_sucesso   out clob,',
+'        p_messages  out pkg_mensagem.message_record_table',
+'    );',
 '    procedure altera_status(',
 '        p_id        in imp_declaracaoimportacao.id%type,',
 '        p_encadeado in boolean default false,',
@@ -319533,9 +319542,6 @@ unistr('    -- Mover todo o bloco de valida\00E7\00F5es hook para dentro da part
 '    --<CUSTOMIZADO_FIM>',
 'end bo_imp_declaracaoimportacao;',
 '/',
-'',
-'',
-'',
 'create or replace package body                      bo_imp_declaracaoimportacao',
 'is',
 unistr('    -- Vers\00E3o 2.4.1 do BO'),
@@ -319923,18 +319929,18 @@ unistr('            p_ds_mensagem => ''In\00EDcio da c\00F3pia de registro'''),
 '            p_informacao_complementar,',
 '            p_id_tenant,',
 '            p_id_processoimportacao,',
-'            p_numero_duimp,',
+'      '))
+);
+wwv_flow_imp_shared.append_to_install_script(
+ p_id=>wwv_flow_imp.id(192793637291732313)
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'      p_numero_duimp,',
 '            p_data_registro,',
 '            p_ind_canal_parametrizado,',
 '            p_id_pais_procedencia_carga,',
 '            p_id_urf_entrada_carga,',
 '            p_id_uf_nacionalizacao,',
-'            p_peso_liquido_carg'))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(192793637291732313)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'a,',
+'            p_peso_liquido_carga,',
 '            p_peso_bruto_carga,',
 '            p_volume,',
 '            p_id_acondicionamento_carga,',
@@ -320644,6 +320650,29 @@ unistr('                -- Inserir o registro na cole\00E7\00E3o'),
 '        );',
 '    end altera_data_di_real_no_processo;',
 '',
+'    procedure altera_status_nacionalizacao(',
+'        p_id        in imp_declaracaoimportacao.id%type,',
+'        p_encadeado in boolean default false,',
+'        p_sucesso   out clob,',
+'        p_messages  out pkg_mensagem.message_record_table',
+'    ) is',
+'    begin',
+'        select * into v_'))
+);
+wwv_flow_imp_shared.append_to_install_script(
+ p_id=>wwv_flow_imp.id(192793637291732313)
+,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'old from imp_declaracaoimportacao where id = p_id;',
+'        v_new := v_old;',
+'',
+'        v_new.id_usuario_alterou := pkg_util.retorna_id_usuario_logado;',
+'        v_new.data_alteracao := sysdate;',
+'        v_new.ind_status := 4;',
+'',
+'        grava(p_id, p_encadeado, p_sucesso, p_messages);',
+'',
+'    end altera_status_nacionalizacao;',
+'',
 '    procedure altera_status(',
 '        p_id        in imp_declaracaoimportacao.id%type,',
 '        p_encadeado in boolean default false,',
@@ -320653,17 +320682,12 @@ unistr('                -- Inserir o registro na cole\00E7\00E3o'),
 '    begin',
 '        select * into v_old from imp_declaracaoimportacao where id = p_id;',
 '        v_new := v_old;',
-'        ',
+'',
 '        v_new.id_usuario_alterou := pkg_util.retorna_id_usuario_logado;',
 '        v_new.data_alteracao := sysdate;',
 '        v_new.ind_status := 2;',
 '',
-'        grava(p_id,'))
-);
-wwv_flow_imp_shared.append_to_install_script(
- p_id=>wwv_flow_imp.id(192793637291732313)
-,p_script_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'p_encadeado,p_sucesso,p_messages);',
+'        grava(p_id,p_encadeado,p_sucesso,p_messages);',
 '',
 '    end altera_status;',
 '    --<CUSTOMIZADO_FIM>',
