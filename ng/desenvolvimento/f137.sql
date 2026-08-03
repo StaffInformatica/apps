@@ -36,18 +36,18 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   11:50 Monday August 3, 2026
---   Exported By:     DEVJONICLEI
+--   Date and Time:   12:57 Monday August 3, 2026
+--   Exported By:     DEVNORTHONN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     74
---       Items:                2,460
+--       Items:                2,462
 --       Computations:           353
 --       Validations:             20
 --       Processes:              388
 --       Regions:                436
 --       Buttons:                321
---       Dynamic Actions:        595
+--       Dynamic Actions:        597
 --     Shared Components:
 --       Logic:
 --         Items:                  6
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3208
-,p_version_scn=>50149130145153
+,p_version_scn=>50174116100532
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -162854,8 +162854,8 @@ wwv_flow_imp_page.create_report_region(
 'begin',
 '    if :P9005_CARD_OU_LISTA = ''GRI'' then',
 '        EXECUTE IMMEDIATE',
-'            ''BEGIN :l_sql := UI_MPD_''||l_pagina||''.sql_lista_oculta(:param1,:param2,:param3); END;''',
-'            USING OUT l_sql, IN :P9005_PARAMETRO,:P9005_PARAMETRO2,:P9005_PRE_FILTRO_LISTA;',
+'            ''BEGIN :l_sql := UI_MPD_''||l_pagina||''.sql_lista_oculta(:param1,:param2,:param3,:param4); END;''',
+'            USING OUT l_sql, IN :P9005_PARAMETRO,:P9005_PARAMETRO2,:P9005_PRE_FILTRO_LISTA,:P9005_ORDER;',
 '    else',
 '        l_sql := q''~',
 '            select ',
@@ -162901,7 +162901,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_when_cond2=>'GRI'
 ,p_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
 ,p_ajax_enabled=>'Y'
-,p_ajax_items_to_submit=>'P9005_PARAMETRO,P9005_PARAMETRO2,P9005_PARAMETRO3,P9005_FILTRO_INFORMADO,P9005_PRE_FILTRO_LISTA'
+,p_ajax_items_to_submit=>'P9005_PARAMETRO,P9005_PARAMETRO2,P9005_PARAMETRO3,P9005_FILTRO_INFORMADO,P9005_PRE_FILTRO_LISTA,P9005_ORDER'
 ,p_lazy_loading=>false
 ,p_query_row_template=>wwv_flow_imp.id(529674865928987028)
 ,p_query_num_rows=>15
@@ -165325,7 +165325,7 @@ unistr('                ''Erro ao carregar op\00E7\00F5es'' as display_value,'),
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'number_of_columns', '2',
+  'number_of_columns', '5',
   'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
@@ -165394,7 +165394,7 @@ unistr('                ''Erro ao carregar op\00E7\00F5es'' as display_value,'),
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'number_of_columns', '2',
+  'number_of_columns', '5',
   'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
@@ -169132,8 +169132,8 @@ wwv_flow_imp_page.create_report_region(
 'begin',
 '    if :P9006_CARD_OU_LISTA = ''GRI'' then',
 '        EXECUTE IMMEDIATE',
-'            ''BEGIN :l_sql := UI_MPD_''||l_pagina||''.sql_lista_oculta(:param1,:param2); END;''',
-'            USING OUT l_sql, IN :P9006_PARAMETRO, :P9006_PARAMETRO2;',
+'            ''BEGIN :l_sql := UI_MPD_''||l_pagina||''.sql_lista_oculta(:param1,:param2,:param3,:param4); END;''',
+'            USING OUT l_sql, IN :P9006_PARAMETRO, :P9006_PARAMETRO2,:P9006_PRE_FILTRO_LISTA, :P9006_ORDER;',
 '    else',
 '        l_sql := q''~',
 '            select ',
@@ -169175,7 +169175,7 @@ wwv_flow_imp_page.create_report_region(
 '    return l_sql;       ',
 'end;'))
 ,p_ajax_enabled=>'Y'
-,p_ajax_items_to_submit=>'P9006_PARAMETRO,P9006_CARD_OU_LISTA,P9006_PARAMETRO2'
+,p_ajax_items_to_submit=>'P9006_PARAMETRO,P9006_CARD_OU_LISTA,P9006_PARAMETRO2,P9006_PRE_FILTRO_LISTA,P9006_ORDER'
 ,p_lazy_loading=>true
 ,p_query_row_template=>wwv_flow_imp.id(529674865928987028)
 ,p_query_num_rows=>15
@@ -169841,14 +169841,14 @@ wwv_flow_imp_page.create_page_plug(
 'begin',
 '    EXECUTE IMMEDIATE',
 '        ''BEGIN :l_sql := UI_MPD_''||l_pagina||''.sql_card(:param1,:param2,:param3,:param4); END;''',
-'        USING OUT l_sql, IN :P9006_PARAMETRO, :P9006_PARAMETRO2,:P9006_PARAMETRO3,:P9006_ORDER;',
+'        USING OUT l_sql, IN :P9006_PARAMETRO, :P9006_PARAMETRO2,:P9006_PRE_FILTRO_CARD,:P9006_ORDER;',
 '',
 '    return l_sql;       ',
 'end;',
 ''))
 ,p_lazy_loading=>true
 ,p_plug_source_type=>'NATIVE_CARDS'
-,p_ajax_items_to_submit=>'P9006_CODIGO_ARTEFATO,P9006_PARAMETRO,P9006_PARAMETRO2,P9006_PARAMETRO3,P9006_ORDER'
+,p_ajax_items_to_submit=>'P9006_CODIGO_ARTEFATO,P9006_PARAMETRO,P9006_PARAMETRO2,P9006_PARAMETRO3,P9006_ORDER,P9006_PRE_FILTRO_CARD'
 ,p_plug_query_num_rows=>15
 ,p_plug_query_num_rows_type=>'SET'
 ,p_show_total_row_count=>true
@@ -170130,7 +170130,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '    l_retorno varchar2(10);',
-'    l_pagina varchar2(256) := nvl(:P9005_CODIGO_ARTEFATO,''TD367'');',
+'    l_pagina varchar2(256) := nvl(:P9006_CODIGO_ARTEFATO,''TD367'');',
 'begin',
 '    begin',
 '        EXECUTE IMMEDIATE',
@@ -171156,6 +171156,144 @@ wwv_flow_imp_page.create_page_item(
 ,p_fc_zero_count_entries=>'H'
 ,p_fc_show_chart=>false
 ,p_fc_display_as=>'INLINE'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(269356634846193340)
+,p_name=>'P9006_PRE_FILTRO_CARD'
+,p_item_sequence=>320
+,p_item_plug_id=>wwv_flow_imp.id(655462996311761718)
+,p_item_display_point=>'PREVIOUS'
+,p_item_default=>'1'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_lov_language=>'PLSQL'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_sql          clob;',
+'    l_package_name varchar2(128);',
+'    l_pagina       varchar2(100) := nvl(:P9006_CODIGO_ARTEFATO, ''TD367'');',
+'begin',
+'    l_package_name := dbms_assert.sql_object_name(',
+'        ''UI_MPD_'' || l_pagina',
+'    );',
+'',
+'    execute immediate',
+'        ''begin',
+'             :resultado := '' || l_package_name || ''.pre_filtro;',
+'         end;''',
+'        using',
+'            out l_sql;',
+'',
+'    return l_sql;',
+'exception',
+'    when others then',
+'        return q''[',
+'            select',
+unistr('                ''Erro ao carregar op\00E7\00F5es'' as display_value,'),
+'                null                       as return_value',
+'            from dual',
+'            where 1 = 0',
+'        ]'';',
+'end;'))
+,p_display_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_quantidade number;',
+'    l_artefato   varchar2(128);',
+'    l_package    varchar2(128);',
+'begin',
+'    l_artefato := upper(',
+'        nvl(:P9006_CODIGO_ARTEFATO, ''TD367'')',
+'    );',
+'',
+'    l_package := ''UI_MPD_'' || l_artefato;',
+'',
+'    select count(*)',
+'      into l_quantidade',
+'      from user_procedures',
+'     where object_name    = l_package',
+'       and lower(procedure_name) = lower(''pre_filtro'');',
+'',
+'    return l_quantidade > 0;',
+'exception',
+'    when others then',
+'        return false;',
+'end;'))
+,p_display_when2=>'PLSQL'
+,p_display_when_type=>'FUNCTION_BODY'
+,p_field_template=>wwv_flow_imp.id(529718614480987056)
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_of_columns', '5',
+  'page_action_on_selection', 'NONE')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(269356903026197092)
+,p_name=>'P9006_PRE_FILTRO_LISTA'
+,p_item_sequence=>330
+,p_item_plug_id=>wwv_flow_imp.id(668400468611197516)
+,p_item_display_point=>'PREVIOUS'
+,p_item_default=>'1'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_lov_language=>'PLSQL'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_sql          clob;',
+'    l_package_name varchar2(128);',
+'    l_pagina       varchar2(100) := nvl(:P9006_CODIGO_ARTEFATO, ''TD367'');',
+'begin',
+'    l_package_name := dbms_assert.sql_object_name(',
+'        ''UI_MPD_'' || l_pagina',
+'    );',
+'',
+'    execute immediate',
+'        ''begin',
+'             :resultado := '' || l_package_name || ''.pre_filtro;',
+'         end;''',
+'        using',
+'            out l_sql;',
+'',
+'    return l_sql;',
+'exception',
+'    when others then',
+'        return q''[',
+'            select',
+unistr('                ''Erro ao carregar op\00E7\00F5es'' as display_value,'),
+'                null                       as return_value',
+'            from dual',
+'            where 1 = 0',
+'        ]'';',
+'end;'))
+,p_display_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_quantidade number;',
+'    l_artefato   varchar2(128);',
+'    l_package    varchar2(128);',
+'begin',
+'    l_artefato := upper(',
+'        nvl(:P9006_CODIGO_ARTEFATO, ''TD367'')',
+'    );',
+'',
+'    l_package := ''UI_MPD_'' || l_artefato;',
+'',
+'    select count(*)',
+'      into l_quantidade',
+'      from user_procedures',
+'     where object_name    = l_package',
+'       and lower(procedure_name) = lower(''pre_filtro'');',
+'',
+'    return l_quantidade > 0;',
+'exception',
+'    when others then',
+'        return false;',
+'end;'))
+,p_display_when2=>'PLSQL'
+,p_display_when_type=>'FUNCTION_BODY'
+,p_field_template=>wwv_flow_imp.id(529718614480987056)
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_of_columns', '5',
+  'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(352143899020946085)
@@ -173741,6 +173879,70 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_02=>'S'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(261049041999423339)
+,p_name=>'onChangePrefiltroCard'
+,p_event_sequence=>290
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P9006_PRE_FILTRO_CARD'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(261049198999423340)
+,p_event_id=>wwv_flow_imp.id(261049041999423339)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(705113922787842663)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(261049279159423341)
+,p_event_id=>wwv_flow_imp.id(261049041999423339)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(655462996311761718)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(261049393977423342)
+,p_name=>'onChangePrefiltroLista'
+,p_event_sequence=>300
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P9006_PRE_FILTRO_LISTA'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(261049427280423343)
+,p_event_id=>wwv_flow_imp.id(261049393977423342)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(667074643422194467)
+,p_attribute_01=>'N'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(261049537395423344)
+,p_event_id=>wwv_flow_imp.id(261049393977423342)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(668400468611197516)
+,p_attribute_01=>'N'
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(175532664362583365)
