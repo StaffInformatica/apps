@@ -36,12 +36,12 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   17:23 Wednesday August 5, 2026
---   Exported By:     DEVNORTHONN
+--   Date and Time:   20:04 Wednesday August 5, 2026
+--   Exported By:     DEVJONICLEI
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     74
---       Items:                2,467
+--       Items:                2,468
 --       Computations:           353
 --       Validations:             20
 --       Processes:              387
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3212
-,p_version_scn=>50196192048995
+,p_version_scn=>50197153545020
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -108653,6 +108653,17 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_affected_region_id=>wwv_flow_imp.id(194978964714629123)
 ,p_attribute_01=>'N'
 );
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(181588997178479725)
+,p_event_id=>wwv_flow_imp.id(166022182007055574)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(635130092766837213)
+,p_attribute_01=>'N'
+);
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(166023069394055576)
 ,p_name=>'onCloseHistorico'
@@ -110478,6 +110489,15 @@ wwv_flow_imp_page.create_page_item(
   'value_protected', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(181589041423479726)
+,p_name=>'P334_IND_CALCULANDO_VALORES'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_imp.id(506174696579820199)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(195450103112020560)
 ,p_name=>'P334_LABEL_MOEDA'
 ,p_item_sequence=>10
@@ -111227,7 +111247,7 @@ unistr('            //     message: "Falha ao tentar atualizar os valores do pro
 '    }',
 ');'))
 ,p_server_condition_type=>'EXPRESSION'
-,p_server_condition_expr1=>'(:P334_REQUEST IS NULL OR :P334_REQUEST <> ''ATUALIZA_IND'') AND :P334_DATA_HORA_ULTIMO_CALCULO <> pkg_data.fmt(sysdate, ''DATA'', null)'
+,p_server_condition_expr1=>'(:P334_REQUEST IS NULL OR :P334_REQUEST <> ''ATUALIZA_IND'') AND :P334_IND_CALCULANDO_VALORES = ''S'' --AND :P334_DATA_HORA_ULTIMO_CALCULO <> pkg_data.fmt(sysdate, ''DATA'', null)'
 ,p_server_condition_expr2=>'PLSQL'
 );
 wwv_flow_imp_page.create_page_da_action(
@@ -111280,6 +111300,30 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'calcularTotalVMLD();',
 'calcularTotalTributos();'))
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(181589106983479727)
+,p_event_id=>wwv_flow_imp.id(140897199624637215)
+,p_event_result=>'TRUE'
+,p_action_sequence=>40
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'if (apex.item("P334_IND_CALCULANDO_VALORES").getValue() === "S") {',
+'    var calculando = $("#P334_LABEL_CALCULANDO").val();',
+'    var msgCalculando = $("#msg_calculando");',
+'    msgCalculando.html(',
+'        `',
+'            <span style="color: #d00000; font-weight: 600;">',
+'                <span ',
+'                    class="fa fa-exclamation-triangle"',
+'                    style="margin-right: 4px;"',
+'                ></span>',
+'                ${calculando}',
+'            </span>',
+'        `',
+'    );',
+'} '))
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(140897912623637223)
@@ -111558,7 +111602,7 @@ wwv_flow_imp_page.create_page_process(
 '    l_msg_ultimo_calculo       varchar2(4000);',
 'begin',
 '    select count(1) into l_verifica_nacionalizacao from imp_processoimportacao where id = :P334_ID and data_nacionalizacao_real is null;',
-'    select id_tenant, pkg_data.fmt(data_hora_ultimo_calculo, ''DATA'') into l_id_tenant, :P334_DATA_HORA_ULTIMO_CALCULO from imp_processoimportacao where id = :P334_ID;',
+'    select id_tenant, pkg_data.fmt(data_hora_ultimo_calculo, ''DATA''), ind_calculando_valores into l_id_tenant, :P334_DATA_HORA_ULTIMO_CALCULO, :P334_IND_CALCULANDO_VALORES from imp_processoimportacao where id = :P334_ID;',
 '    select id_moeda_tenant into :P334_ID_MOEDA_TENANT from imp_processoimportacao where id = :P334_ID;',
 '    select id_moeda into :P334_ID_MOEDA_ITENS from imp_processoimportacao_item where id_processoimportacao = :P334_ID group by id_moeda fetch first 1 row only;',
 '    select ',
