@@ -36,7 +36,7 @@ prompt APPLICATION 124 - NG
 -- Application Export:
 --   Application:     124
 --   Name:            NG
---   Date and Time:   12:20 Monday August 10, 2026
+--   Date and Time:   11:56 Tuesday August 11, 2026
 --   Exported By:     DEVLEONARDO
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3226
-,p_version_scn=>50242554293571
+,p_version_scn=>50245453494156
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -153187,10 +153187,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
 ,p_button_template_id=>wwv_flow_imp.id(384015177600198578)
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'SALVAR'
+,p_button_image_alt=>'&P354_LABEL_SALVAR.'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
-,p_button_condition=>':P354_ID is not null and :P354_URL_PROXIMO is null'
+,p_button_condition=>':P354_PARAMETRO is not null'
 ,p_button_condition2=>'PLSQL'
 ,p_button_condition_type=>'EXPRESSION'
 ,p_icon_css_classes=>'fa-check-circle'
@@ -153217,16 +153217,16 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_type=>'BRANCH_TO_URL_IDENT_BY_ITEM'
 ,p_branch_when_button_id=>wwv_flow_imp.id(131132464203302321)
 ,p_branch_sequence=>10
-,p_required_patch=>wwv_flow_imp.id(383844475796198454)
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(131152435134302421)
 ,p_branch_name=>'goto_anterior'
-,p_branch_action=>'f?p=&APP_ID.:9012:&SESSION.::&DEBUG.::P0_CODIGO_ARTEFATO,P9012_CODIGO_ARTEFATO,P9012_CODIGO_WIZARD,P9012_ID,P9012_PARAMETRO:TD506,TD506,TD506,&P354_ID.,&P354_PARAMETRO.'
+,p_branch_action=>'f?p=&APP_ID.:9012:&SESSION.::&DEBUG.::P0_CODIGO_ARTEFATO,P9012_CODIGO_ARTEFATO,P9012_CODIGO_WIZARD,P9012_ID,P9012_PARAMETRO:TD1024,TD1024,TD1024,&P354_ID.,&P354_PARAMETRO.'
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_when_button_id=>wwv_flow_imp.id(131132464203302321)
 ,p_branch_sequence=>20
+,p_required_patch=>wwv_flow_imp.id(383844475796198454)
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(280617434255188449)
@@ -153819,13 +153819,13 @@ wwv_flow_imp_page.create_page_da_action(
 '',
 '$btn.prop("disabled", true).text("Gerando PDF...");',
 '',
-'var conteudo = $(''#documento'')[0];',
-'var doc_number = $(''#doc-number'').text();',
+'var conteudo = document.querySelector(''.mnf-doc'');',
+'var doc_number = apex.item(''P354_PARAMETRO'').getValue();',
 '',
 'html2pdf()',
 '  .set({',
 '    margin: 10,',
-'    filename: ''purchase-order['' + doc_number + ''].pdf'',',
+'    filename: ''minuta-nf['' + doc_number + ''].pdf'',',
 '    image: { type: ''jpeg'', quality: 0.98 },',
 '    html2canvas: { scale: 2 },',
 '    jsPDF: { unit: ''mm'', format: ''a4'', orientation: ''portrait'' }',
@@ -153836,14 +153836,14 @@ wwv_flow_imp_page.create_page_da_action(
 '      var reader = new FileReader();',
 '      reader.readAsDataURL(pdfBlob);',
 '      reader.onloadend = function () {',
-'          var base64Data = reader.result.split('','')[1];  ',
-'          $s(''P354_CLOB'',base64Data);',
+'          var base64Data = reader.result.split('','')[1];',
+'          $s(''P354_CLOB'', base64Data);',
 '',
 '          apex.server.process(',
 '            "SALVA_ANEXO",',
 '            {',
-'                x01: ''purchase-order['' + doc_number + ''].pdf'',                ',
-'                pageItems: "#P354_CLOB",',
+'                x01: ''minuta-nf['' + doc_number + ''].pdf'',',
+'                pageItems: "#P354_CLOB,#P354_PARAMETRO"',
 '            },',
 '            {',
 '                dataType: "json",',
@@ -153854,13 +153854,17 @@ wwv_flow_imp_page.create_page_da_action(
 '                            apex.navigation.dialog.close(true);',
 '                        }, 2000);',
 '                    } else {',
+'                        $btn.prop("disabled", false).text("Concluir");',
 '                        apex.message.alert("Erro ao salvar: " + (pData.msg || "Sem detalhe"));',
 '                    }',
 '                },',
 '                error: function(err) {',
-unistr('                    console.error("Erro t\00E9cnico:", err);'),
-unistr('                    apex.message.alert("Erro t\00E9cnico ao salvar PDF.");                    '),
-'                }',
+'    $btn.prop("disabled", false).text("Concluir");',
+'    console.error("Status HTTP:", err.status);',
+'    console.error("Resposta:", err.responseText ? err.responseText.substring(0, 500) : ''vazio'');',
+unistr('    apex.message.alert("Erro t\00E9cnico ao salvar PDF.");'),
+'}',
+'',
 '            }',
 '          );',
 '      };',
@@ -154078,7 +154082,8 @@ wwv_flow_imp_shared.create_invokeapi_comp_param(
 ,p_data_type=>'VARCHAR2'
 ,p_has_default=>true
 ,p_display_sequence=>60
-,p_value_type=>'API_DEFAULT'
+,p_value_type=>'ITEM'
+,p_value=>'P354_PARAMETRO'
 );
 wwv_flow_imp_shared.create_invokeapi_comp_param(
  p_id=>wwv_flow_imp.id(131145404832302400)
@@ -154137,147 +154142,17 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_name=>'Load'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
-'    -- Labels',
-'    l_pedido_importacao            varchar2(4000) := retorna_texto(''tela.pedido_importacao.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_numero_documento             varchar2(4000) := retorna_texto(''tela.numero_documento.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_importador                   varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.id_importador.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_notify                       varchar2(4000) := retorna_texto(''tela.notify.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_incoterm                     varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.id_incoterm.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_via_transporte               varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.id_viatransporte.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_condicao_pagamento           varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.id_condicaopagamento.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_local_desembarque            varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.id_local_desembarque.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_observacao                   varchar2(4000) := retorna_texto(''coluna.ng_anexo.observacao.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_itens                        varchar2(4000) := retorna_texto(''tela.itens.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_codigo_item                  varchar2(4000) := retorna_texto(''coluna.ng_item.codigo_item.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_descricao_item               varchar2(4000) := retorna_texto(''coluna.ng_item.descricao_item.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_unidade_medida               varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao_item.id_unidademedida.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_quantidade                   varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao_item.quantidade.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_valor_unitario               varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao_item.valor_unitario.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_valor_total                  varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao_item.valor_total.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_total                        varchar2(4000) := retorna_texto(''tela.total.l'', :P354_IDIOMA_SELECIONADO);',
 '    l_label_salvar                 varchar2(4000) := pkg_ui.retorna_label_botao(''salvar'');',
-'    l_label_valor_desconto         varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.valor_desconto.l'', :P354_IDIOMA_SELECIONADO);',
-'    l_label_valor_despesa_proforma varchar2(4000) := retorna_texto(''coluna.imp_pedidoimportacao.valor_despesa_proforma.l'', :P354_IDIOMA_SELECIONADO);',
-'    -- Dados',
-'    l_numero_pedido_importacao     varchar2(4000);',
-'    l_importador_razao_social      varchar2(4000);',
-'    l_importador_inscricao_federal varchar2(4000);',
-'    l_importador_etiqueta_endereco varchar2(4000);',
-'    l_notify_razao_social          varchar2(4000);',
-'    l_notify_inscricao_federal     varchar2(4000);',
-'    l_notify_etiqueta_endereco     varchar2(4000);',
-'    l_codigo_incoterm              varchar2(4000);',
-'    l_descricao_viatransporte      varchar2(4000);',
-'    l_descricao_condicaopagamento  varchar2(4000);',
-'    l_nome_local                   varchar2(4000);',
-'    l_valor_total_condicao_venda   varchar2(4000);',
-'    l_valor_desconto               varchar2(4000);',
-'    l_valor_despesa_proforma       varchar2(4000);',
-'    -- JSON',
-'    l_json clob;',
+' ',
 'begin',
 '    -- Atribui caba retorno aos itens correspondentes',
-'    :P354_LABEL_PEDIDO_IMPORTACAO      := l_pedido_importacao;',
-'    :P354_LABEL_NUMERO_DOCUMENTO       := l_numero_documento;',
-'    :P354_LABEL_IMPORTADOR             := l_importador;',
-'    :P354_LABEL_NOTIFY                 := l_notify;',
-'    :P354_LABEL_INCOTERM               := l_incoterm;',
-'    :P354_LABEL_VIA_TRANSPORTE         := l_via_transporte;',
-'    :P354_LABEL_CONDICAO_PAGAMENTO     := l_condicao_pagamento;',
-'    :P354_LABEL_LOCAL_DESEMBARQUE      := l_local_desembarque;',
-'    :P354_LABEL_OBSERVACAO             := l_observacao;',
-'    :P354_LABEL_ITENS                  := l_itens;',
-'    :P354_LABEL_CODIGO_ITEM            := l_codigo_item;',
-'    :P354_LABEL_DESCRICAO_ITEM         := l_descricao_item;',
-'    :P354_LABEL_UNIDADE_MEDIDA         := l_unidade_medida;',
-'    :P354_LABEL_QUANTIDADE             := l_quantidade;',
-'    :P354_LABEL_VALOR_UNITARIO         := l_valor_unitario;',
-'    :P354_LABEL_VALOR_TOTAL            := l_valor_total;',
-'    :P354_LABEL_TOTAL                  := l_total;',
+'',
 '    :P354_LABEL_SALVAR                 := l_label_salvar;',
-'    :P354_LABEL_VALOR_DESCONTO         := l_label_valor_desconto;',
-'    :P354_LABEL_VALOR_DESPESA_PROFORMA := l_label_valor_despesa_proforma;',
 '',
-'    -- Conulta para retorna os dados do documento',
-'    select ',
-'        a.numero_pedido_importacao,',
-'        b.razao_social,',
-'        b.inscricao_federal,',
-'        c.etiqueta_endereco,',
-'        d.razao_social,',
-'        d.inscricao_federal,',
-'        e.etiqueta_endereco,',
-'        f.codigo_incoterm,',
-'        to_char(chamar_webservice_traducao(''wksp_teste'',''ng_viatransporte'',''descricao_viatransporte'',:P354_IDIOMA_SELECIONADO,a.id_viatransporte)),',
-'        to_char(chamar_webservice_traducao(''wksp_teste'',''ng_condicaopagamento'',''descricao_condicaopagamento'',:P354_IDIOMA_SELECIONADO,a.id_condicaopagamento)),',
-'        to_char(chamar_webservice_traducao(''wksp_teste'',''ng_localembarquedesembarque'',''nome_local'',:P354_IDIOMA_SELECIONADO,a.id_local_desembarque)),',
-'        to_char(valor_total_condicao_venda, ''FM999G999G990D00''),',
-'        to_char(nvl(valor_desconto, 0), ''FM999G999G990D00''),',
-'        to_char(nvl(valor_despesa_proforma, 0), ''FM999G999G990D00'')',
-'    into ',
-'        l_numero_pedido_importacao, ',
-'        l_importador_razao_social, ',
-'        l_importador_inscricao_federal,',
-'        l_importador_etiqueta_endereco,',
-'        l_notify_razao_social,',
-'        l_notify_inscricao_federal,',
-'        l_notify_etiqueta_endereco,',
-'        l_codigo_incoterm,',
-'        l_descricao_viatransporte,',
-'        l_descricao_condicaopagamento,',
-'        l_nome_local,',
-'        l_valor_total_condicao_venda,',
-'        l_valor_desconto,',
-'        l_valor_despesa_proforma',
-'    from imp_pedidoimportacao a ',
-'    join ng_pessoa_juridica b on b.id_pessoa = a.id_importador',
-'    left join ng_pessoa_endereco c on c.id_pessoa = a.id_importador',
-'    left join ng_pessoa_juridica d on d.id_pessoa = a.id_adquirente',
-'    left join ng_pessoa_endereco e on e.id_pessoa = a.id_adquirente',
-'    join ng_incoterm f on f.id = a.id_incoterm    ',
-'    where a.id = :P354_ID',
-'    and lower(c.ind_endereco_principal) = ''s''',
-'    and (lower(e.ind_endereco_principal) = ''s'' or e.ind_endereco_principal is null);',
-'    ',
-'    -- Atribui cada retorno da consulta acima aos itens correspondentes',
-'    :P354_NUMERO_PEDIDO_IMPORTACAO     := l_numero_pedido_importacao;',
-'    :P354_IMPORTADOR_RAZAO_SOCIAL      := l_importador_razao_social;',
-'    :P354_IMPORTADOR_INSCRICAO_FEDERAL := l_importador_inscricao_federal;',
-'    :P354_IMPORTADOR_ETIQUETA_ENDERECO := l_importador_etiqueta_endereco;',
-'    :P354_NOTIFY_RAZAO_SOCIAL          := l_notify_razao_social;',
-'    :P354_NOTIFY_INSCRICAO_FEDERAL     := l_notify_inscricao_federal;',
-'    :P354_NOTIFY_ETIQUETA_ENDERECO     := l_notify_etiqueta_endereco;',
-'    :P354_CODIGO_INCOTERM              := l_codigo_incoterm;',
-'    :P354_DESCRICAO_VIATRANSPORTE      := l_descricao_viatransporte;',
-'    :P354_DESCRICAO_CONDICAOPAGAMENTO  := l_descricao_condicaopagamento;',
-'    :P354_NOME_LOCAL                   := l_nome_local;',
-'    :P354_VALOR_TOTAL_CONDICAO_VENDA   := l_valor_total_condicao_venda;',
-'    :P354_VALOR_DESCONTO               := l_valor_desconto;',
-'    :P354_VALOR_DESPESA_PROFORMA       := l_valor_despesa_proforma;',
-'',
-'    -- Monta o JSON para buscar os itens do pedido',
-'    select ',
-'        json_arrayagg(',
-'            json_object(',
-'                ''code''        value b.codigo_item,',
-'                ''description'' value to_char(chamar_webservice_traducao(''wksp_teste'',''ng_item'',''descricao_item'',:P354_IDIOMA_SELECIONADO,a.id_item)),',
-'                ''measure''     value c.codigo_unidademedida,',
-'                ''quantity''    value case c.ind_tipo_dado when ''D'' then to_char(a.quantidade, ''FM999G999G990D00000'') when ''I'' then to_char(a.quantidade) end,',
-'                ''unit_price''  value to_char(a.valor_unitario - a.valor_desconto_unitario, ''FM999G999G990D00''),',
-'                ''total_price'' value to_char(a.valor_total, ''FM999G999G990D00'')',
-'            ) order by a.num_sequencia_item',
-'        ) ',
-'    into l_json',
-'    from imp_pedidoimportacao_item a',
-'    join ng_item b on b.id = a.id_item',
-'    left join ng_unidademedida c on c.id = a.id_unidademedida',
-'    where a.id_pedidoimportacao = :P354_ID;    ',
-'    -- Atribui o resultado do JSON ao item correspondente',
-'    :P354_JSON_ITENS := l_json;',
+' ',
 '',
 'end;'))
 ,p_process_clob_language=>'PLSQL'
-,p_required_patch=>wwv_flow_imp.id(383844475796198454)
 ,p_internal_uid=>276855651509090888
 );
 wwv_flow_imp_page.create_page_process(
@@ -154288,91 +154163,51 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_name=>'SALVA_ANEXO'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
-'    l_id_pedidoimportacao number := :P354_ID;',
-'    l_id_tenant number;',
-'    l_id_documento number;',
-'    l_id_entidade number;',
-'    l_ind_situacao varchar2(1);',
-'    l_anexo blob;',
-'    l_anexo_name varchar2(4000) := apex_application.g_x01;',
-'    l_id_anexo number;    ',
-'    l_base64 clob := :P354_CLOB;',
+'    l_base64  clob    := :P354_CLOB;',
+'    l_anexo   blob;',
 '    l_sucesso clob;',
 '    l_messages pkg_mensagem.message_record_table;',
-'    l_raw    raw(32767);',
-'    l_pos    integer := 1;',
-'    l_len    integer := dbms_lob.getlength(l_base64);',
-'    l_amount integer := 32767;',
+'    l_raw     raw(32767);',
+'    l_pos     integer := 1;',
+'    l_len     integer := dbms_lob.getlength(l_base64);',
 'begin',
-'    l_messages := pkg_mensagem.message_record_table();    ',
-'',
-'    select id_tenant into l_id_tenant from imp_pedidoimportacao where id = l_id_pedidoimportacao;',
-'    ',
-'    select ',
-'        id, ',
-'        case ind_aprovar ',
-'            when ''S'' then ''P''',
-'            when ''N'' then ''A''',
-'        end',
-'    into ',
-'        l_id_documento, ',
-'        l_ind_situacao ',
-'    from ng_documento ',
-unistr('    where lower(nome_documento) = ''pedido de importa\00E7\00E3o'';'),
-'',
-'    select id into l_id_entidade from srv_entidade where lower(nome_entidade) = ''imp_pedidoimportacao'';',
-'',
 '    dbms_lob.createtemporary(l_anexo, true);',
-'    ',
 '    while l_pos <= l_len loop',
 '        l_raw := utl_encode.base64_decode(',
-'                    utl_raw.cast_to_raw(',
-'                        dbms_lob.substr(l_base64, least(2000, l_len - l_pos + 1), l_pos)',
-'                    )',
+'                     utl_raw.cast_to_raw(',
+'                         dbms_lob.substr(l_base64, least(2000, l_len - l_pos + 1), l_pos)',
+'                     )',
 '                 );',
 '        dbms_lob.writeappend(l_anexo, utl_raw.length(l_raw), l_raw);',
 '        l_pos := l_pos + 2000;',
 '    end loop;',
 '',
-'    if l_anexo is null or dbms_lob.getlength(l_anexo) = 0 then',
+'    if dbms_lob.getlength(l_anexo) = 0 then',
 unistr('        raise_application_error(-20001, ''PDF enviado est\00E1 vazio.'');'),
 '    end if;',
 '',
-'    bo_ng_anexo.inclui_registro(',
-'        p_id_usuario_revisou => null,',
-'        p_data_hora_revisao => null,',
-'        p_observacao => :P354_OBSERVACAO,',
-'        p_ind_situacao => l_ind_situacao,',
-'        p_id_tenant => l_id_tenant,',
-'        p_id_documento => l_id_documento,',
-'        p_id_entidade => l_id_entidade,',
-'        p_id_referencia => l_id_pedidoimportacao,',
-'        p_numero_documento => :P354_NUMERO_PEDIDO_IMPORTACAO,',
-'        p_versao_documento => bo_ng_anexo.gera_versao(l_id_entidade, l_id_pedidoimportacao),',
-'        p_data_documento => :P354_DATA_SELECIONADA,',
-'        p_anexo => l_anexo,',
-'        p_anexo_name => l_anexo_name,',
-'        p_anexo_mimetype => ''application/pdf'',',
-'        p_anexo_charset => null,',
-'        p_tamanho_anexo => round(dbms_lob.getlength(l_anexo) / (1024 * 1024), 3),',
-'        p_id => l_id_anexo,',
-'        p_sucesso => l_sucesso,',
-'        p_messages => l_messages',
+'    bo_imp_minutanotafiscal_entrada.conclui_minuta(',
+'        p_id         => to_number(:P354_PARAMETRO),',
+'        p_anexo      => l_anexo,',
+'        p_anexo_name => apex_application.g_x01,',
+'        p_sucesso    => l_sucesso,',
+'        p_messages   => l_messages',
 '    );',
 '',
-'    DBMS_LOB.FREETEMPORARY(l_anexo);',
+'    dbms_lob.freetemporary(l_anexo);',
 '',
 '    apex_json.open_object;',
 '    apex_json.write(''status'', ''OK'');',
-'    apex_json.write(''id_anexo'', l_id_anexo);',
-'    apex_json.write(''nome'', l_anexo_name);',
 '    apex_json.close_object;',
 '',
 'exception',
 '    when others then',
-'        if dbms_lob.istemporary(l_anexo) = 1 then',
-'            DBMS_LOB.FREETEMPORARY(l_anexo);',
-'        end if;',
+'        begin',
+'            if dbms_lob.istemporary(l_anexo) = 1 then',
+'                dbms_lob.freetemporary(l_anexo);',
+'            end if;',
+'        exception when others then null;',
+'        end;',
 '        apex_json.open_object;',
 '        apex_json.write(''status'', ''ERRO'');',
 '        apex_json.write(''msg'', sqlerrm);',
@@ -187856,6 +187691,8 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_type=>'BRANCH_TO_URL_IDENT_BY_ITEM'
 ,p_branch_when_button_id=>wwv_flow_imp.id(19645499193547247)
 ,p_branch_sequence=>20
+,p_branch_condition_type=>'REQUEST_IN_CONDITION'
+,p_branch_condition=>'Proximo'
 );
 wwv_flow_imp_page.create_page_branch(
  p_id=>wwv_flow_imp.id(19645351386547246)
@@ -188767,15 +188604,16 @@ wwv_flow_imp_page.create_page_da_action(
 unistr('                // Se houver sem valida\00E7\00E3o, segue direto'),
 '                if (pData[0].hasOwnProperty(''semValidacao'')) {',
 unistr('                    console.info("Sem valida\00E7\00E3o ao gravar");'),
-'                    apex.submit({ request: "Create" });',
+'                    apex.submit({ request: "Proximo" });',
 '                    return;',
 '                }',
 '',
 unistr('                // Fun\00E7\00E3o recursiva para exibir mensagens em sequ\00EAncia'),
 '                function exibirConfirmacoes(index) {',
+'                    console.log(''exibirConfirmacoes'')',
 '                    if (index >= pData.length) {',
 unistr('                        // Terminou todas as confirma\00E7\00F5es, agora pode submeter'),
-'                        apex.submit({ request: "Create" });',
+'                        apex.submit({ request: "Proximo" });',
 '                        return;',
 '                    }',
 '',
@@ -188807,7 +188645,8 @@ unistr('                                console.warn("Usu\00E1rio cancelou na et
 '',
 '            } else {',
 unistr('                // Nenhuma mensagem \2192 segue normal'),
-'                apex.submit({ request: "Create" });',
+'                console.log(''Nenhuma mensagem'')',
+'                apex.submit({ request: "Proximo" });',
 '            }',
 '        }',
 '    }',
@@ -188909,7 +188748,7 @@ wwv_flow_imp_page.create_page_process(
 'END;'))
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when=>'Create'
+,p_process_when=>'Proximo'
 ,p_process_when_type=>'REQUEST_IN_CONDITION'
 ,p_process_success_message=>'&P9013_SUCESSO.'
 ,p_internal_uid=>79619605631047639
@@ -189238,7 +189077,7 @@ wwv_flow_imp_page.create_page_process(
 'declare',
 '    l_clob clob;',
 '    v_messages pkg_mensagem.message_record_table;',
-'    l_pagina varchar2(256) := nvl(:p9013_codigo_artefato,''td452'');',
+'    l_pagina varchar2(256) := nvl(:P9013_CODIGO_ARTEFATO,''td452'');',
 'begin',
 '    execute immediate',
 '        ''begin :v_messages := ui_mpd_''||l_pagina||''.valida(:p_id); end;''',
