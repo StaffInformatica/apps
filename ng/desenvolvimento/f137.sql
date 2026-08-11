@@ -36,8 +36,8 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   18:30 Tuesday August 11, 2026
---   Exported By:     DEVJONATHAN
+--   Date and Time:   19:01 Tuesday August 11, 2026
+--   Exported By:     DEVJONICLEI
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     76
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3226
-,p_version_scn=>50254547557860
+,p_version_scn=>50254796106976
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -154974,7 +154974,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'ID_DESPESA'
 ,p_display_order=>10
 ,p_column_identifier=>'T'
-,p_column_label=>'&P353_LABEL_ID_DESPESA.'
+,p_column_label=>'&P355_LABEL_ID_DESPESA.'
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -154984,7 +154984,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'ID_REFERENCIA'
 ,p_display_order=>60
 ,p_column_identifier=>'W'
-,p_column_label=>'&P353_LABEL_ID_REFERENCIA.'
+,p_column_label=>'&P355_LABEL_ID_REFERENCIA.'
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
@@ -154994,7 +154994,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'ID_MOEDA_DESPESA'
 ,p_display_order=>80
 ,p_column_identifier=>'X'
-,p_column_label=>'&P353_LABEL_ID_MOEDA_DESPESA.'
+,p_column_label=>'&P355_LABEL_ID_MOEDA_DESPESA.'
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'WITHOUT_MODIFICATION'
 ,p_heading_alignment=>'LEFT'
@@ -155005,7 +155005,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'VALOR_MOEDA_DESPESA'
 ,p_display_order=>90
 ,p_column_identifier=>'Y'
-,p_column_label=>'&P353_LABEL_VALOR_MOEDA_DESPESA.'
+,p_column_label=>'&P355_LABEL_VALOR_MOEDA_DESPESA.'
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'WITHOUT_MODIFICATION'
 ,p_heading_alignment=>'LEFT'
@@ -155016,7 +155016,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'VALOR_MOEDA_DOCUMENTO'
 ,p_display_order=>130
 ,p_column_identifier=>'AA'
-,p_column_label=>'&P353_LABEL_VALOR_MOEDA_DOCUMENTO.'
+,p_column_label=>'&P355_LABEL_VALOR_MOEDA_DOCUMENTO.'
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'WITHOUT_MODIFICATION'
 ,p_heading_alignment=>'LEFT'
@@ -155027,7 +155027,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_db_column_name=>'TOTAL_DESPESA'
 ,p_display_order=>140
 ,p_column_identifier=>'AC'
-,p_column_label=>'&P353_LABEL_TOTAL_DESPESA.'
+,p_column_label=>'&P355_LABEL_TOTAL_DESPESA.'
 ,p_column_type=>'STRING'
 ,p_display_text_as=>'WITHOUT_MODIFICATION'
 ,p_heading_alignment=>'LEFT'
