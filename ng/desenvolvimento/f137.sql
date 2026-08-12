@@ -36,16 +36,16 @@ prompt APPLICATION 137 - NG
 -- Application Export:
 --   Application:     137
 --   Name:            NG
---   Date and Time:   19:01 Tuesday August 11, 2026
---   Exported By:     DEVJONICLEI
+--   Date and Time:   20:58 Wednesday August 12, 2026
+--   Exported By:     DEVJONATHAN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     76
 --       Items:                2,569
 --       Computations:           359
 --       Validations:             20
---       Processes:              403
---       Regions:                447
+--       Processes:              406
+--       Regions:                448
 --       Buttons:                333
 --       Dynamic Actions:        627
 --     Shared Components:
@@ -169,8 +169,8 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_string_03=>'ON_DISABLE_CLOSE'
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
-,p_files_version=>3226
-,p_version_scn=>50254796106976
+,p_files_version=>3263
+,p_version_scn=>50265974062305
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -19243,6 +19243,107 @@ wwv_flow_imp_shared.create_app_static_file(
  p_id=>wwv_flow_imp.id(275175137008483922)
 ,p_file_name=>'429.min.css'
 ,p_mime_type=>'text/css'
+,p_file_charset=>'utf-8'
+,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/shared_components/files/429_js
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '76617220696E766F6963655370696E6E6572203D206E756C6C3B0A0A66756E6374696F6E20696E766F6963654D6F7374726172436172726567616D656E746F28626F74616F2C20746578746F29207B0A20202020617065782E6D6573736167652E636C65';
+wwv_flow_imp.g_varchar2_table(2) := '61724572726F727328293B0A0A2020202069662028696E766F6963655370696E6E657229207B0A2020202020202020696E766F6963655370696E6E65722E72656D6F766528293B0A202020207D0A0A20202020696E766F6963655370696E6E6572203D20';
+wwv_flow_imp.g_varchar2_table(3) := '617065782E7574696C2E73686F775370696E6E6572280A20202020202020202428626F74616F292E636C6F7365737428222E742D526567696F6E2C20626F647922290A20202020293B0A0A20202020636F6E736F6C652E6C6F6728225B494E564F494345';
+wwv_flow_imp.g_varchar2_table(4) := '5D2022202B20746578746F293B0A7D0A0A66756E6374696F6E20696E766F69636552656D6F766572436172726567616D656E746F2829207B0A2020202069662028696E766F6963655370696E6E657229207B0A2020202020202020696E766F6963655370';
+wwv_flow_imp.g_varchar2_table(5) := '696E6E65722E72656D6F766528293B0A2020202020202020696E766F6963655370696E6E6572203D206E756C6C3B0A202020207D0A7D0A0A66756E6374696F6E20696E766F6963654572726F286D656E736167656D29207B0A20202020696E766F696365';
+wwv_flow_imp.g_varchar2_table(6) := '52656D6F766572436172726567616D656E746F28293B0A20202020617065782E6D6573736167652E636C6561724572726F727328293B0A20202020617065782E6D6573736167652E73686F774572726F7273285B7B0A2020202020202020747970653A20';
+wwv_flow_imp.g_varchar2_table(7) := '226572726F72222C0A20202020202020206C6F636174696F6E3A205B2270616765225D2C0A20202020202020206D6573736167653A206D656E736167656D2C0A2020202020202020756E736166653A2066616C73650A202020207D5D293B0A7D0A0A6675';
+wwv_flow_imp.g_varchar2_table(8) := '6E6374696F6E20696E766F696365507265656E636865724974656E73286974656D732C206C6F767329207B0A20202020696620286974656D7329207B0A20202020202020204F626A6563742E6B657973286974656D73292E666F72456163682866756E63';
+wwv_flow_imp.g_varchar2_table(9) := '74696F6E286E6F6D654974656D29207B0A202020202020202020202020696620286C6F7673202626206C6F76735B6E6F6D654974656D5D29207B0A2020202020202020202020202020202072657475726E3B0A2020202020202020202020207D0A0A2020';
+wwv_flow_imp.g_varchar2_table(10) := '2020202020202020202069662028617065782E6974656D286E6F6D654974656D292E6E6F646529207B0A20202020202020202020202020202020617065782E6974656D286E6F6D654974656D292E73657456616C7565280A202020202020202020202020';
+wwv_flow_imp.g_varchar2_table(11) := '20202020202020206974656D735B6E6F6D654974656D5D203D3D206E756C6C203F202222203A206974656D735B6E6F6D654974656D5D0A20202020202020202020202020202020293B0A2020202020202020202020207D0A20202020202020207D293B0A';
+wwv_flow_imp.g_varchar2_table(12) := '202020207D0A0A20202020696620286C6F767329207B0A20202020202020204F626A6563742E6B657973286C6F7673292E666F72456163682866756E6374696F6E286E6F6D654974656D29207B0A202020202020202020202020766172206C6F76203D20';
+wwv_flow_imp.g_varchar2_table(13) := '6C6F76735B6E6F6D654974656D5D3B0A0A20202020202020202020202069662028617065782E6974656D286E6F6D654974656D292E6E6F646529207B0A20202020202020202020202020202020617065782E6974656D286E6F6D654974656D292E736574';
+wwv_flow_imp.g_varchar2_table(14) := '56616C7565280A20202020202020202020202020202020202020206C6F762E76616C7565203D3D206E756C6C203F202222203A206C6F762E76616C75652C0A20202020202020202020202020202020202020206C6F762E646973706C6179203D3D206E75';
+wwv_flow_imp.g_varchar2_table(15) := '6C6C203F202222203A206C6F762E646973706C61790A20202020202020202020202020202020293B0A2020202020202020202020207D0A20202020202020207D293B0A202020207D0A7D0A0A66756E6374696F6E20696E766F69636546616C6861416A61';
+wwv_flow_imp.g_varchar2_table(16) := '782865746170612C206A715848522C20746578745374617475732C206572726F725468726F776E29207B0A20202020636F6E736F6C652E6572726F7228225B494E564F4943455D2022202B206574617061202B2022205354415455533A222C2074657874';
+wwv_flow_imp.g_varchar2_table(17) := '537461747573293B0A20202020636F6E736F6C652E6572726F7228225B494E564F4943455D2022202B206574617061202B2022204552524F523A222C206572726F725468726F776E293B0A20202020636F6E736F6C652E6572726F7228225B494E564F49';
+wwv_flow_imp.g_varchar2_table(18) := '43455D2022202B206574617061202B202220524553504F4E53453A222C206A715848522E726573706F6E736554657874293B0A0A20202020696E766F6963654572726F280A2020202020202020224572726F20656D2022202B206574617061202B20223A';
+wwv_flow_imp.g_varchar2_table(19) := '2022202B0A2020202020202020286A715848522E726573706F6E736554657874207C7C206572726F725468726F776E207C7C2074657874537461747573290A20202020293B0A7D0A0A66756E6374696F6E20696E766F69636545746170613328626F7461';
+wwv_flow_imp.g_varchar2_table(20) := '6F29207B0A20202020636F6E736F6C652E6C6F6728225B494E564F4943455D204574617061203220636F6E636C75C3AD64612E20496E696369616E646F2076616C696461C3A7C3A36F2065206D6F6E746167656D2064612074656C612E2E2E22293B0A0A';
+wwv_flow_imp.g_varchar2_table(21) := '20202020617065782E7365727665722E70726F63657373280A20202020202020202250524F4345535341525F494E564F4943455F4A534F4E222C0A20202020202020207B0A2020202020202020202020207830313A20617065782E6974656D2822503432';
+wwv_flow_imp.g_varchar2_table(22) := '395F5044465F494E564F49434522292E67657456616C756528292C0A202020202020202020202020706167654974656D733A202223503432395F4D4F44454C4F5F4F50454E4149220A20202020202020207D2C0A20202020202020207B0A202020202020';
+wwv_flow_imp.g_varchar2_table(23) := '20202020202064617461547970653A20226A736F6E220A20202020202020207D0A20202020290A202020202E646F6E652866756E6374696F6E287265746F726E6F29207B0A2020202020202020696E766F69636552656D6F766572436172726567616D65';
+wwv_flow_imp.g_varchar2_table(24) := '6E746F28293B0A0A202020202020202069662028217265746F726E6F2E7375636365737329207B0A202020202020202020202020696E766F6963654572726F287265746F726E6F2E6D657373616765207C7C20224572726F20616F2070726F6365737361';
+wwv_flow_imp.g_varchar2_table(25) := '72206120696E766F6963652E22293B0A20202020202020202020202072657475726E3B0A20202020202020207D0A0A2020202020202020696E766F696365507265656E636865724974656E73287265746F726E6F2E6974656D732C207265746F726E6F2E';
+wwv_flow_imp.g_varchar2_table(26) := '6C6F7673293B0A0A2020202020202020617065782E6D6573736167652E636C6561724572726F727328293B0A2020202020202020617065782E6D6573736167652E73686F775061676553756363657373287265746F726E6F2E6D657373616765293B0A0A';
+wwv_flow_imp.g_varchar2_table(27) := '2020202020202020747279207B0A202020202020202020202020617065782E726567696F6E2822696E766F6963655F6974656D7322292E7265667265736828293B0A20202020202020207D20636174636820286529207B0A202020202020202020202020';
+wwv_flow_imp.g_varchar2_table(28) := '636F6E736F6C652E6C6F6728225B494E564F4943455D2052656769C3A36F20696E766F6963655F6974656D73206EC3A36F20656E636F6E74726164612E22293B0A20202020202020207D0A0A2020202020202020747279207B0A20202020202020202020';
+wwv_flow_imp.g_varchar2_table(29) := '2020617065782E726567696F6E2822696E766F6963655F6761707322292E7265667265736828293B0A20202020202020207D20636174636820286529207B0A202020202020202020202020636F6E736F6C652E6C6F6728225B494E564F4943455D205265';
+wwv_flow_imp.g_varchar2_table(30) := '6769C3A36F20696E766F6963655F67617073206EC3A36F20656E636F6E74726164612E22293B0A20202020202020207D0A0A2020202020202020636F6E736F6C652E6C6F6728225B494E564F4943455D2050726F63657373616D656E746F20636F6E636C';
+wwv_flow_imp.g_varchar2_table(31) := '75C3AD646F2E22293B0A202020207D290A202020202E6661696C2866756E6374696F6E286A715848522C20746578745374617475732C206572726F725468726F776E29207B0A2020202020202020696E766F69636546616C6861416A6178282245544150';
+wwv_flow_imp.g_varchar2_table(32) := '412033202D2050524F4345535341525F494E564F4943455F4A534F4E222C206A715848522C20746578745374617475732C206572726F725468726F776E293B0A202020207D293B0A7D0A0A66756E6374696F6E20696E766F69636545746170613228626F';
+wwv_flow_imp.g_varchar2_table(33) := '74616F29207B0A20202020636F6E736F6C652E6C6F6728225B494E564F4943455D20546578746F206578747261C3AD646F2E20496E696369616E646F20657374727574757261C3A7C3A36F20646120696E766F6963652E2E2E22293B0A0A202020206170';
+wwv_flow_imp.g_varchar2_table(34) := '65782E7365727665722E70726F63657373280A202020202020202022455354525554555241525F494E564F4943455F415049222C0A20202020202020207B0A202020202020202020202020706167654974656D733A0A2020202020202020202020202020';
+wwv_flow_imp.g_varchar2_table(35) := '20202223503432395F49445F54454E414E542C22202B0A202020202020202020202020202020202223503432395F49445F50524F434553534F494D504F52544143414F2C22202B0A202020202020202020202020202020202223503432395F4D4F44454C';
+wwv_flow_imp.g_varchar2_table(36) := '4F5F4F50454E4149220A20202020202020207D2C0A20202020202020207B0A20202020202020202020202064617461547970653A20226A736F6E220A20202020202020207D0A20202020290A202020202E646F6E652866756E6374696F6E287265746F72';
+wwv_flow_imp.g_varchar2_table(37) := '6E6F29207B0A20202020202020202F2A0A202020202020202069662028217265746F726E6F2E7375636365737329207B0A202020202020202020202020696E766F6963654572726F287265746F726E6F2E6D657373616765207C7C20224572726F20616F';
+wwv_flow_imp.g_varchar2_table(38) := '2065737472757475726172206120696E766F6963652E22293B0A20202020202020202020202072657475726E3B0A20202020202020207D2A2F0A0A2020202020202020696E766F69636545746170613328626F74616F293B0A202020207D290A20202020';
+wwv_flow_imp.g_varchar2_table(39) := '2E6661696C2866756E6374696F6E286A715848522C20746578745374617475732C206572726F725468726F776E29207B0A2020202020202020696E766F69636546616C6861416A6178282245544150412032202D20455354525554555241525F494E564F';
+wwv_flow_imp.g_varchar2_table(40) := '4943455F415049222C206A715848522C20746578745374617475732C206572726F725468726F776E293B0A202020207D293B0A7D0A0A66756E6374696F6E20696E766F696365416E616C6973617228626F74616F29207B0A20202020696E766F6963654D';
+wwv_flow_imp.g_varchar2_table(41) := '6F7374726172436172726567616D656E746F280A2020202020202020626F74616F2C0A2020202020202020224578747261696E646F206F20746578746F20646F20646F63756D656E746F2E2E2E220A20202020293B0A0A20202020766172206172717569';
+wwv_flow_imp.g_varchar2_table(42) := '766F203D20617065782E6974656D2822503432395F5044465F494E564F49434522292E67657456616C756528293B0A20202020636F6E736F6C652E6C6F6728225B494E564F4943455D2056616C6F7220503432395F5044465F494E564F4943453A222C20';
+wwv_flow_imp.g_varchar2_table(43) := '6172717569766F293B0A0A20202020617065782E7365727665722E70726F63657373280A202020202020202022455854524149525F544558544F5F494E564F4943455F415049222C0A20202020202020207B0A2020202020202020202020207830313A20';
+wwv_flow_imp.g_varchar2_table(44) := '6172717569766F2C0A202020202020202020202020706167654974656D733A202223503432395F4D4F44454C4F5F4F50454E4149220A20202020202020207D2C0A20202020202020207B0A20202020202020202020202064617461547970653A20226A73';
+wwv_flow_imp.g_varchar2_table(45) := '6F6E220A20202020202020207D0A20202020290A202020202E646F6E652866756E6374696F6E287265746F726E6F29207B0A202020202020202069662028217265746F726E6F2E7375636365737329207B0A202020202020202020202020696E766F6963';
+wwv_flow_imp.g_varchar2_table(46) := '654572726F287265746F726E6F2E6D657373616765207C7C20224572726F20616F206578747261697220746578746F20646F20646F63756D656E746F2E22293B0A20202020202020202020202072657475726E3B0A20202020202020207D0A0A20202020';
+wwv_flow_imp.g_varchar2_table(47) := '20202020696E766F69636545746170613228626F74616F293B0A202020207D290A202020202E6661696C2866756E6374696F6E286A715848522C20746578745374617475732C206572726F725468726F776E29207B0A2020202020202020696E766F6963';
+wwv_flow_imp.g_varchar2_table(48) := '6546616C6861416A6178282245544150412031202D20455854524149525F544558544F5F494E564F4943455F415049222C206A715848522C20746578745374617475732C206572726F725468726F776E293B0A202020207D293B0A7D0A0A2F2A0A44796E';
+wwv_flow_imp.g_varchar2_table(49) := '616D696320416374696F6E20646F20626F74C3A36F3A0A696E766F696365416E616C6973617228746869732E74726967676572696E67456C656D656E74293B0A2A2F0A';
+wwv_flow_imp_shared.create_app_static_file(
+ p_id=>wwv_flow_imp.id(282005720515784398)
+,p_file_name=>'429.js'
+,p_mime_type=>'text/javascript'
+,p_file_charset=>'utf-8'
+,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/shared_components/files/429_min_js
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '76617220696E766F6963655370696E6E65723D6E756C6C3B66756E6374696F6E20696E766F6963654D6F7374726172436172726567616D656E746F28652C6F297B617065782E6D6573736167652E636C6561724572726F727328292C696E766F69636553';
+wwv_flow_imp.g_varchar2_table(2) := '70696E6E65722626696E766F6963655370696E6E65722E72656D6F766528292C696E766F6963655370696E6E65723D617065782E7574696C2E73686F775370696E6E657228242865292E636C6F7365737428222E742D526567696F6E2C20626F64792229';
+wwv_flow_imp.g_varchar2_table(3) := '292C636F6E736F6C652E6C6F6728225B494E564F4943455D20222B6F297D66756E6374696F6E20696E766F69636552656D6F766572436172726567616D656E746F28297B696E766F6963655370696E6E6572262628696E766F6963655370696E6E65722E';
+wwv_flow_imp.g_varchar2_table(4) := '72656D6F766528292C696E766F6963655370696E6E65723D6E756C6C297D66756E6374696F6E20696E766F6963654572726F2865297B696E766F69636552656D6F766572436172726567616D656E746F28292C617065782E6D6573736167652E636C6561';
+wwv_flow_imp.g_varchar2_table(5) := '724572726F727328292C617065782E6D6573736167652E73686F774572726F7273285B7B747970653A226572726F72222C6C6F636174696F6E3A5B2270616765225D2C6D6573736167653A652C756E736166653A21317D5D297D66756E6374696F6E2069';
+wwv_flow_imp.g_varchar2_table(6) := '6E766F696365507265656E636865724974656E7328652C6F297B6526264F626A6563742E6B6579732865292E666F7245616368282866756E6374696F6E286E297B6F26266F5B6E5D7C7C617065782E6974656D286E292E6E6F64652626617065782E6974';
+wwv_flow_imp.g_varchar2_table(7) := '656D286E292E73657456616C7565286E756C6C3D3D655B6E5D3F22223A655B6E5D297D29292C6F26264F626A6563742E6B657973286F292E666F7245616368282866756E6374696F6E2865297B766172206E3D6F5B655D3B617065782E6974656D286529';
+wwv_flow_imp.g_varchar2_table(8) := '2E6E6F64652626617065782E6974656D2865292E73657456616C7565286E756C6C3D3D6E2E76616C75653F22223A6E2E76616C75652C6E756C6C3D3D6E2E646973706C61793F22223A6E2E646973706C6179297D29297D66756E6374696F6E20696E766F';
+wwv_flow_imp.g_varchar2_table(9) := '69636546616C6861416A617828652C6F2C6E2C61297B636F6E736F6C652E6572726F7228225B494E564F4943455D20222B652B22205354415455533A222C6E292C636F6E736F6C652E6572726F7228225B494E564F4943455D20222B652B22204552524F';
+wwv_flow_imp.g_varchar2_table(10) := '523A222C61292C636F6E736F6C652E6572726F7228225B494E564F4943455D20222B652B2220524553504F4E53453A222C6F2E726573706F6E736554657874292C696E766F6963654572726F28224572726F20656D20222B652B223A20222B286F2E7265';
+wwv_flow_imp.g_varchar2_table(11) := '73706F6E7365546578747C7C617C7C6E29297D66756E6374696F6E20696E766F6963654574617061332865297B636F6E736F6C652E6C6F6728225B494E564F4943455D204574617061203220636F6E636C75C3AD64612E20496E696369616E646F207661';
+wwv_flow_imp.g_varchar2_table(12) := '6C696461C3A7C3A36F2065206D6F6E746167656D2064612074656C612E2E2E22292C617065782E7365727665722E70726F63657373282250524F4345535341525F494E564F4943455F4A534F4E222C7B7830313A617065782E6974656D2822503432395F';
+wwv_flow_imp.g_varchar2_table(13) := '5044465F494E564F49434522292E67657456616C756528292C706167654974656D733A2223503432395F4D4F44454C4F5F4F50454E4149227D2C7B64617461547970653A226A736F6E227D292E646F6E65282866756E6374696F6E2865297B696628696E';
+wwv_flow_imp.g_varchar2_table(14) := '766F69636552656D6F766572436172726567616D656E746F28292C652E73756363657373297B696E766F696365507265656E636865724974656E7328652E6974656D732C652E6C6F7673292C617065782E6D6573736167652E636C6561724572726F7273';
+wwv_flow_imp.g_varchar2_table(15) := '28292C617065782E6D6573736167652E73686F77506167655375636365737328652E6D657373616765293B7472797B617065782E726567696F6E2822696E766F6963655F6974656D7322292E7265667265736828297D63617463682865297B636F6E736F';
+wwv_flow_imp.g_varchar2_table(16) := '6C652E6C6F6728225B494E564F4943455D2052656769C3A36F20696E766F6963655F6974656D73206EC3A36F20656E636F6E74726164612E22297D7472797B617065782E726567696F6E2822696E766F6963655F6761707322292E726566726573682829';
+wwv_flow_imp.g_varchar2_table(17) := '7D63617463682865297B636F6E736F6C652E6C6F6728225B494E564F4943455D2052656769C3A36F20696E766F6963655F67617073206EC3A36F20656E636F6E74726164612E22297D636F6E736F6C652E6C6F6728225B494E564F4943455D2050726F63';
+wwv_flow_imp.g_varchar2_table(18) := '657373616D656E746F20636F6E636C75C3AD646F2E22297D656C736520696E766F6963654572726F28652E6D6573736167657C7C224572726F20616F2070726F636573736172206120696E766F6963652E22297D29292E6661696C282866756E6374696F';
+wwv_flow_imp.g_varchar2_table(19) := '6E28652C6F2C6E297B696E766F69636546616C6861416A6178282245544150412033202D2050524F4345535341525F494E564F4943455F4A534F4E222C652C6F2C6E297D29297D66756E6374696F6E20696E766F6963654574617061322865297B636F6E';
+wwv_flow_imp.g_varchar2_table(20) := '736F6C652E6C6F6728225B494E564F4943455D20546578746F206578747261C3AD646F2E20496E696369616E646F20657374727574757261C3A7C3A36F20646120696E766F6963652E2E2E22292C617065782E7365727665722E70726F63657373282245';
+wwv_flow_imp.g_varchar2_table(21) := '5354525554555241525F494E564F4943455F415049222C7B706167654974656D733A2223503432395F49445F54454E414E542C23503432395F49445F50524F434553534F494D504F52544143414F2C23503432395F4D4F44454C4F5F4F50454E4149227D';
+wwv_flow_imp.g_varchar2_table(22) := '2C7B64617461547970653A226A736F6E227D292E646F6E65282866756E6374696F6E286F297B696E766F6963654574617061332865297D29292E6661696C282866756E6374696F6E28652C6F2C6E297B696E766F69636546616C6861416A617828224554';
+wwv_flow_imp.g_varchar2_table(23) := '4150412032202D20455354525554555241525F494E564F4943455F415049222C652C6F2C6E297D29297D66756E6374696F6E20696E766F696365416E616C697361722865297B696E766F6963654D6F7374726172436172726567616D656E746F28652C22';
+wwv_flow_imp.g_varchar2_table(24) := '4578747261696E646F206F20746578746F20646F20646F63756D656E746F2E2E2E22293B766172206F3D617065782E6974656D2822503432395F5044465F494E564F49434522292E67657456616C756528293B636F6E736F6C652E6C6F6728225B494E56';
+wwv_flow_imp.g_varchar2_table(25) := '4F4943455D2056616C6F7220503432395F5044465F494E564F4943453A222C6F292C617065782E7365727665722E70726F636573732822455854524149525F544558544F5F494E564F4943455F415049222C7B7830313A6F2C706167654974656D733A22';
+wwv_flow_imp.g_varchar2_table(26) := '23503432395F4D4F44454C4F5F4F50454E4149227D2C7B64617461547970653A226A736F6E227D292E646F6E65282866756E6374696F6E286F297B6F2E737563636573733F696E766F6963654574617061322865293A696E766F6963654572726F286F2E';
+wwv_flow_imp.g_varchar2_table(27) := '6D6573736167657C7C224572726F20616F206578747261697220746578746F20646F20646F63756D656E746F2E22297D29292E6661696C282866756E6374696F6E28652C6F2C6E297B696E766F69636546616C6861416A6178282245544150412031202D';
+wwv_flow_imp.g_varchar2_table(28) := '20455854524149525F544558544F5F494E564F4943455F415049222C652C6F2C6E297D29297D';
+wwv_flow_imp_shared.create_app_static_file(
+ p_id=>wwv_flow_imp.id(282028554326129885)
+,p_file_name=>'429.min.js'
+,p_mime_type=>'text/javascript'
 ,p_file_charset=>'utf-8'
 ,p_file_content => wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
 );
@@ -155206,12 +155307,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_sequence=>10
 ,p_button_plug_id=>wwv_flow_imp.id(1116830969431364120)
 ,p_button_name=>'Gravar'
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
-,p_button_template_id=>wwv_flow_imp.id(529721578828987060)
+,p_button_action=>'DEFINED_BY_DA'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>wwv_flow_imp.id(529721430009987060)
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'&P355_LABEL_GRAVAR.'
 ,p_button_position=>'NEXT'
+,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-angle-right'
 );
 wwv_flow_imp_page.create_page_button(
@@ -156809,6 +156911,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>unistr('IMPORTA\00C7\00C3O-DE-INVOICE-VIA-PDF')
 ,p_step_title=>unistr('Importa\00E7\00E3o de invoice via PDF')
 ,p_autocomplete_on_off=>'OFF'
+,p_javascript_file_urls=>'#APP_FILES#429#MIN#.js'
 ,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'function toggleClearButton(itemName, buttonId) {',
 '    const valor = apex.item(itemName).getValue();',
@@ -158744,16 +158847,63 @@ wwv_flow_imp_page.create_ig_report_column(
 ,p_is_visible=>true
 ,p_is_frozen=>false
 );
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(269370485569277940)
+,p_name=>'New'
+,p_template=>wwv_flow_imp.id(529623708881986997)
+,p_display_sequence=>610
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select blob_content, filename, mime_type',
+'  from apex_application_temp_files'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>wwv_flow_imp.id(529674865928987028)
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'NEXT_PREVIOUS_LINKS'
+,p_pagination_display_position=>'BOTTOM_RIGHT'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(269370659091277942)
+,p_query_column_id=>2
+,p_column_alias=>'FILENAME'
+,p_column_display_sequence=>20
+,p_column_heading=>'Filename'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(269370743594277943)
+,p_query_column_id=>3
+,p_column_alias=>'MIME_TYPE'
+,p_column_display_sequence=>30
+,p_column_heading=>'Mime Type'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(225900069187178221)
 ,p_button_sequence=>50
 ,p_button_plug_id=>wwv_flow_imp.id(225628587752813619)
 ,p_button_name=>'BTN_ANALISAR'
-,p_button_action=>'SUBMIT'
+,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft:t-Button--stretch:t-Button--padTop'
 ,p_button_template_id=>wwv_flow_imp.id(529721578828987060)
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Ver PDF'
+,p_warn_on_unsaved_changes=>null
 ,p_icon_css_classes=>'fa-file-pdf-o'
 ,p_grid_new_row=>'Y'
 ,p_grid_column_span=>3
@@ -159804,10 +159954,19 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'click'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(227661979214146843)
+ p_id=>wwv_flow_imp.id(269370125613277937)
 ,p_event_id=>wwv_flow_imp.id(227661869446146842)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attribute_01=>'invoiceAnalisar(this.triggeringElement);'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(227661979214146843)
+,p_event_id=>wwv_flow_imp.id(227661869446146842)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
@@ -160027,10 +160186,45 @@ wwv_flow_imp_page.create_page_process(
 '  l_error_items       varchar2(4000);',
 '  l_values            apex_json.t_values;',
 '',
+unistr('  -- Instrumenta\00E7\00E3o de desempenho'),
+'  l_tick_inicio        pls_integer := dbms_utility.get_time;',
+'  l_tick_etapa         pls_integer := dbms_utility.get_time;',
+'  l_qtd_itens          pls_integer := 0;',
+'  l_qtd_gaps           pls_integer := 0;',
+'',
 unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  l_etapa              varchar2(200) := ''INICIALIZACAO'';',
 '  l_detalhe_http       varchar2(4000);',
 '  l_backtrace          varchar2(4000);',
+'',
+'  procedure registrar_tempo(',
+'    p_etapa   in varchar2,',
+'    p_detalhe in varchar2 default null',
+'  ) is',
+'    l_tick_atual pls_integer := dbms_utility.get_time;',
+'    l_tempo_etapa number;',
+'    l_tempo_total number;',
+'  begin',
+'    l_tempo_etapa := (l_tick_atual - l_tick_etapa) / 100;',
+'    l_tempo_total := (l_tick_atual - l_tick_inicio) / 100;',
+'',
+'    grava_log2(',
+'         ''[INVOICE 429]''',
+'      || '' ETAPA='' || p_etapa',
+'      || '' | TEMPO_ETAPA='' || to_char(l_tempo_etapa, ''FM9999990D00'') || ''s''',
+'      || '' | TEMPO_TOTAL='' || to_char(l_tempo_total, ''FM9999990D00'') || ''s''',
+'      || case',
+'           when p_detalhe is not null',
+'           then '' | '' || substr(p_detalhe, 1, 3000)',
+'         end',
+'    );',
+'',
+'    l_tick_etapa := l_tick_atual;',
+'  exception',
+'    when others then',
+unistr('      -- O diagn\00F3stico nunca deve impedir o processamento da invoice.'),
+'      null;',
+'  end registrar_tempo;',
 '',
 '  procedure registrar_etapa(',
 '    p_etapa    in varchar2,',
@@ -160146,6 +160340,8 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    return l_body;',
 '  end;',
 'begin',
+'  registrar_tempo(''PROCESSO_INICIO'', ''arquivo_temp='' || :P429_PDF_INVOICE);',
+'',
 '  if :P429_PDF_INVOICE is null then',
 '    raise_application_error(-20001, ''Selecione um arquivo PDF.'');',
 '  end if;',
@@ -160156,11 +160352,17 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  :P429_RESULTADO_VALIDACAO := null;',
 '  :P429_ITENS_COM_ERRO := null;',
 '  :P429_STATUS_IMPORTACAO := null;',
+'  registrar_tempo(''INICIALIZACAO_APEX_CONCLUIDA'');',
 '',
 '  select blob_content, filename, mime_type',
 '    into l_pdf_blob, l_filename, l_mime_type',
 '    from apex_application_temp_files',
 '   where name = :P429_PDF_INVOICE;',
+'',
+'  registrar_tempo(',
+'    ''PDF_CARREGADO'',',
+'    ''arquivo='' || l_filename || ''; bytes='' || dbms_lob.getlength(l_pdf_blob) || ''; mime='' || l_mime_type',
+'  );',
 '',
 '  if l_mime_type not in (''application/pdf'', ''application/octet-stream'') then',
 '    raise_application_error(-20002, ''O arquivo selecionado nao e um PDF.'');',
@@ -160169,6 +160371,10 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  l_safe_filename := replace(nvl(l_filename, ''document.pdf''), ''"'', '''');',
 '  l_boundary := ''----apex-invoice-'' || rawtohex(sys_guid());',
 '  l_multipart_blob := build_pdf_multipart_body(l_pdf_blob, l_safe_filename, l_boundary);',
+'  registrar_tempo(',
+'    ''MULTIPART_CRIADO'',',
+'    ''bytes='' || dbms_lob.getlength(l_multipart_blob)',
+'  );',
 '',
 '  apex_web_service.g_request_headers.delete;',
 '  apex_web_service.g_request_headers(1).name := ''Accept'';',
@@ -160181,6 +160387,7 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    ''arquivo='' || l_safe_filename',
 '      || ''; bytes='' || dbms_lob.getlength(l_pdf_blob)',
 '  );',
+'  registrar_tempo(''ANTES_EXTRACT_TEXT'');',
 '',
 '  begin',
 '    l_text_response := apex_web_service.make_rest_request(',
@@ -160197,6 +160404,11 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  registrar_etapa(',
 '    ''RETORNO_EXTRACT_TEXT'',',
 '    ''status_http='' || apex_web_service.g_status_code',
+'  );',
+'  registrar_tempo(',
+'    ''HTTP_EXTRACT_TEXT_CONCLUIDO'',',
+'    ''status_http='' || apex_web_service.g_status_code',
+'      || ''; response_chars='' || dbms_lob.getlength(l_text_response)',
 '  );',
 '',
 '  if apex_web_service.g_status_code <> 200 then',
@@ -160217,6 +160429,11 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    );',
 '  end if;',
 '',
+'  registrar_tempo(',
+'    ''TEXTO_EXTRAIDO_PROCESSADO'',',
+'    ''texto_chars='' || dbms_lob.getlength(l_extracted_text)',
+'  );',
+'',
 '  apex_json.initialize_clob_output;',
 '  apex_json.open_object;',
 '  apex_json.write(''filename'', l_safe_filename);',
@@ -160224,6 +160441,10 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  apex_json.close_object;',
 '  l_structure_payload := apex_json.get_clob_output;',
 '  apex_json.free_output;',
+'  registrar_tempo(',
+'    ''PAYLOAD_STRUCTURE_CRIADO'',',
+'    ''payload_chars='' || dbms_lob.getlength(l_structure_payload)',
+'  );',
 '',
 '  apex_web_service.g_request_headers.delete;',
 '  apex_web_service.g_request_headers(1).name := ''Accept'';',
@@ -160235,6 +160456,7 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    ''CHAMANDO_STRUCTURE_INVOICE'',',
 '    ''payload_chars='' || dbms_lob.getlength(l_structure_payload)',
 '  );',
+'  registrar_tempo(''ANTES_STRUCTURE_INVOICE'');',
 '',
 '  begin',
 '    l_structure_response := apex_web_service.make_rest_request(',
@@ -160251,6 +160473,11 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  registrar_etapa(',
 '    ''RETORNO_STRUCTURE_INVOICE'',',
 '    ''status_http='' || apex_web_service.g_status_code',
+'  );',
+'  registrar_tempo(',
+'    ''HTTP_STRUCTURE_INVOICE_CONCLUIDO'',',
+'    ''status_http='' || apex_web_service.g_status_code',
+'      || ''; response_chars='' || dbms_lob.getlength(l_structure_response)',
 '  );',
 '',
 '  if apex_web_service.g_status_code <> 200 then',
@@ -160272,6 +160499,11 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    );',
 '  end if;',
 '',
+'  registrar_tempo(',
+'    ''JSON_INVOICE_EXTRAIDO'',',
+'    ''invoice_chars='' || dbms_lob.getlength(l_invoice_json)',
+'  );',
+'',
 '  apex_json.initialize_clob_output;',
 '  apex_json.open_object;',
 '  apex_json.open_object(''context'');',
@@ -160291,6 +160523,8 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    into l_invoice_json',
 '    from dual;',
 '',
+'  registrar_tempo(''CONTEXTO_JSON_APLICADO'');',
+'',
 '  apex_collection.create_or_truncate_collection(''INVOICE_429_AUDIT'');',
 '  apex_collection.add_member(',
 '    p_collection_name => ''INVOICE_429_AUDIT'',',
@@ -160299,7 +160533,13 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    p_clob001         => l_invoice_json',
 '  );',
 '',
+'  registrar_tempo(''AUDITORIA_COLLECTION_GRAVADA'');',
+'  registrar_tempo(''ANTES_VALIDATE_JSON'');',
 '  l_validation_result := imp_invoice_ai_import_pkg.validate_json(l_invoice_json);',
+'  registrar_tempo(',
+'    ''VALIDATE_JSON_CONCLUIDO'',',
+'    ''resultado_chars='' || dbms_lob.getlength(l_validation_result)',
+'  );',
 '',
 '  select json_value(l_validation_result, ''$.status'' returning varchar2(50) null on error)',
 '    into l_validation_status',
@@ -160421,6 +160661,9 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '         :P429_VALOR_INVOICE',
 '    from dual;',
 '',
+'  registrar_tempo(''ITENS_CABECALHO_PREENCHIDOS'');',
+'  registrar_tempo(''ANTES_MONTAR_COLLECTION_ITEMS'');',
+'',
 '  for r in (',
 '    select o.*,',
 '           coalesce(o.id_entrega, v.id_entrega) id_entrega_resolvido,',
@@ -160493,6 +160736,7 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '         group by to_number(regexp_substr(scope, ''[0-9]+'')) + 1',
 '      ) g on g.item_index = o.item_index',
 '  ) loop',
+'    l_qtd_itens := l_qtd_itens + 1;',
 '    apex_collection.add_member(',
 '      p_collection_name => ''INVOICE_429_ITEMS'',',
 '      p_c001 => r.sequencia,            p_c002 => r.id_entrega_resolvido,',
@@ -160532,6 +160776,12 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    );',
 '  end loop;',
 '',
+'  registrar_tempo(',
+'    ''COLLECTION_ITEMS_CONCLUIDA'',',
+'    ''quantidade_itens='' || l_qtd_itens',
+'  );',
+'  registrar_tempo(''ANTES_MONTAR_COLLECTION_GAPS'');',
+'',
 '  for g in (',
 '    select severity, scope, field, message, extracted_value',
 '      from json_table(',
@@ -160545,6 +160795,7 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '          extracted_value varchar2(1000) path ''$.extracted_value''',
 '      )',
 '  ) loop',
+'    l_qtd_gaps := l_qtd_gaps + 1;',
 '    apex_collection.add_member(',
 '      p_collection_name => ''INVOICE_429_GAPS'',',
 '      p_c001 => g.severity, p_c002 => g.scope, p_c003 => g.field,',
@@ -160574,6 +160825,11 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    end if;',
 '  end loop;',
 '',
+'  registrar_tempo(',
+'    ''COLLECTION_GAPS_CONCLUIDA'',',
+'    ''quantidade_gaps='' || l_qtd_gaps',
+'  );',
+'',
 '  :P429_ITENS_COM_ERRO := l_error_items;',
 '  :P429_STATUS_IMPORTACAO := case',
 '    when l_validation_status = ''VALID'' then ''PRONTO_PARA_IMPORTAR''',
@@ -160589,9 +160845,16 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '  end if;',
 '',
 '  registrar_etapa(''PROCESSAMENTO_CONCLUIDO'');',
+'  registrar_tempo(',
+'    ''PROCESSAMENTO_CONCLUIDO'',',
+'    ''status='' || :P429_STATUS_IMPORTACAO',
+'      || ''; itens='' || l_qtd_itens',
+'      || ''; gaps='' || l_qtd_gaps',
+'  );',
 '  liberar_blob_temporario;',
 'exception',
 '  when no_data_found then',
+'    registrar_tempo(''ERRO_NO_DATA_FOUND'', ''etapa='' || l_etapa || ''; erro='' || sqlerrm);',
 '    liberar_blob_temporario;',
 '    raise_application_error(',
 '      -20008,',
@@ -160599,6 +160862,10 @@ unistr('  -- Diagn\00F3stico da comunica\00E7\00E3o HTTP'),
 '    );',
 '',
 '  when others then',
+'    registrar_tempo(',
+'      ''ERRO_GERAL'',',
+'      ''etapa='' || l_etapa || ''; sqlcode='' || sqlcode || ''; erro='' || substr(sqlerrm, 1, 1500)',
+'    );',
 '    liberar_blob_temporario;',
 '',
 unistr('    -- Mant\00E9m mensagens funcionais j\00E1 geradas pelo pr\00F3prio processo.'),
@@ -160634,6 +160901,7 @@ unistr('           ''Erro na an\00E1lise da invoice. Etapa: '' || l_etapa'),
 ,p_process_clob_language=>'PLSQL'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_imp.id(225900069187178221)
+,p_required_patch=>wwv_flow_imp.id(529550877024986936)
 ,p_internal_uid=>237693941219920405
 );
 wwv_flow_imp_page.create_page_process(
@@ -160772,6 +161040,936 @@ wwv_flow_imp_shared.create_invokeapi_comp_param(
 ,p_display_sequence=>30
 ,p_value_type=>'ITEM'
 ,p_value=>'P0_HELP_TELA'
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(269369912140277935)
+,p_process_sequence=>10
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'EXTRAIR_TEXTO_INVOICE_API'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    c_api_base constant varchar2(32767) := ''https://import-invoice-v2.onrender.com'';',
+'    c_crlf constant varchar2(2) := chr(13) || chr(10);',
+'    c_transfer_timeout constant pls_integer := 600;',
+'',
+'    l_nome_arquivo_temp varchar2(4000);',
+'    l_pdf_blob blob;',
+'    l_filename varchar2(4000);',
+'    l_safe_filename varchar2(4000);',
+'    l_mime_type varchar2(255);',
+'    l_boundary varchar2(100);',
+'    l_multipart_blob blob;',
+'    l_text_response clob;',
+'    l_extracted_text clob;',
+'    l_values apex_json.t_values;',
+'',
+'    l_tick_inicio pls_integer := dbms_utility.get_time;',
+'    l_tick_etapa pls_integer := dbms_utility.get_time;',
+'    l_etapa varchar2(200) := ''INICIALIZACAO'';',
+'',
+'    procedure registrar_tempo(p_etapa in varchar2, p_detalhe in varchar2 default null) is',
+'        l_tick_atual pls_integer := dbms_utility.get_time;',
+'        l_tempo_etapa number;',
+'        l_tempo_total number;',
+'    begin',
+'        l_tempo_etapa := (l_tick_atual - l_tick_etapa) / 100;',
+'        l_tempo_total := (l_tick_atual - l_tick_inicio) / 100;',
+'        grava_log2(',
+'            ''[INVOICE 429] ETAPA='' || p_etapa ||',
+'            '' | TEMPO_ETAPA='' || to_char(l_tempo_etapa, ''FM9999990D00'') || ''s'' ||',
+'            '' | TEMPO_TOTAL='' || to_char(l_tempo_total, ''FM9999990D00'') || ''s'' ||',
+'            case when p_detalhe is not null then '' | '' || substr(p_detalhe, 1, 3000) end',
+'        );',
+'        l_tick_etapa := l_tick_atual;',
+'    exception when others then null;',
+'    end registrar_tempo;',
+'',
+'    procedure liberar_blob_temporario is',
+'    begin',
+'        if l_multipart_blob is not null and dbms_lob.istemporary(l_multipart_blob) = 1 then',
+'            dbms_lob.freetemporary(l_multipart_blob);',
+'        end if;',
+'    exception when others then null;',
+'    end liberar_blob_temporario;',
+'',
+'    procedure append_varchar2_to_blob(p_blob in out nocopy blob, p_value in varchar2) is',
+'        l_raw raw(32767);',
+'    begin',
+'        l_raw := utl_raw.cast_to_raw(p_value);',
+'        dbms_lob.writeappend(p_blob, utl_raw.length(l_raw), l_raw);',
+'    end append_varchar2_to_blob;',
+'',
+'    procedure append_blob(p_dest in out nocopy blob, p_src in blob) is',
+'        l_dest_offset integer;',
+'        l_amount integer;',
+'    begin',
+'        l_amount := dbms_lob.getlength(p_src);',
+'        if l_amount > 0 then',
+'            l_dest_offset := dbms_lob.getlength(p_dest) + 1;',
+'            dbms_lob.copy(',
+'                dest_lob => p_dest,',
+'                src_lob => p_src,',
+'                amount => l_amount,',
+'                dest_offset => l_dest_offset,',
+'                src_offset => 1',
+'            );',
+'        end if;',
+'    end append_blob;',
+'',
+'    function build_pdf_multipart_body(',
+'        p_pdf_blob in blob,',
+'        p_filename in varchar2,',
+'        p_boundary in varchar2',
+'    ) return blob is',
+'        l_body blob;',
+'    begin',
+'        dbms_lob.createtemporary(l_body, true);',
+'        append_varchar2_to_blob(l_body, ''--'' || p_boundary || c_crlf);',
+'        append_varchar2_to_blob(',
+'            l_body,',
+'            ''Content-Disposition: form-data; name="file"; filename="'' || p_filename || ''"'' || c_crlf',
+'        );',
+'        append_varchar2_to_blob(l_body, ''Content-Type: application/pdf'' || c_crlf || c_crlf);',
+'        append_blob(l_body, p_pdf_blob);',
+'        append_varchar2_to_blob(l_body, c_crlf || ''--'' || p_boundary || ''--'' || c_crlf);',
+'        return l_body;',
+'    end build_pdf_multipart_body;',
+'',
+'begin',
+'    l_nome_arquivo_temp := apex_application.g_x01;',
+'    registrar_tempo(''AJAX1_INICIO'', ''arquivo='' || l_nome_arquivo_temp);',
+'',
+'    if l_nome_arquivo_temp is null then',
+'        raise_application_error(-20001, ''Selecione um arquivo PDF.'');',
+'    end if;',
+'',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_TEXT'');',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_API'');',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_ITEMS'');',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_GAPS'');',
+'',
+'    begin',
+'        select blob_content,',
+'               filename,',
+'               mime_type',
+'          into l_pdf_blob,',
+'               l_filename,',
+'               l_mime_type',
+'          from (',
+'                select blob_content,',
+'                       filename,',
+'                       mime_type',
+'                  from apex_application_temp_files',
+'                 where filename = l_nome_arquivo_temp',
+'                    or name = l_nome_arquivo_temp',
+'                 order by created_on desc',
+'               )',
+'         where rownum = 1;',
+'',
+'    exception',
+'        when no_data_found then',
+'            raise_application_error(',
+'                -20003,',
+unistr('                ''Arquivo n\00E3o encontrado em APEX_APPLICATION_TEMP_FILES. Arquivo: '' ||'),
+'                l_nome_arquivo_temp',
+'            );',
+'    end;',
+'',
+'    registrar_tempo(',
+'        ''PDF_CARREGADO'',',
+'        ''arquivo='' || l_filename || ''; bytes='' || dbms_lob.getlength(l_pdf_blob) || ''; mime='' || l_mime_type',
+'    );',
+'',
+'    if l_mime_type not in (''application/pdf'', ''application/octet-stream'') then',
+unistr('        raise_application_error(-20002, ''O arquivo selecionado n\00E3o \00E9 um PDF.'');'),
+'    end if;',
+'',
+'    l_safe_filename := replace(nvl(l_filename, ''document.pdf''), ''"'', '''');',
+'    l_boundary := ''----apex-invoice-'' || rawtohex(sys_guid());',
+'    l_multipart_blob := build_pdf_multipart_body(l_pdf_blob, l_safe_filename, l_boundary);',
+'',
+'    apex_web_service.g_request_headers.delete;',
+'    apex_web_service.g_request_headers(1).name := ''Accept'';',
+'    apex_web_service.g_request_headers(1).value := ''application/json'';',
+'    apex_web_service.g_request_headers(2).name := ''Content-Type'';',
+'    apex_web_service.g_request_headers(2).value := ''multipart/form-data; boundary='' || l_boundary;',
+'',
+'    l_etapa := ''CHAMANDO_EXTRACT_TEXT'';',
+'    registrar_tempo(''ANTES_EXTRACT_TEXT'');',
+'',
+'    l_text_response := apex_web_service.make_rest_request(',
+'        p_url => c_api_base || ''/extract-text'',',
+'        p_http_method => ''POST'',',
+'        p_body_blob => l_multipart_blob,',
+'        p_transfer_timeout => c_transfer_timeout',
+'    );',
+'',
+'    registrar_tempo(',
+'        ''HTTP_EXTRACT_TEXT_CONCLUIDO'',',
+'        ''status='' || apex_web_service.g_status_code || ''; response_chars='' || dbms_lob.getlength(l_text_response)',
+'    );',
+'',
+'    if apex_web_service.g_status_code <> 200 then',
+'        raise_application_error(',
+'            -20004,',
+'            ''Erro HTTP '' || apex_web_service.g_status_code || '' ao extrair texto: '' ||',
+'            dbms_lob.substr(l_text_response, 2000, 1)',
+'        );',
+'    end if;',
+'',
+'    apex_json.parse(l_values, l_text_response);',
+'    l_extracted_text := apex_json.get_clob(p_values => l_values, p_path => ''text'');',
+'',
+'    if l_extracted_text is null then',
+'        raise_application_error(',
+'            -20005,',
+unistr('            ''A API n\00E3o retornou o campo text: '' || dbms_lob.substr(l_text_response, 2000, 1)'),
+'        );',
+'    end if;',
+'',
+'    apex_collection.add_member(',
+'        p_collection_name => ''INVOICE_429_TEXT'',',
+'        p_c001 => l_safe_filename,',
+'        p_c002 => nvl(:P429_MODELO_OPENAI, ''OPENAI_MODEL do Render''),',
+'        p_clob001 => l_extracted_text',
+'    );',
+'',
+'    registrar_tempo(',
+'        ''AJAX1_CONCLUIDO'',',
+'        ''texto_chars='' || dbms_lob.getlength(l_extracted_text)',
+'    );',
+'',
+'    liberar_blob_temporario;',
+'',
+'    apex_json.open_object;',
+'    apex_json.write(''success'', true);',
+unistr('    apex_json.write(''message'', ''Texto extra\00EDdo com sucesso.'');'),
+'    apex_json.close_object;',
+'',
+'exception',
+'    when no_data_found then',
+'        liberar_blob_temporario;',
+'        registrar_tempo(''AJAX1_ERRO_NO_DATA_FOUND'', ''arquivo='' || l_nome_arquivo_temp);',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+unistr('        apex_json.write(''message'', ''Arquivo n\00E3o encontrado em APEX_APPLICATION_TEMP_FILES.'');'),
+'        apex_json.close_object;',
+'',
+'    when others then',
+'        liberar_blob_temporario;',
+'        registrar_tempo(',
+'            ''AJAX1_ERRO'',',
+'            ''etapa='' || l_etapa || ''; sqlcode='' || sqlcode || ''; erro='' || substr(sqlerrm, 1, 1500)',
+'        );',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+'        apex_json.write(''message'', substr(sqlerrm, 1, 2000));',
+'        apex_json.write(''etapa'', l_etapa);',
+'        apex_json.close_object;',
+'end;',
+''))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>269369912140277935
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(269370205685277938)
+,p_process_sequence=>20
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'ESTRUTURAR_INVOICE_API'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    c_api_base constant varchar2(32767) := ''https://import-invoice-v2.onrender.com'';',
+'    c_transfer_timeout constant pls_integer := 600;',
+'',
+'    l_safe_filename varchar2(4000);',
+'    l_modelo varchar2(4000);',
+'    l_extracted_text clob;',
+'    l_structure_payload clob;',
+'    l_structure_response clob;',
+'    l_invoice_json clob;',
+'    l_context_patch clob;',
+'',
+'    l_tick_inicio pls_integer := dbms_utility.get_time;',
+'    l_tick_etapa pls_integer := dbms_utility.get_time;',
+'    l_etapa varchar2(200) := ''INICIALIZACAO'';',
+'',
+'    procedure registrar_tempo(p_etapa in varchar2, p_detalhe in varchar2 default null) is',
+'        l_tick_atual pls_integer := dbms_utility.get_time;',
+'        l_tempo_etapa number;',
+'        l_tempo_total number;',
+'    begin',
+'        l_tempo_etapa := (l_tick_atual - l_tick_etapa) / 100;',
+'        l_tempo_total := (l_tick_atual - l_tick_inicio) / 100;',
+'        grava_log2(',
+'            ''[INVOICE 429] ETAPA='' || p_etapa ||',
+'            '' | TEMPO_ETAPA='' || to_char(l_tempo_etapa, ''FM9999990D00'') || ''s'' ||',
+'            '' | TEMPO_TOTAL='' || to_char(l_tempo_total, ''FM9999990D00'') || ''s'' ||',
+'            case when p_detalhe is not null then '' | '' || substr(p_detalhe, 1, 3000) end',
+'        );',
+'        l_tick_etapa := l_tick_atual;',
+'    exception when others then null;',
+'    end registrar_tempo;',
+'',
+'begin',
+'    registrar_tempo(''AJAX2_INICIO'');',
+'',
+'    select c001, c002, clob001',
+'      into l_safe_filename, l_modelo, l_extracted_text',
+'      from apex_collections',
+'     where collection_name = ''INVOICE_429_TEXT''',
+'       and seq_id = (',
+'            select max(seq_id)',
+'              from apex_collections',
+'             where collection_name = ''INVOICE_429_TEXT''',
+'       );',
+'',
+'    if l_extracted_text is null then',
+unistr('        raise_application_error(-20010, ''Texto extra\00EDdo n\00E3o encontrado. Execute novamente a an\00E1lise.'');'),
+'    end if;',
+'',
+'    registrar_tempo(',
+'        ''TEXTO_RECUPERADO'',',
+'        ''arquivo='' || l_safe_filename || ''; texto_chars='' || dbms_lob.getlength(l_extracted_text)',
+'    );',
+'',
+'    apex_json.initialize_clob_output;',
+'    apex_json.open_object;',
+'    apex_json.write(''filename'', l_safe_filename);',
+'    apex_json.write(''extracted_text'', l_extracted_text);',
+'    apex_json.close_object;',
+'    l_structure_payload := apex_json.get_clob_output;',
+'    apex_json.free_output;',
+'',
+'    registrar_tempo(',
+'        ''PAYLOAD_STRUCTURE_CRIADO'',',
+'        ''payload_chars='' || dbms_lob.getlength(l_structure_payload)',
+'    );',
+'',
+'    apex_web_service.g_request_headers.delete;',
+'    apex_web_service.g_request_headers(1).name := ''Accept'';',
+'    apex_web_service.g_request_headers(1).value := ''application/json'';',
+'    apex_web_service.g_request_headers(2).name := ''Content-Type'';',
+'    apex_web_service.g_request_headers(2).value := ''application/json'';',
+'',
+'    l_etapa := ''CHAMANDO_STRUCTURE_INVOICE'';',
+'    registrar_tempo(''ANTES_STRUCTURE_INVOICE'');',
+'',
+'    l_structure_response := apex_web_service.make_rest_request(',
+'        p_url => c_api_base || ''/structure-invoice'',',
+'        p_http_method => ''POST'',',
+'        p_body => l_structure_payload,',
+'        p_transfer_timeout => c_transfer_timeout',
+'    );',
+'',
+'    registrar_tempo(',
+'        ''HTTP_STRUCTURE_INVOICE_CONCLUIDO'',',
+'        ''status='' || apex_web_service.g_status_code || ''; response_chars='' || dbms_lob.getlength(l_structure_response)',
+'    );',
+'',
+'    if apex_web_service.g_status_code <> 200 then',
+'        raise_application_error(',
+'            -20006,',
+'            ''Erro HTTP '' || apex_web_service.g_status_code || '' ao estruturar invoice: '' ||',
+'            dbms_lob.substr(l_structure_response, 2000, 1)',
+'        );',
+'    end if;',
+'',
+'    select json_query(l_structure_response, ''$.data'' returning clob null on error)',
+'      into l_invoice_json',
+'      from dual;',
+'',
+'    if l_invoice_json is null then',
+'        raise_application_error(',
+'            -20007,',
+unistr('            ''A API n\00E3o retornou $.data: '' || dbms_lob.substr(l_structure_response, 2000, 1)'),
+'        );',
+'    end if;',
+'',
+'    apex_json.initialize_clob_output;',
+'    apex_json.open_object;',
+'    apex_json.open_object(''context'');',
+'',
+'    if :P429_ID_TENANT is not null then',
+'        apex_json.write(''id_tenant'', :P429_ID_TENANT);',
+'    end if;',
+'',
+'    apex_json.write(''id_usuario_incluiu'', 124);',
+'',
+'    if :P429_ID_PROCESSOIMPORTACAO is not null then',
+'        apex_json.write(''id_processoimportacao'', :P429_ID_PROCESSOIMPORTACAO);',
+'    end if;',
+'',
+'    apex_json.close_object;',
+'    apex_json.close_object;',
+'    l_context_patch := apex_json.get_clob_output;',
+'    apex_json.free_output;',
+'',
+'    select json_mergepatch(l_invoice_json, l_context_patch returning clob)',
+'      into l_invoice_json',
+'      from dual;',
+'',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_API'');',
+'',
+'    apex_collection.add_member(',
+'        p_collection_name => ''INVOICE_429_API'',',
+'        p_c001 => l_safe_filename,',
+'        p_c002 => l_modelo,',
+'        p_clob001 => l_invoice_json',
+'    );',
+'',
+'    registrar_tempo(',
+'        ''AJAX2_CONCLUIDO'',',
+'        ''json_chars='' || dbms_lob.getlength(l_invoice_json)',
+'    );',
+'',
+'    apex_json.open_object;',
+'    apex_json.write(''success'', true);',
+'    apex_json.write(''message'', ''Invoice estruturada com sucesso.'');',
+'    apex_json.close_object;',
+'',
+'exception',
+'    when no_data_found then',
+'        registrar_tempo(''AJAX2_ERRO_NO_DATA_FOUND'');',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+unistr('        apex_json.write(''message'', ''Texto extra\00EDdo n\00E3o encontrado na collection INVOICE_429_TEXT.'');'),
+'        apex_json.close_object;',
+'',
+'    when others then',
+'        registrar_tempo(',
+'            ''AJAX2_ERRO'',',
+'            ''etapa='' || l_etapa || ''; sqlcode='' || sqlcode || ''; erro='' || substr(sqlerrm, 1, 1500)',
+'        );',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+'        apex_json.write(''message'', substr(sqlerrm, 1, 2000));',
+'        apex_json.write(''etapa'', l_etapa);',
+'        apex_json.close_object;',
+'end;',
+''))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>269370205685277938
+);
+wwv_flow_imp_page.create_page_process(
+ p_id=>wwv_flow_imp.id(269370316810277939)
+,p_process_sequence=>30
+,p_process_point=>'ON_DEMAND'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'PROCESSAR_INVOICE_JSON'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_invoice_json clob;',
+'    l_validation_result clob;',
+'    l_validation_status varchar2(50);',
+'    l_page_item varchar2(100);',
+'    l_error_items varchar2(4000);',
+'    l_qtd_itens pls_integer := 0;',
+'    l_qtd_gaps pls_integer := 0;',
+'    l_tick_inicio pls_integer := dbms_utility.get_time;',
+'    l_tick_etapa pls_integer := dbms_utility.get_time;',
+'',
+'    procedure registrar_tempo(p_etapa in varchar2, p_detalhe in varchar2 default null) is',
+'        l_tick_atual pls_integer := dbms_utility.get_time;',
+'        l_tempo_etapa number;',
+'        l_tempo_total number;',
+'    begin',
+'        l_tempo_etapa := (l_tick_atual - l_tick_etapa) / 100;',
+'        l_tempo_total := (l_tick_atual - l_tick_inicio) / 100;',
+'        grava_log2(',
+'            ''[INVOICE 429 AJAX3] ETAPA='' || p_etapa ||',
+'            '' | TEMPO_ETAPA='' || to_char(l_tempo_etapa, ''FM9999990D00'') || ''s'' ||',
+'            '' | TEMPO_TOTAL='' || to_char(l_tempo_total, ''FM9999990D00'') || ''s'' ||',
+'            case when p_detalhe is not null then '' | '' || substr(p_detalhe, 1, 3000) end',
+'        );',
+'        l_tick_etapa := l_tick_atual;',
+'    exception when others then null;',
+'    end registrar_tempo;',
+'',
+'begin',
+'    registrar_tempo(''INICIO'');',
+'',
+'    select clob001',
+'      into l_invoice_json',
+'      from apex_collections',
+'     where collection_name = ''INVOICE_429_API''',
+'       and seq_id = (',
+'            select max(seq_id)',
+'              from apex_collections',
+'             where collection_name = ''INVOICE_429_API''',
+'       );',
+'',
+'    if l_invoice_json is null then',
+unistr('        raise_application_error(-20010, ''JSON da invoice n\00E3o encontrado. Execute novamente a an\00E1lise.'');'),
+'    end if;',
+'',
+'    registrar_tempo(''JSON_RECUPERADO'', ''chars='' || dbms_lob.getlength(l_invoice_json));',
+'',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_ITEMS'');',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_GAPS'');',
+'    apex_collection.create_or_truncate_collection(''INVOICE_429_AUDIT'');',
+'',
+'    apex_collection.add_member(',
+'        p_collection_name => ''INVOICE_429_AUDIT'',',
+'        p_c001 => apex_application.g_x01,',
+'        p_c002 => nvl(:P429_MODELO_OPENAI, ''OPENAI_MODEL do Render''),',
+'        p_clob001 => l_invoice_json',
+'    );',
+'',
+'    registrar_tempo(''AUDITORIA_GRAVADA'');',
+'    registrar_tempo(''ANTES_VALIDATE_JSON'');',
+'',
+'    l_validation_result := imp_invoice_ai_import_pkg.validate_json(l_invoice_json);',
+'',
+'    registrar_tempo(',
+'        ''VALIDATE_JSON_CONCLUIDO'',',
+'        ''chars='' || dbms_lob.getlength(l_validation_result)',
+'    );',
+'',
+'    select json_value(l_validation_result, ''$.status'' returning varchar2(50) null on error)',
+'      into l_validation_status',
+'      from dual;',
+'',
+'    select json_value(l_invoice_json, ''$.invoice.num_invoice''),',
+'           json_value(l_invoice_json, ''$.invoice.data_invoice''),',
+'           json_value(l_invoice_json, ''$.invoice.ind_status'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.pedido_importacao.numero_pedido_importacao_extraido''),',
+'           json_value(l_invoice_json, ''$.invoice.pedido_importacao.referencia_original_extraida''),',
+'           json_value(l_validation_result, ''$.resolved.id_pedidoimportacao'' returning number null on error),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_exportador'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.exportador.id_exportador'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.exportador.nome_extraido''),',
+'           json_value(l_invoice_json, ''$.invoice.exportador.documento_extraido''),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_importador'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.importador.id_importador'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.importador.nome_extraido''),',
+'           json_value(l_invoice_json, ''$.invoice.importador.documento_extraido''),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_adquirente'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.adquirente.id_adquirente'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.adquirente.nome_extraido''),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_condicaopagamento'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.condicao_pagamento.id_condicaopagamento'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.condicao_pagamento.descricao_extraida''),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_incoterm'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.incoterm.id_incoterm'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.incoterm.codigo_extraido''),',
+'           coalesce(',
+'               json_value(l_validation_result, ''$.resolved.id_moeda'' returning number null on error),',
+'               json_value(l_invoice_json, ''$.invoice.moeda.id_moeda'' returning number null on error)',
+'           ),',
+'           json_value(l_invoice_json, ''$.invoice.moeda.codigo_extraido''),',
+'           json_value(l_validation_result, ''$.confidence.pedido_importacao.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.pedido_importacao.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.pedido_importacao.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.exportador.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.exportador.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.exportador.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.importador.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.importador.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.importador.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.adquirente.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.adquirente.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.adquirente.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.condicao_pagamento.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.condicao_pagamento.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.condicao_pagamento.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.incoterm.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.incoterm.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.incoterm.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_validation_result, ''$.confidence.moeda.score'' returning number null on error),',
+'           json_value(l_validation_result, ''$.confidence.moeda.status'' returning varchar2(30) null on error),',
+'           json_value(l_validation_result, ''$.confidence.moeda.metodo'' returning varchar2(50) null on error),',
+'           json_value(l_invoice_json, ''$.invoice.pesos.peso_liquido'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.pesos.peso_bruto'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.valores.valor_total_mercadoria'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.valores.valor_desconto'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.valores.valor_despesa_invoice'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.valores.valor_total_condicao_venda'' returning number),',
+'           json_value(l_invoice_json, ''$.invoice.valores.valor_invoice_informado'' returning number)',
+'      into :P429_NUM_INVOICE,',
+'           :P429_DATA_INVOICE,',
+'           :P429_IND_STATUS,',
+'           :P429_NUM_PEDIDO_IMPORTACAO,',
+'           :P429_REFERENCIA_PEDIDO_ORIGINAL,',
+'           :P429_ID_PEDIDOIMPORTACAO,',
+'           :P429_ID_EXPORTADOR,',
+'           :P429_NOME_EXPORTADOR,',
+'           :P429_DOCUMENTO_EXPORTADOR,',
+'           :P429_ID_IMPORTADOR,',
+'           :P429_NOME_IMPORTADOR,',
+'           :P429_DOCUMENTO_IMPORTADOR,',
+'           :P429_ID_ADQUIRENTE,',
+'           :P429_NOME_ADQUIRENTE,',
+'           :P429_ID_CONDICAOPAGAMENTO,',
+'           :P429_DESC_CONDICAOPAGAMENTO,',
+'           :P429_ID_INCOTERM,',
+'           :P429_CODIGO_INCOTERM,',
+'           :P429_ID_MOEDA,',
+'           :P429_CODIGO_MOEDA,',
+'           :P429_SCORE_PEDIDOIMPORTACAO,',
+'           :P429_STATUS_PEDIDOIMPORTACAO,',
+'           :P429_METODO_PEDIDOIMPORTACAO,',
+'           :P429_SCORE_EXPORTADOR,',
+'           :P429_STATUS_EXPORTADOR,',
+'           :P429_METODO_EXPORTADOR,',
+'           :P429_SCORE_IMPORTADOR,',
+'           :P429_STATUS_IMPORTADOR,',
+'           :P429_METODO_IMPORTADOR,',
+'           :P429_SCORE_ADQUIRENTE,',
+'           :P429_STATUS_ADQUIRENTE,',
+'           :P429_METODO_ADQUIRENTE,',
+'           :P429_SCORE_CONDPAGTO,',
+'           :P429_STATUS_CONDPAGTO,',
+'           :P429_METODO_CONDPAGTO,',
+'           :P429_SCORE_INCOTERM,',
+'           :P429_STATUS_INCOTERM,',
+'           :P429_METODO_INCOTERM,',
+'           :P429_SCORE_MOEDA,',
+'           :P429_STATUS_MOEDA,',
+'           :P429_METODO_MOEDA,',
+'           :P429_PESO_LIQUIDO,',
+'           :P429_PESO_BRUTO,',
+'           :P429_VALOR_MERCADORIA,',
+'           :P429_VALOR_DESCONTO,',
+'           :P429_VALOR_DESPESA,',
+'           :P429_VALOR_CONDICAO_VENDA,',
+'           :P429_VALOR_INVOICE',
+'      from dual;',
+'',
+'    registrar_tempo(''CABECALHO_PREENCHIDO'');',
+'',
+'    for r in (',
+'        select o.*,',
+'               coalesce(o.id_entrega, v.id_entrega) id_entrega_resolvido,',
+'               coalesce(o.id_entrega_item, v.id_entrega_item) id_entrega_item_resolvido,',
+'               coalesce(o.id_item, v.id_item) id_item_resolvido,',
+'               coalesce(o.id_ncm, v.id_ncm) id_ncm_resolvido,',
+'               coalesce(o.id_unidade, v.id_unidademedida) id_unidade_resolvido,',
+'               coalesce(o.id_fabricante, v.id_fabricante) id_fabricante_resolvido,',
+'               coalesce(o.id_pais, v.id_pais_origem) id_pais_resolvido,',
+'               g.campos_pendentes',
+'          from json_table(',
+'                   l_invoice_json,',
+'                   ''$.items[*]''',
+'                   columns',
+'                       item_index for ordinality,',
+'                       sequencia varchar2(100) path ''$.sequencia_item_invoice'',',
+'                       id_entrega number path ''$.entrega.id_entrega'' null on error,',
+'                       ref_entrega varchar2(100) path ''$.entrega.referencia_extraida'',',
+'                       id_entrega_item number path ''$.entrega_item.id_entrega_item'' null on error,',
+'                       id_item number path ''$.item.id_item'' null on error,',
+'                       codigo_item varchar2(100) path ''$.item.codigo_extraido'',',
+'                       descricao_item varchar2(4000) path ''$.item.descricao_extraida'',',
+'                       id_ncm number path ''$.ncm.id_ncm'' null on error,',
+'                       codigo_ncm varchar2(100) path ''$.ncm.codigo_extraido'',',
+'                       id_unidade number path ''$.unidade_medida.id_unidademedida'' null on error,',
+'                       codigo_unidade varchar2(100) path ''$.unidade_medida.codigo_extraido'',',
+'                       quantidade varchar2(100) path ''$.quantidade'',',
+'                       peso_unitario varchar2(100) path ''$.pesos.peso_unitario'',',
+'                       peso_liquido_total varchar2(100) path ''$.pesos.peso_liquido_total'',',
+'                       peso_bruto_unitario varchar2(100) path ''$.pesos.peso_bruto_unitario'',',
+'                       peso_bruto_total varchar2(100) path ''$.pesos.peso_bruto_total'',',
+'                       valor_unitario varchar2(100) path ''$.valores.valor_unitario'',',
+'                       valor_desconto varchar2(100) path ''$.valores.valor_desconto'',',
+'                       valor_condicao_venda varchar2(100) path ''$.valores.valor_total_condicao_venda'',',
+'                       valor_desconto_item varchar2(100) path ''$.valores.valor_total_desconto_invoice_item'',',
+'                       valor_mercadoria varchar2(100) path ''$.valores.valor_total_mercadoria'',',
+'                       valor_despesa_item varchar2(100) path ''$.valores.valor_total_despesa_invoice_item'',',
+'                       id_fabricante number path ''$.fabricante.id_fabricante'' null on error,',
+'                       nome_fabricante varchar2(200) path ''$.fabricante.nome_extraido'',',
+'                       id_pais number path ''$.pais_origem.id_pais_origem'' null on error,',
+'                       codigo_pais varchar2(100) path ''$.pais_origem.codigo_extraido'',',
+'                       nome_pais varchar2(200) path ''$.pais_origem.nome_extraido''',
+'               ) o',
+'          left join json_table(',
+'                   l_validation_result,',
+'                   ''$.resolved.items[*]''',
+'                   columns',
+'                       item_index number path ''$.item_index'',',
+'                       id_entrega number path ''$.id_entrega'',',
+'                       id_entrega_item number path ''$.id_entrega_item'',',
+'                       id_item number path ''$.id_item'',',
+'                       id_ncm number path ''$.id_ncm'',',
+'                       id_unidademedida number path ''$.id_unidademedida'',',
+'                       id_fabricante number path ''$.id_fabricante'',',
+'                       id_pais_origem number path ''$.id_pais_origem''',
+'               ) v',
+'            on v.item_index = o.item_index',
+'          left join (',
+'               select to_number(regexp_substr(scope, ''[0-9]+'')) + 1 item_index,',
+'                      listagg(field, '', '') within group(order by field) campos_pendentes',
+'                 from json_table(',
+'                          l_validation_result,',
+'                          ''$.gaps[*]''',
+'                          columns',
+'                              severity varchar2(10) path ''$.severity'',',
+'                              scope varchar2(100) path ''$.scope'',',
+'                              field varchar2(200) path ''$.field''',
+'                      )',
+'                where severity in (''ERROR'', ''WARN'')',
+'                  and scope like ''items[%''',
+'                group by to_number(regexp_substr(scope, ''[0-9]+'')) + 1',
+'          ) g',
+'            on g.item_index = o.item_index',
+'    ) loop',
+'        l_qtd_itens := l_qtd_itens + 1;',
+'',
+'        apex_collection.add_member(',
+'            p_collection_name => ''INVOICE_429_ITEMS'',',
+'            p_c001 => r.sequencia,',
+'            p_c002 => r.id_entrega_resolvido,',
+'            p_c003 => r.ref_entrega,',
+'            p_c004 => r.id_entrega_item_resolvido,',
+'            p_c005 => r.id_item_resolvido,',
+'            p_c006 => r.codigo_item,',
+'            p_c007 => r.descricao_item,',
+'            p_c008 => r.id_ncm_resolvido,',
+'            p_c009 => r.codigo_ncm,',
+'            p_c010 => r.id_unidade_resolvido,',
+'            p_c011 => r.codigo_unidade,',
+'            p_c012 => r.quantidade,',
+'            p_c013 => r.peso_unitario,',
+'            p_c014 => r.peso_liquido_total,',
+'            p_c015 => r.peso_bruto_unitario,',
+'            p_c016 => r.peso_bruto_total,',
+'            p_c017 => r.valor_unitario,',
+'            p_c018 => r.valor_desconto,',
+'            p_c019 => r.valor_condicao_venda,',
+'            p_c020 => r.valor_desconto_item,',
+'            p_c021 => r.valor_mercadoria,',
+'            p_c022 => r.valor_despesa_item,',
+'            p_c023 => r.id_fabricante_resolvido,',
+'            p_c024 => r.nome_fabricante,',
+'            p_c025 => r.id_pais_resolvido,',
+'            p_c026 => r.codigo_pais,',
+'            p_c027 => r.nome_pais,',
+'            p_c028 => case',
+'                when r.id_entrega_resolvido is not null and r.id_entrega_item_resolvido is not null then ''Encontrado''',
+'                else ''Nao encontrado''',
+'            end,',
+'            p_c029 => regexp_replace(',
+'                case when r.id_entrega_resolvido is null then ''items[].entrega.id_entrega, '' end ||',
+'                case when r.id_entrega_item_resolvido is null then ''items[].entrega_item.id_entrega_item, '' end ||',
+'                case when r.id_item_resolvido is null then ''items[].item.id_item, '' end ||',
+'                case when r.id_ncm_resolvido is null then ''items[].ncm.id_ncm, '' end ||',
+'                case when r.id_unidade_resolvido is null then ''items[].unidade_medida.id_unidademedida, '' end ||',
+'                nvl(r.campos_pendentes, null),',
+'                '', $'',',
+'                ''''',
+'            ),',
+'            p_c030 => case when r.id_entrega_resolvido is null then ''S'' else ''N'' end,',
+'            p_c031 => case when r.id_entrega_item_resolvido is null then ''S'' else ''N'' end,',
+'            p_c032 => case when r.id_item_resolvido is null then ''S'' else ''N'' end,',
+'            p_c033 => case when r.id_ncm_resolvido is null then ''S'' else ''N'' end,',
+'            p_c034 => case when r.id_unidade_resolvido is null then ''S'' else ''N'' end,',
+'            p_c035 => case when r.id_fabricante_resolvido is null then ''S'' else ''N'' end,',
+'            p_c036 => case when r.id_pais_resolvido is null then ''S'' else ''N'' end',
+'        );',
+'    end loop;',
+'',
+'    registrar_tempo(''COLLECTION_ITEMS_CONCLUIDA'', ''quantidade='' || l_qtd_itens);',
+'',
+'    for g in (',
+'        select severity, scope, field, message, extracted_value',
+'          from json_table(',
+'                   l_validation_result,',
+'                   ''$.gaps[*]''',
+'                   columns',
+'                       severity varchar2(10) path ''$.severity'',',
+'                       scope varchar2(100) path ''$.scope'',',
+'                       field varchar2(200) path ''$.field'',',
+'                       message varchar2(1000) path ''$.message'',',
+'                       extracted_value varchar2(1000) path ''$.extracted_value''',
+'               )',
+'    ) loop',
+'        l_qtd_gaps := l_qtd_gaps + 1;',
+'',
+'        apex_collection.add_member(',
+'            p_collection_name => ''INVOICE_429_GAPS'',',
+'            p_c001 => g.severity,',
+'            p_c002 => g.scope,',
+'            p_c003 => g.field,',
+'            p_c004 => g.message,',
+'            p_c005 => g.extracted_value',
+'        );',
+'',
+'        l_page_item := case g.field',
+'            when ''invoice.num_invoice'' then ''P429_NUM_INVOICE''',
+'            when ''invoice.data_invoice'' then ''P429_DATA_INVOICE''',
+'            when ''invoice.pedido_importacao.id_pedidoimportacao'' then ''P429_ID_PEDIDOIMPORTACAO''',
+'            when ''invoice.pedido_importacao.numero_pedido_importacao_extraido'' then ''P429_NUM_PEDIDO_IMPORTACAO''',
+'            when ''invoice.exportador.id_exportador'' then ''P429_ID_EXPORTADOR''',
+'            when ''invoice.importador.id_importador'' then ''P429_ID_IMPORTADOR''',
+'            when ''invoice.adquirente.id_adquirente'' then ''P429_ID_ADQUIRENTE''',
+'            when ''invoice.condicao_pagamento.id_condicaopagamento'' then ''P429_ID_CONDICAOPAGAMENTO''',
+'            when ''invoice.incoterm.id_incoterm'' then ''P429_ID_INCOTERM''',
+'            when ''invoice.moeda.id_moeda'' then ''P429_ID_MOEDA''',
+'            when ''invoice.valores.valor_invoice_informado'' then ''P429_VALOR_INVOICE''',
+'        end;',
+'',
+'        if g.severity in (''ERROR'', ''WARN'') and l_page_item is not null then',
+'            if instr('':'' || l_error_items || '':'', '':'' || l_page_item || '':'') = 0 then',
+'                l_error_items := l_error_items ||',
+'                    case when l_error_items is not null then '':'' end ||',
+'                    l_page_item;',
+'            end if;',
+'        end if;',
+'    end loop;',
+'',
+'    registrar_tempo(''COLLECTION_GAPS_CONCLUIDA'', ''quantidade='' || l_qtd_gaps);',
+'',
+'    :P429_ITENS_COM_ERRO := l_error_items;',
+'    :P429_STATUS_IMPORTACAO := case',
+'        when l_validation_status = ''VALID'' then ''PRONTO_PARA_IMPORTAR''',
+'        else ''PENDENTE_DE_CONFERENCIA''',
+'    end;',
+'    :P429_RESULTADO_VALIDACAO := l_validation_result;',
+'    :P429_JSON_RETORNADO_API := l_invoice_json;',
+'',
+'    registrar_tempo(',
+'        ''PROCESSAMENTO_CONCLUIDO'',',
+'        ''status='' || :P429_STATUS_IMPORTACAO || ''; itens='' || l_qtd_itens || ''; gaps='' || l_qtd_gaps',
+'    );',
+'',
+'    apex_json.open_object;',
+'    apex_json.write(''success'', true);',
+'    apex_json.write(''status'', :P429_STATUS_IMPORTACAO);',
+'    apex_json.write(''validationStatus'', l_validation_status);',
+'    apex_json.write(',
+'        ''message'',',
+'        case',
+'            when l_validation_status = ''VALID'' then',
+'                ''Invoice analisada e todos os cadastros foram encontrados. Confira os dados antes de importar.''',
+'            else',
+'                ''Invoice analisada. Os campos em vermelho precisam ser conferidos ou corrigidos.''',
+'        end',
+'    );',
+'',
+'    apex_json.open_object(''items'');',
+'    apex_json.write(''P429_NUM_INVOICE'', :P429_NUM_INVOICE);',
+'    apex_json.write(''P429_DATA_INVOICE'', :P429_DATA_INVOICE);',
+'    apex_json.write(''P429_IND_STATUS'', :P429_IND_STATUS);',
+'    apex_json.write(''P429_NUM_PEDIDO_IMPORTACAO'', :P429_NUM_PEDIDO_IMPORTACAO);',
+'    apex_json.write(''P429_REFERENCIA_PEDIDO_ORIGINAL'', :P429_REFERENCIA_PEDIDO_ORIGINAL);',
+'    apex_json.write(''P429_ID_PEDIDOIMPORTACAO'', :P429_ID_PEDIDOIMPORTACAO);',
+'    apex_json.write(''P429_ID_EXPORTADOR'', :P429_ID_EXPORTADOR);',
+'    apex_json.write(''P429_NOME_EXPORTADOR'', :P429_NOME_EXPORTADOR);',
+'    apex_json.write(''P429_DOCUMENTO_EXPORTADOR'', :P429_DOCUMENTO_EXPORTADOR);',
+'    apex_json.write(''P429_ID_IMPORTADOR'', :P429_ID_IMPORTADOR);',
+'    apex_json.write(''P429_NOME_IMPORTADOR'', :P429_NOME_IMPORTADOR);',
+'    apex_json.write(''P429_DOCUMENTO_IMPORTADOR'', :P429_DOCUMENTO_IMPORTADOR);',
+'    apex_json.write(''P429_ID_ADQUIRENTE'', :P429_ID_ADQUIRENTE);',
+'    apex_json.write(''P429_NOME_ADQUIRENTE'', :P429_NOME_ADQUIRENTE);',
+'    apex_json.write(''P429_ID_CONDICAOPAGAMENTO'', :P429_ID_CONDICAOPAGAMENTO);',
+'    apex_json.write(''P429_DESC_CONDICAOPAGAMENTO'', :P429_DESC_CONDICAOPAGAMENTO);',
+'    apex_json.write(''P429_ID_INCOTERM'', :P429_ID_INCOTERM);',
+'    apex_json.write(''P429_CODIGO_INCOTERM'', :P429_CODIGO_INCOTERM);',
+'    apex_json.write(''P429_ID_MOEDA'', :P429_ID_MOEDA);',
+'    apex_json.write(''P429_CODIGO_MOEDA'', :P429_CODIGO_MOEDA);',
+'    apex_json.write(''P429_SCORE_PEDIDOIMPORTACAO'', :P429_SCORE_PEDIDOIMPORTACAO);',
+'    apex_json.write(''P429_STATUS_PEDIDOIMPORTACAO'', :P429_STATUS_PEDIDOIMPORTACAO);',
+'    apex_json.write(''P429_METODO_PEDIDOIMPORTACAO'', :P429_METODO_PEDIDOIMPORTACAO);',
+'    apex_json.write(''P429_SCORE_EXPORTADOR'', :P429_SCORE_EXPORTADOR);',
+'    apex_json.write(''P429_STATUS_EXPORTADOR'', :P429_STATUS_EXPORTADOR);',
+'    apex_json.write(''P429_METODO_EXPORTADOR'', :P429_METODO_EXPORTADOR);',
+'    apex_json.write(''P429_SCORE_IMPORTADOR'', :P429_SCORE_IMPORTADOR);',
+'    apex_json.write(''P429_STATUS_IMPORTADOR'', :P429_STATUS_IMPORTADOR);',
+'    apex_json.write(''P429_METODO_IMPORTADOR'', :P429_METODO_IMPORTADOR);',
+'    apex_json.write(''P429_SCORE_ADQUIRENTE'', :P429_SCORE_ADQUIRENTE);',
+'    apex_json.write(''P429_STATUS_ADQUIRENTE'', :P429_STATUS_ADQUIRENTE);',
+'    apex_json.write(''P429_METODO_ADQUIRENTE'', :P429_METODO_ADQUIRENTE);',
+'    apex_json.write(''P429_SCORE_CONDPAGTO'', :P429_SCORE_CONDPAGTO);',
+'    apex_json.write(''P429_STATUS_CONDPAGTO'', :P429_STATUS_CONDPAGTO);',
+'    apex_json.write(''P429_METODO_CONDPAGTO'', :P429_METODO_CONDPAGTO);',
+'    apex_json.write(''P429_SCORE_INCOTERM'', :P429_SCORE_INCOTERM);',
+'    apex_json.write(''P429_STATUS_INCOTERM'', :P429_STATUS_INCOTERM);',
+'    apex_json.write(''P429_METODO_INCOTERM'', :P429_METODO_INCOTERM);',
+'    apex_json.write(''P429_SCORE_MOEDA'', :P429_SCORE_MOEDA);',
+'    apex_json.write(''P429_STATUS_MOEDA'', :P429_STATUS_MOEDA);',
+'    apex_json.write(''P429_METODO_MOEDA'', :P429_METODO_MOEDA);',
+'    apex_json.write(''P429_PESO_LIQUIDO'', :P429_PESO_LIQUIDO);',
+'    apex_json.write(''P429_PESO_BRUTO'', :P429_PESO_BRUTO);',
+'    apex_json.write(''P429_VALOR_MERCADORIA'', :P429_VALOR_MERCADORIA);',
+'    apex_json.write(''P429_VALOR_DESCONTO'', :P429_VALOR_DESCONTO);',
+'    apex_json.write(''P429_VALOR_DESPESA'', :P429_VALOR_DESPESA);',
+'    apex_json.write(''P429_VALOR_CONDICAO_VENDA'', :P429_VALOR_CONDICAO_VENDA);',
+'    apex_json.write(''P429_VALOR_INVOICE'', :P429_VALOR_INVOICE);',
+'    apex_json.write(''P429_ITENS_COM_ERRO'', :P429_ITENS_COM_ERRO);',
+'    apex_json.write(''P429_STATUS_IMPORTACAO'', :P429_STATUS_IMPORTACAO);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''lovs'');',
+'',
+'    apex_json.open_object(''P429_ID_PEDIDOIMPORTACAO'');',
+'    apex_json.write(''value'', :P429_ID_PEDIDOIMPORTACAO);',
+'    apex_json.write(''display'', :P429_NUM_PEDIDO_IMPORTACAO);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_EXPORTADOR'');',
+'    apex_json.write(''value'', :P429_ID_EXPORTADOR);',
+'    apex_json.write(''display'', :P429_NOME_EXPORTADOR);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_IMPORTADOR'');',
+'    apex_json.write(''value'', :P429_ID_IMPORTADOR);',
+'    apex_json.write(''display'', :P429_NOME_IMPORTADOR);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_ADQUIRENTE'');',
+'    apex_json.write(''value'', :P429_ID_ADQUIRENTE);',
+'    apex_json.write(''display'', :P429_NOME_ADQUIRENTE);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_CONDICAOPAGAMENTO'');',
+'    apex_json.write(''value'', :P429_ID_CONDICAOPAGAMENTO);',
+'    apex_json.write(''display'', :P429_DESC_CONDICAOPAGAMENTO);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_INCOTERM'');',
+'    apex_json.write(''value'', :P429_ID_INCOTERM);',
+'    apex_json.write(''display'', :P429_CODIGO_INCOTERM);',
+'    apex_json.close_object;',
+'',
+'    apex_json.open_object(''P429_ID_MOEDA'');',
+'    apex_json.write(''value'', :P429_ID_MOEDA);',
+'    apex_json.write(''display'', :P429_CODIGO_MOEDA);',
+'    apex_json.close_object;',
+'',
+'    apex_json.close_object;',
+'    apex_json.close_object;',
+'',
+'exception',
+'    when no_data_found then',
+'        registrar_tempo(''ERRO_JSON_NAO_ENCONTRADO'');',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+unistr('        apex_json.write(''message'', ''JSON da invoice n\00E3o encontrado na collection INVOICE_429_API.'');'),
+'        apex_json.close_object;',
+'',
+'    when others then',
+'        registrar_tempo(',
+'            ''ERRO_GERAL'',',
+'            ''sqlcode='' || sqlcode || ''; erro='' || substr(sqlerrm, 1, 1500)',
+'        );',
+'        apex_json.open_object;',
+'        apex_json.write(''success'', false);',
+'        apex_json.write(''message'', substr(sqlerrm, 1, 2000));',
+'        apex_json.close_object;',
+'end;',
+''))
+,p_process_clob_language=>'PLSQL'
+,p_internal_uid=>269370316810277939
 );
 end;
 /
@@ -186414,14 +187612,13 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_SET_VALUE'
 ,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
 ,p_affected_elements=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'// $(''input[coluna="'' + window._lastDlgLinkZoom + ''"]'').closest(''span.lov'').find(''input[type=hidden]'')',
 '$(''input[coluna="'' + window._lastDlgLinkZoom + ''"], textarea[coluna="'' + window._lastDlgLinkZoom + ''"]'')',
 '  .closest(''span.lov'')',
 '  .find(''input[type=hidden]'');'))
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9010_SELECTED_ITEM_ID'
 ,p_attribute_07=>'P9010_SELECTED_ITEM_ID'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 ,p_client_condition_type=>'NOT_NULL'
@@ -186446,14 +187643,13 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_SET_VALUE'
 ,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
 ,p_affected_elements=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'// $(''input[coluna="'' + window._lastDlgLinkZoom + ''"]'').closest(''span.lov'').find(''input[type=text]'')',
 '$('':is(input, textarea)[coluna="'' + window._lastDlgLinkZoom + ''"]'')',
 '  .closest(''span.lov'')',
 '  .find('':is(input[type=text], textarea)'');'))
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9010_SELECTED_ITEM_TEXT '
 ,p_attribute_07=>'P9010_SELECTED_ITEM_TEXT'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 ,p_client_condition_type=>'NOT_NULL'
@@ -187634,7 +188830,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9011_SELECTED_ITEM_ID'
 ,p_attribute_07=>'P9011_SELECTED_ITEM_ID'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
@@ -187664,7 +188860,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9011_SELECTED_ITEM_TEXT'
 ,p_attribute_07=>'P9011_SELECTED_ITEM_TEXT'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
@@ -187950,7 +189146,6 @@ wwv_flow_imp_page.create_page(
 '    console.log(item.value);',
 '    console.log(apex.item( "P9010_FILE1" ).getValue()); ',
 '}',
-'',
 '',
 'function checkInputAndToggleClass(inputElement) {',
 unistr('    // Verificar se o campo de entrada est\00E1 preenchido'),
@@ -188864,7 +190059,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9012_SELECTED_ITEM_ID'
 ,p_attribute_07=>'P9012_SELECTED_ITEM_ID'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 ,p_client_condition_type=>'NOT_NULL'
@@ -188889,14 +190084,16 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_SET_VALUE'
 ,p_affected_elements_type=>'JAVASCRIPT_EXPRESSION'
 ,p_affected_elements=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'// $(''input[coluna="'' + window._lastDlgLinkZoom + ''"]'').closest(''span.lov'').find(''input[type=text]'')',
 '$('':is(input, textarea)[coluna="'' + window._lastDlgLinkZoom + ''"]'')',
 '  .closest(''span.lov'')',
-'  .find('':is(input[type=text], textarea)'');'))
+'  .find('':is(input[type=text], textarea)'');',
+'',
+'',
+''))
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9012_SELECTED_ITEM_TEXT'
 ,p_attribute_07=>'P9012_SELECTED_ITEM_TEXT'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 ,p_client_condition_type=>'NOT_NULL'
@@ -191032,7 +192229,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9013_SELECTED_ITEM_ID'
 ,p_attribute_07=>'P9013_SELECTED_ITEM_ID'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
@@ -191061,7 +192258,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9013_SELECTED_ITEM_TEXT'
 ,p_attribute_07=>'P9013_SELECTED_ITEM_TEXT'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
@@ -194157,7 +195354,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9015_SELECTED_ITEM_ID'
 ,p_attribute_07=>'P9015_SELECTED_ITEM_ID'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
@@ -194187,7 +195384,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attribute_01=>'PLSQL_EXPRESSION'
 ,p_attribute_04=>':P9015_SELECTED_ITEM_TEXT'
 ,p_attribute_07=>'P9015_SELECTED_ITEM_TEXT'
-,p_attribute_08=>'Y'
+,p_attribute_08=>'N'
 ,p_attribute_09=>'N'
 ,p_wait_for_result=>'Y'
 );
