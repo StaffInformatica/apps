@@ -36,8 +36,8 @@ prompt APPLICATION 124 - NG
 -- Application Export:
 --   Application:     124
 --   Name:            NG
---   Date and Time:   16:04 Friday August 14, 2026
---   Exported By:     DEVLEONARDO
+--   Date and Time:   12:19 Monday August 17, 2026
+--   Exported By:     DEVJONATHAN
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     76
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3275
-,p_version_scn=>50275156176694
+,p_version_scn=>50304506365435
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -65987,7 +65987,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>wwv_flow_imp.id(384015028781198578)
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'botao.gravar.l'
+,p_button_image_alt=>'&P0_LABEL_SALVAR.'
 ,p_button_position=>'CENTER_BOTTOM'
 ,p_button_condition=>'P152_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
@@ -66003,7 +66003,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>wwv_flow_imp.id(384015028781198578)
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'botao.salvar.l'
+,p_button_image_alt=>'&P0_LABEL_SALVAR.'
 ,p_button_position=>'CENTER_BOTTOM'
 ,p_button_condition=>':P152_ID IS NOT NULL AND :P152_VISUALIZAR IS NULL'
 ,p_button_condition2=>'PLSQL'
