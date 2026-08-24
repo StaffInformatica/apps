@@ -16,13 +16,24 @@
     {
       "internalName": "MPD",
       "name": "MPD",
-      "description": "Adicionar uma descrição para o aplicativo MPD",
+      "description": "Módulo Padrão",
       "author": "northonn",
       "version": "1.0.0",
       "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/app-icon-256-rounded.png",
       "url": "https://github.com/StaffInformatica/apps/tree/main/mpd/desenvolvimento",
       "source": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/f140.sql",
       "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/f140.zip"
-    }
+    },
+    {
+      "internalName": "SRV",
+      "name": "SRV",
+      "description": "Serviços",
+      "author": "northonn",
+      "version": "1.0.0",
+      "icon": "https://raw.githubusercontent.com/StaffInformatica/apps/main/mpd/desenvolvimento/app-icon-256-rounded.png",
+      "url": "https://github.com/StaffInformatica/apps/tree/main/mpd/desenvolvimento",
+      "source": "https://raw.githubusercontent.com/StaffInformatica/apps/main/srv/desenvolvimento/f138.sql",
+      "zip": "https://raw.githubusercontent.com/StaffInformatica/apps/main/srv/desenvolvimento/f138.zip"
+    }    
   ]
 }
