@@ -36,8 +36,8 @@ prompt APPLICATION 124 - NG
 -- Application Export:
 --   Application:     124
 --   Name:            NG
---   Date and Time:   14:24 Tuesday August 25, 2026
---   Exported By:     DEVJONATHAN
+--   Date and Time:   13:13 Wednesday August 26, 2026
+--   Exported By:     DEVLEONARDO
 --   Flashback:       0
 --   Export Type:     Application Export
 --     Pages:                     80
@@ -170,7 +170,7 @@ unistr('    -- Valida\00E7\00E3o r\00EDgida (evita lixo/injection): somente \00B
 ,p_substitution_value_03=>'var button = parent.$(''.ui-dialog-titlebar-close''); button.unbind(); button.on(''click'', function() {});'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3282
-,p_version_scn=>50393044285211
+,p_version_scn=>50394532473789
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -157669,7 +157669,7 @@ wwv_flow_imp_page.create_card_action(
 ,p_display_sequence=>10
 ,p_label=>'&P356_LABEL_MAIS_DETALHES.'
 ,p_link_target_type=>'REDIRECT_PAGE'
-,p_link_target=>'f?p=&APP_ID.:9013:&SESSION.::&DEBUG.:9013:P9013_CODIGO_ARTEFATO,P9013_PARAMETRO,P9013_ID:TD784,&P356_PARAMETRO.,&P356_PARAMETRO.'
+,p_link_target=>'f?p=&APP_ID.:9005:&SESSION.::&DEBUG.:9005:P9005_CODIGO_ARTEFATO,P9005_PARAMETRO,P9005_CARD_OU_LISTA,P0_CODIGO_ARTEFATO:TD1256,&P356_PARAMETRO.,LISTA,TD1256'
 ,p_button_display_type=>'TEXT'
 ,p_action_css_classes=>'t-Button--link padding-none'
 ,p_is_hot=>false
@@ -157977,6 +157977,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select',
+'    t.id,',
 '    pkg_ui.retorna_label_tela(''transporte'') titulo,',
 '    pkg_componentes.html_card_colunas(''imp_minutanotafiscal_entrada_transporte.id_transportador'',',
 '        b.nome_fantasia || '' - '' || b.razao_social, 4) atributo1,',
@@ -158049,7 +158050,7 @@ wwv_flow_imp_page.create_card_action(
 ,p_display_sequence=>10
 ,p_label=>'&P356_LABEL_MAIS_DETALHES.'
 ,p_link_target_type=>'REDIRECT_PAGE'
-,p_link_target=>'f?p=&APP_ID.:9005:&SESSION.::&DEBUG.:9005:P0_CODIGO_ARTEFATO,P9005_CODIGO_ARTEFATO,P9005_PARAMETRO:TD938,TD938,&P356_PARAMETRO.'
+,p_link_target=>'f?p=&APP_ID.:9010:&SESSION.::&DEBUG.:9010:P9010_CODIGO_ARTEFATO,P9010_ID,P9010_VISUALIZAR:TD1257,&ID.,1'
 ,p_button_display_type=>'TEXT'
 ,p_action_css_classes=>'t-Button--link padding-none'
 ,p_is_hot=>false
@@ -158779,6 +158780,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select',
+'    a.id,',
 '    pkg_ui.retorna_label_tela(''dados_gerais'') titulo,',
 '    pkg_componentes.html_card_colunas(''imp_minutanotafiscal_entrada.id_exportador'',',
 '        b.nome_fantasia || '' - '' || b.razao_social, 3) atributo1,',
@@ -158853,7 +158855,7 @@ wwv_flow_imp_page.create_card_action(
 ,p_display_sequence=>10
 ,p_label=>'&P356_LABEL_MAIS_DETALHES.'
 ,p_link_target_type=>'REDIRECT_PAGE'
-,p_link_target=>'f?p=&APP_ID.:9010:&SESSION.::&DEBUG.:9010:P9010_CODIGO_ARTEFATO,P9010_ID,P9010_VISUALIZAR,P9010_PARAMETRO,P9010_TIPO_CONFIRMACAO:TD1253,&ID.,1,&P356_PARAMETRO.,0'
+,p_link_target=>'f?p=&APP_ID.:9010:&SESSION.::&DEBUG.:9010:P9010_CODIGO_ARTEFATO,P9010_ID,P9010_VISUALIZAR:TD1253,&ID.,1'
 ,p_button_display_type=>'TEXT'
 ,p_action_css_classes=>'t-Button--link padding-none'
 ,p_is_hot=>false
